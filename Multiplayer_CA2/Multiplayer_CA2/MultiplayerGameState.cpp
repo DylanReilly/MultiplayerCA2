@@ -336,15 +336,15 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		// Sent by the server to order to spawn player 1 airplane on connect
 		case Server::SpawnSelf:
 		{
-			sf::Int32 TankIdentifier;
+			sf::Int32 Tankentifier;
 			sf::Vector2f TankPosition;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+			packet >> Tankentifier >> TankPosition.x >> TankPosition.y;
 
-			Tank* Tank = mWorld.addTank(TankIdentifier);
+			Tank* Tank = mWorld.addTank(Tankentifier);
 			Tank->setPosition(TankPosition);
 			
-			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys1));
-			mLocalPlayerIdentifiers.push_back(TankIdentifier);
+			mPlayers[Tankentifier].reset(new Player(&mSocket, Tankentifier, getContext().keys1));
+			mLocalPlayerIdentifiers.push_back(Tankentifier);
 
 			mGameStarted = true;
 		} break;
@@ -352,24 +352,24 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		// 
 		case Server::PlayerConnect:
 		{
-			sf::Int32 TankIdentifier;
+			sf::Int32 Tankentifier;
 			sf::Vector2f TankPosition;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+			packet >> Tankentifier >> TankPosition.x >> TankPosition.y;
 
-			Tank* Tank = mWorld.addTank(TankIdentifier);
+			Tank* Tank = mWorld.addTank(Tankentifier);
 			Tank->setPosition(TankPosition);
 
-			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
+			mPlayers[Tankentifier].reset(new Player(&mSocket, Tankentifier, nullptr));
 		} break;
 
 		// 
 		case Server::PlayerDisconnect:
 		{
-			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier;
+			sf::Int32 Tankentifier;
+			packet >> Tankentifier;
 
-			mWorld.removeTank(TankIdentifier);
-			mPlayers.erase(TankIdentifier);
+			mWorld.removeTank(Tankentifier);
+			mPlayers.erase(Tankentifier);
 		} break;
 
 		// 
@@ -385,40 +385,40 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			packet >> TankCount;
 			for (sf::Int32 i = 0; i < TankCount; ++i)
 			{
-				sf::Int32 TankIdentifier;
+				sf::Int32 Tankentifier;
 				sf::Int32 hitpoints;
 				sf::Int32 missileAmmo;
 				sf::Vector2f TankPosition;
-				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> hitpoints >> missileAmmo;
+				packet >> Tankentifier >> TankPosition.x >> TankPosition.y >> hitpoints >> missileAmmo;
 
-				Tank* Tank = mWorld.addTank(TankIdentifier);
+				Tank* Tank = mWorld.addTank(Tankentifier);
 				Tank->setPosition(TankPosition);
 				Tank->setHitpoints(hitpoints);
 				Tank->setMissileAmmo(missileAmmo);
 
-				mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
+				mPlayers[Tankentifier].reset(new Player(&mSocket, Tankentifier, nullptr));
 			}
 		} break;
 
 		//
 		case Server::AcceptCoopPartner:
 		{
-			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier;
+			sf::Int32 Tankentifier;
+			packet >> Tankentifier;
 
-			mWorld.addTank(TankIdentifier);
-			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys2));
-			mLocalPlayerIdentifiers.push_back(TankIdentifier);
+			mWorld.addTank(Tankentifier);
+			mPlayers[Tankentifier].reset(new Player(&mSocket, Tankentifier, getContext().keys2));
+			mLocalPlayerIdentifiers.push_back(Tankentifier);
 		} break;
 
 		// Player event (like missile fired) occurs
 		case Server::PlayerEvent:
 		{
-			sf::Int32 TankIdentifier;
+			sf::Int32 Tankentifier;
 			sf::Int32 action;
-			packet >> TankIdentifier >> action;
+			packet >> Tankentifier >> action;
 
-			auto itr = mPlayers.find(TankIdentifier);
+			auto itr = mPlayers.find(Tankentifier);
 			if (itr != mPlayers.end())
 				itr->second->handleNetworkEvent(static_cast<Player::Action>(action), mWorld.getCommandQueue());
 		} break;
@@ -426,12 +426,12 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		// Player's movement or fire keyboard state changes
 		case Server::PlayerRealtimeChange:
 		{
-			sf::Int32 TankIdentifier;
+			sf::Int32 Tankentifier;
 			sf::Int32 action;
 			bool actionEnabled;
-			packet >> TankIdentifier >> action >> actionEnabled;
+			packet >> Tankentifier >> action >> actionEnabled;
 
-			auto itr = mPlayers.find(TankIdentifier);
+			auto itr = mPlayers.find(Tankentifier);
 			if (itr != mPlayers.end())
 				itr->second->handleNetworkRealtimeChange(static_cast<Player::Action>(action), actionEnabled);
 		} break;
@@ -464,11 +464,11 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			for (sf::Int32 i = 0; i < TankCount; ++i)
 			{
 				sf::Vector2f TankPosition;
-				sf::Int32 TankIdentifier;
-				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+				sf::Int32 Tankentifier;
+				packet >> Tankentifier >> TankPosition.x >> TankPosition.y;
 
-				Tank* Tank = mWorld.getTank(TankIdentifier);
-				bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), TankIdentifier) != mLocalPlayerIdentifiers.end();
+				Tank* Tank = mWorld.getTank(Tankentifier);
+				bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), Tankentifier) != mLocalPlayerIdentifiers.end();
 				if (Tank && !isLocalPlane)
 				{
 					sf::Vector2f interpolatedPosition = Tank->getPosition() + (TankPosition - Tank->getPosition()) * 0.1f;

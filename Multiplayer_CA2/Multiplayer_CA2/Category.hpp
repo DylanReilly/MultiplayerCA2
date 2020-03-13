@@ -9,19 +9,19 @@ namespace Category
 	{
 		None				= 0,
 		SceneAirLayer		= 1 << 0,
-		PlayerTank		= 1 << 1,
-		AlliedTank		= 1 << 2,
-		EnemyTank		= 1 << 3,
+		PlayerTank			= 1 << 1,
+		AlliedTank			= 1 << 2,
+		EnemyTank			= 1 << 3,
 		Pickup				= 1 << 4,
-		AlliedProjectile	= 1 << 5,
-		EnemyProjectile		= 1 << 6,
+		AlliedProjectiles	= 1 << 5,
+		EnemyProjectiles	= 1 << 6,
 		ParticleSystem		= 1 << 7,
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
-		Collidable = 1 << 10, //Added collidable ID - Jason Lynch
+		Collidable			= 1 << 10, //Added collidable ID - Jason Lynch
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
-		Projectile = AlliedProjectile | EnemyProjectile,
+		Projectiles = AlliedProjectiles | EnemyProjectiles,
 	};
 }
 

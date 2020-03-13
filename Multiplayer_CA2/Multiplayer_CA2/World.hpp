@@ -89,14 +89,14 @@ class World : private sf::NonCopyable
 
 		struct SpawnPoint 
 		{
-			SpawnPoint(Tank::Type type, float x, float y)
+			SpawnPoint(Tanks::ID type, float x, float y)
 			: type(type)
 			, x(x)
 			, y(y)
 			{
 			}
 
-			Tank::Type type;
+			Tanks::ID type;
 			float x;
 			float y;
 		};

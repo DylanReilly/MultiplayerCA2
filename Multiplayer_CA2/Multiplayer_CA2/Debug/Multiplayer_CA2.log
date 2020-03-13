@@ -1,13 +1,34 @@
-﻿  Application.cpp
-  GameState.cpp
-  MultiplayerGameState.cpp
-  Obstacle.cpp
+﻿  Obstacle.cpp
 D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Obstacle.cpp(38,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Tank.cpp
+  DataTables.cpp
+  GameServer.cpp
+  GameState.cpp
+  ParticleNode.cpp
+  Pickup.cpp
+  Player.cpp
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(26,1): error C2678: binary '==': no operator found which takes a left-hand operand of type 'int' (or there is no acceptable conversion)
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\Time.hpp(161,22): message : could be 'bool sf::operator ==(sf::Time,sf::Time)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\String.hpp(521,33): message : or       'bool sf::operator ==(const sf::String &,const sf::String &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Transform.hpp(419,24): message : or       'bool sf::operator ==(const sf::Transform &,const sf::Transform &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\BlendMode.hpp(133,24): message : or       'bool sf::operator ==(const sf::BlendMode &,const sf::BlendMode &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Color.hpp(114,24): message : or       'bool sf::operator ==(const sf::Color &,const sf::Color &)' [found using argument-dependent lookup]
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(26,1): message : while trying to match the argument list '(int, Tank)'
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(43,1): error C2678: binary '==': no operator found which takes a left-hand operand of type 'int' (or there is no acceptable conversion)
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\Time.hpp(161,22): message : could be 'bool sf::operator ==(sf::Time,sf::Time)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\String.hpp(521,33): message : or       'bool sf::operator ==(const sf::String &,const sf::String &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Transform.hpp(419,24): message : or       'bool sf::operator ==(const sf::Transform &,const sf::Transform &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\BlendMode.hpp(133,24): message : or       'bool sf::operator ==(const sf::BlendMode &,const sf::BlendMode &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Color.hpp(114,24): message : or       'bool sf::operator ==(const sf::Color &,const sf::Color &)' [found using argument-dependent lookup]
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(43,1): message : while trying to match the argument list '(int, Tank)'
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(59,1): error C2678: binary '==': no operator found which takes a left-hand operand of type 'int' (or there is no acceptable conversion)
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\Time.hpp(161,22): message : could be 'bool sf::operator ==(sf::Time,sf::Time)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\System\String.hpp(521,33): message : or       'bool sf::operator ==(const sf::String &,const sf::String &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Transform.hpp(419,24): message : or       'bool sf::operator ==(const sf::Transform &,const sf::Transform &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\BlendMode.hpp(133,24): message : or       'bool sf::operator ==(const sf::BlendMode &,const sf::BlendMode &)' [found using argument-dependent lookup]
+D:\DKIT\Multiplayer\SFML-2.5.1\include\SFML\Graphics\Color.hpp(114,24): message : or       'bool sf::operator ==(const sf::Color &,const sf::Color &)' [found using argument-dependent lookup]
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Player.cpp(59,1): message : while trying to match the argument list '(int, Tank)'
+  Projectile.cpp
+  SceneNode.cpp
   World.cpp
   Generating Code...
-Tank.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
-DataTables.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
-ParticleNode.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
-Pickup.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
-Projectile.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
-D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Debug\Multiplayer_CA2.exe : fatal error LNK1169: one or more multiply defined symbols found

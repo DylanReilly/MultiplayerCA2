@@ -117,7 +117,7 @@ void World::removeTank(int identifier)
 
 Tank* World::addTank(int identifier)
 {
-	std::unique_ptr<Tank> player(new Tank(Tank::Eagle, mTextures, mFonts));
+	std::unique_ptr<Tank> player(new Tank(Category::AlliedTank, Tanks::ID::GreenGatling1, mTextures, mFonts));
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 
@@ -263,21 +263,21 @@ void World::handleCollisions()
 			auto& player = static_cast<Tank&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
 
-			// Apply pickup effect to player, destroy projectile
+			// Apply pickup effect to player, destroy Projectiles
 			pickup.apply(player);
 			pickup.destroy();
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)
-			  || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectiles)
+			  || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectiles))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
-			auto& projectile = static_cast<Projectile&>(*pair.second);
+			auto& Projectiles = static_cast<Projectile&>(*pair.second);
 
-			// Apply projectile damage to Tank, destroy projectile
-			tank.damage(projectile.getDamage());
-			projectile.destroy();
+			// Apply Projectiles damage to Tank, destroy Projectiles
+			tank.damage(Projectiles.getDamage());
+			Projectiles.destroy();
 		}
 	}
 }
@@ -461,7 +461,7 @@ void World::spawnObstacles()
 void World::destroyEntitiesOutsideView()
 {
 	Command command;
-	command.category = Category::Projectile | Category::EnemyTank;
+	command.category = Category::Projectiles | Category::EnemyTank;
 	command.action = derivedAction<Entity>([this] (Entity& e, sf::Time)
 	{
 		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))

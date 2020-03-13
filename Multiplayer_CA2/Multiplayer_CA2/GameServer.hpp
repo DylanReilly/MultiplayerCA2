@@ -20,9 +20,9 @@ class GameServer
 		explicit							GameServer(sf::Vector2f battlefieldSize);
 											~GameServer();
 
-		void								notifyPlayerSpawn(sf::Int32 TankIdentifier);
-		void								notifyPlayerRealtimeChange(sf::Int32 TankIdentifier, sf::Int32 action, bool actionEnabled);
-		void								notifyPlayerEvent(sf::Int32 TankIdentifier, sf::Int32 action);
+		void								notifyPlayerSpawn(sf::Int32 Tankentifier);
+		void								notifyPlayerRealtimeChange(sf::Int32 Tankentifier, sf::Int32 action, bool actionEnabled);
+		void								notifyPlayerEvent(sf::Int32 Tankentifier, sf::Int32 action);
 
 
 	private:
@@ -33,7 +33,7 @@ class GameServer
 
 			sf::TcpSocket			socket;
 			sf::Time				lastPacketTime;
-			std::vector<sf::Int32>	TankIdentifiers;
+			std::vector<sf::Int32>	Tankentifiers;
 			bool					ready;
 			bool					timedOut;
 		};
@@ -87,7 +87,7 @@ class GameServer
 		std::map<sf::Int32, TankInfo>	mTankInfo;
 
 		std::vector<PeerPtr>				mPeers;
-		sf::Int32							mTankIdentifierCounter;
+		sf::Int32							mTankentifierCounter;
 		bool								mWaitingThreadEnd;
 		
 		sf::Time							mLastSpawnTime;

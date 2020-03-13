@@ -16,53 +16,17 @@ namespace
 	const std::vector<ProjectileData> Table = initializeProjectileData();
 }
 
-Projectile::Projectile(Type type, const TextureHolder& textures)
+Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures)
 : Entity(1)
 , mType(type)
-, mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+, mSprite(textures.get(Table[static_cast<int>(type)].texture), Table[static_cast<int>(type)].textureRect)
 , mTargetDirection()
 {
 	centerOrigin(mSprite);
-
-	// Add particle system for missiles
-	if (isGuided())
-	{
-		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke));
-		smoke->setPosition(0.f, getBoundingRect().height / 2.f);
-		attachChild(std::move(smoke));
-
-		std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant));
-		propellant->setPosition(0.f, getBoundingRect().height / 2.f);
-		attachChild(std::move(propellant));
-
-	}
-}
-
-void Projectile::guideTowards(sf::Vector2f position)
-{
-	assert(isGuided());
-	mTargetDirection = unitVector(position - getWorldPosition());
-}
-
-bool Projectile::isGuided() const
-{
-	return mType == Missile;
 }
 
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	if (isGuided())
-	{
-		const float approachRate = 200.f;
-
-		sf::Vector2f newVelocity = unitVector(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
-		newVelocity *= getMaxSpeed();
-		float angle = std::atan2(newVelocity.y, newVelocity.x);
-
-		setRotation(toDegree(angle) + 90.f);
-		setVelocity(newVelocity);
-	}
-
 	Entity::updateCurrent(dt, commands);
 }
 
@@ -73,10 +37,10 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 
 unsigned int Projectile::getCategory() const
 {
-	if (mType == EnemyBullet)
-		return Category::EnemyProjectile;
+	if (mType == Projectiles::ID::RedGatlingBullet || mType == Projectiles::ID::RedLMGBullet || mType == Projectiles::ID::RedHMGBullet || mType == Projectiles::ID::RedTeslaBullet)
+		return Category::EnemyProjectiles;
 	else
-		return Category::AlliedProjectile;
+		return Category::AlliedProjectiles;
 }
 
 sf::FloatRect Projectile::getBoundingRect() const
@@ -86,10 +50,10 @@ sf::FloatRect Projectile::getBoundingRect() const
 
 float Projectile::getMaxSpeed() const
 {
-	return Table[mType].speed;
+	return Table[static_cast<int>(mType)].speed;
 }
 
 int Projectile::getDamage() const
 {
-	return Table[mType].damage;
+	return Table[static_cast<int>(mType)].damage;
 }

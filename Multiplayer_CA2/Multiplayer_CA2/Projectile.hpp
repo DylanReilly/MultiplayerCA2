@@ -1,5 +1,5 @@
-#ifndef BOOK_PROJECTILE_HPP
-#define BOOK_PROJECTILE_HPP
+#ifndef BOOK_Projectiles_HPP
+#define BOOK_Projectiles_HPP
 
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -10,20 +10,9 @@
 class Projectile : public Entity
 {
 	public:
-		enum Type
-		{
-			AlliedBullet,
-			EnemyBullet,
-			Missile,
-			TypeCount
-		};
-
-
-	public:
-								Projectile(Type type, const TextureHolder& textures);
+								Projectile(Projectiles::ID type, const TextureHolder& textures);
 
 		void					guideTowards(sf::Vector2f position);
-		bool					isGuided() const;
 
 		virtual unsigned int	getCategory() const;
 		virtual sf::FloatRect	getBoundingRect() const;
@@ -37,9 +26,9 @@ class Projectile : public Entity
 
 
 	private:
-		Type					mType;
+		Projectiles::ID			mType;
 		sf::Sprite				mSprite;
 		sf::Vector2f			mTargetDirection;
 };
 
-#endif // BOOK_PROJECTILE_HPP
+#endif // BOOK_Projectiles_HPP

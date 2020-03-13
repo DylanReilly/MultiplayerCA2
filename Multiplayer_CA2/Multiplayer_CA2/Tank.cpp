@@ -6,6 +6,7 @@
 #include "SoundNode.hpp"
 #include "NetworkNode.hpp"
 #include "ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -20,10 +21,11 @@ namespace
 	const std::vector<TankData> Table = initializeTankData();
 }
 
-Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
+Tank::Tank(Category::Type entity, Tanks::ID type, const TextureHolder& textures, const FontHolder& fonts)
 : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+, mTextures(textures) //Needed to change tank texture on powerup pickup - Jason Lynch
 , mExplosion(textures.get(Textures::Explosion))
 , mFireCommand()
 , mMissileCommand()
@@ -54,12 +56,6 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	mFireCommand.action   = [this, &textures] (SceneNode& node, sf::Time)
 	{
 		createBullets(node, textures);
-	};
-
-	mMissileCommand.category = Category::SceneAirLayer;
-	mMissileCommand.action   = [this, &textures] (SceneNode& node, sf::Time)
-	{
-		createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures);
 	};
 
 	mDropPickupCommand.category = Category::SceneAirLayer;
@@ -146,10 +142,10 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	}
 
 	// Check if bullets or missiles are fired
-	checkProjectileLaunch(dt, commands);
+	checkProjectilesLaunch(dt, commands);
 
 	// Update enemy movement pattern; apply velocity
-	updateMovementPattern(dt);
+	//updateMovementPattern(dt);
 	Entity::updateCurrent(dt, commands);
 }
 
@@ -177,10 +173,10 @@ void Tank::remove()
 	mShowExplosion = false;
 }
 
-bool Tank::isAllied() const
-{
-	return mType == Eagle;
-}
+//bool Tank::isAllied() const
+//{
+//	return mType == Eagle;
+//}
 
 float Tank::getMaxSpeed() const
 {
@@ -198,6 +194,68 @@ void Tank::increaseSpread()
 	if (mSpreadLevel < 3)
 		++mSpreadLevel;
 }
+
+void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e.g pickups) - Jason Lynch
+	if (val == 1) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank) //2 id player 1, 8 is player 2 - Jason Lynch
+		{
+		case 2:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::GreenLMG1)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::GreenHMG1)].textureRect);
+			mType = Tanks::GreenHMG1;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::RedHMG1)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::RedHMG1)].textureRect);
+			mType = Tanks::RedHMG1;
+			break;
+		}
+	}
+	else if (val == 2) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank)
+		{
+		case 2:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::GreenGatling2)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::GreenGatling2)].textureRect);
+			mType = Tanks::GreenGatling2;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::RedGatling2)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::RedGatling2)].textureRect);
+			mType = Tanks::RedGatling2;
+			break;
+		}
+		increaseFireRate();
+	}
+	else if (val == 3) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank)
+		{
+		case 2:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::GreenTesla2)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::GreenTesla2)].textureRect);
+			mType = Tanks::GreenTesla2;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tanks::RedTesla3)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tanks::RedTesla3)].textureRect);
+			mType = Tanks::RedTesla3;
+			break;
+		}
+	}
+}
+
 
 void Tank::collectMissiles(unsigned int count)
 {
@@ -245,29 +303,29 @@ void Tank::setIdentifier(int identifier)
 	mIdentifier = identifier;
 }
 
-void Tank::updateMovementPattern(sf::Time dt)
-{
-	// Enemy airplane: Movement pattern
-	const std::vector<Direction>& directions = Table[mType].directions;
-	if (!directions.empty())
-	{
-		// Moved long enough in current direction: Change direction
-		if (mTravelledDistance > directions[mDirectionIndex].distance)
-		{
-			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-			mTravelledDistance = 0.f;
-		}
-
-		// Compute velocity from direction
-		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-		float vx = getMaxSpeed() * std::cos(radians);
-		float vy = getMaxSpeed() * std::sin(radians);
-
-		setVelocity(vx, vy);
-
-		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
-	}
-}
+//void Tank::updateMovementPattern(sf::Time dt)
+//{
+//	// Enemy airplane: Movement pattern
+//	const std::vector<Direction>& directions = Table[mType].directions;
+//	if (!directions.empty())
+//	{
+//		// Moved long enough in current direction: Change direction
+//		if (mTravelledDistance > directions[mDirectionIndex].distance)
+//		{
+//			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
+//			mTravelledDistance = 0.f;
+//		}
+//
+//		// Compute velocity from direction
+//		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
+//		float vx = getMaxSpeed() * std::cos(radians);
+//		float vy = getMaxSpeed() * std::sin(radians);
+//
+//		setVelocity(vx, vy);
+//
+//		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
+//	}
+//}
 
 void Tank::checkPickupDrop(CommandQueue& commands)
 {
@@ -279,7 +337,7 @@ void Tank::checkPickupDrop(CommandQueue& commands)
 	mSpawnedPickup = true;
 }
 
-void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
+void Tank::checkProjectilesLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies try to fire all the time
 	if (!isAllied())
@@ -314,7 +372,8 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 
 void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 {
-	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
+	//Projectiles::ID::Type type = isAllied() ? Projectiles::AlliedBullet : Projectiles::EnemyBullet;
+	Projectiles::ID type = Tank::getProjectile();
 
 	switch (mSpreadLevel)
 	{
@@ -335,17 +394,17 @@ void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 	}
 }
 
-void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
+void Tank::createProjectile(SceneNode& node, Projectiles::ID type, float xOffset, float yOffset, const TextureHolder& textures) const
 {
-	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+	std::unique_ptr<Projectile> Projectiles(new Projectile(type, textures));
 
 	sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
-	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	sf::Vector2f velocity(0, Projectiles->getMaxSpeed());
 
 	float sign = isAllied() ? -1.f : +1.f;
-	projectile->setPosition(getWorldPosition() + offset * sign);
-	projectile->setVelocity(velocity * sign);
-	node.attachChild(std::move(projectile));
+	Projectiles->setPosition(getWorldPosition() + offset * sign);
+	Projectiles->setVelocity(velocity * sign);
+	node.attachChild(std::move(Projectiles));
 }
 
 void Tank::createPickup(SceneNode& node, const TextureHolder& textures) const
@@ -378,20 +437,65 @@ void Tank::updateTexts()
 	}
 }
 
-void Tank::updateRollAnimation()
+//Returns whether tank is allied or enemy (green or red respectively) - Dylan Reilly
+bool Tank::isAllied() const
 {
-	if (Table[mType].hasRollAnimation)
+	switch (mType)
 	{
-		sf::IntRect textureRect = Table[mType].textureRect;
+	case Tanks::ID::GreenLMG1:
+	case Tanks::ID::GreenLMG2:
+	case Tanks::ID::GreenLMG3:
+	case Tanks::ID::GreenHMG1:
+	case Tanks::ID::GreenHMG2:
+	case Tanks::ID::GreenHMG3:
+	case Tanks::ID::GreenGatling1:
+	case Tanks::ID::GreenGatling2:
+	case Tanks::ID::GreenGatling3:
+	case Tanks::ID::GreenTesla1:
+	case Tanks::ID::GreenTesla2:
+	case Tanks::ID::GreenTesla3:
+		return true;
+	}
+	return false;
+}
 
-		// Roll left: Texture rect offset once
-		if (getVelocity().x < 0.f)
-			textureRect.left += textureRect.width;
-
-		// Roll right: Texture rect offset twice
-		else if (getVelocity().x > 0.f)
-			textureRect.left += 2 * textureRect.width;
-
-		mSprite.setTextureRect(textureRect);
+//Returns correct projectile ID based on the tank being used - Dylan Reilly
+Projectiles::ID Tank::getProjectile() const
+{
+	switch (mType) {
+	case Tanks::ID::GreenLMG1:
+	case Tanks::ID::GreenLMG2:
+	case Tanks::ID::GreenLMG3:
+		return Projectiles::ID::GreenLMGBullet;
+	case Tanks::ID::RedLMG1:
+	case Tanks::ID::RedLMG2:
+	case Tanks::ID::RedLMG3:
+		return Projectiles::ID::RedLMGBullet;
+	case Tanks::ID::GreenHMG1:
+	case Tanks::ID::GreenHMG2:
+	case Tanks::ID::GreenHMG3:
+		return Projectiles::ID::GreenHMGBullet;
+	case Tanks::ID::RedHMG1:
+	case Tanks::ID::RedHMG2:
+	case Tanks::ID::RedHMG3:
+		return Projectiles::ID::RedHMGBullet;
+	case Tanks::ID::GreenGatling1:
+	case Tanks::ID::GreenGatling2:
+	case Tanks::ID::GreenGatling3:
+		return Projectiles::ID::GreenGatlingBullet;
+	case Tanks::ID::RedGatling1:
+	case Tanks::ID::RedGatling2:
+	case Tanks::ID::RedGatling3:
+		return Projectiles::ID::RedGatlingBullet;
+	case Tanks::ID::GreenTesla1:
+	case Tanks::ID::GreenTesla2:
+	case Tanks::ID::GreenTesla3:
+		return Projectiles::ID::GreenTeslaBullet;
+	case Tanks::ID::RedTesla1:
+	case Tanks::ID::RedTesla2:
+	case Tanks::ID::RedTesla3:
+		return Projectiles::ID::RedTeslaBullet;
+	default:
+		return Projectiles::ID::None;
 	}
 }

@@ -43,6 +43,38 @@ namespace Textures
 	};
 }
 
+namespace Tanks
+{
+	enum ID
+	{
+		GreenLMG1,
+		GreenLMG2,
+		GreenLMG3,
+		GreenHMG1,
+		GreenHMG2,
+		GreenHMG3,
+		GreenGatling1,
+		GreenGatling2,
+		GreenGatling3,
+		GreenTesla1,
+		GreenTesla2,
+		GreenTesla3,
+		RedLMG1,
+		RedLMG2,
+		RedLMG3,
+		RedHMG1,
+		RedHMG2,
+		RedHMG3,
+		RedGatling1,
+		RedGatling2,
+		RedGatling3,
+		RedTesla1,
+		RedTesla2,
+		RedTesla3,
+		TypeCount
+	};
+}
+
 namespace Obstacles
 {
 	enum ID
@@ -65,6 +97,26 @@ namespace TankPickup
 		Nuke,//Nuke pickup to KILL EM ALL!!!!! - Jason Lynch
 		Repair, //Added for healing - Dylan Reilly 
 		FireRate, //Added for increased fire speed - Dylan Reilly
+		TypeCount
+	};
+}
+
+namespace Projectiles
+{
+	enum class ID
+	{
+		None,
+		AlliedBullet,
+		EnemyBullet,
+		Missile,
+		GreenLMGBullet, //Added to distinguishing between each players Projectiles - Dylan Reilly
+		GreenHMGBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		GreenGatlingBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		GreenTeslaBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		RedLMGBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		RedHMGBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		RedGatlingBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
+		RedTeslaBullet,//Added to distinguishing between each players Projectiles - Dylan Reilly
 		TypeCount
 	};
 }

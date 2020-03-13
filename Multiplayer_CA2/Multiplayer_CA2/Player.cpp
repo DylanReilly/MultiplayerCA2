@@ -17,50 +17,50 @@ struct TankMover
 {
 	TankMover(float vx, float vy, int identifier)
 	: velocity(vx, vy)
-	, TankID(identifier)
+	, Tank(identifier)
 	{
 	}
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == TankID)
+		if (Tank.getIdentifier() == Tank)
 			Tank.accelerate(velocity * Tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
-	int TankID;
+	int Tank;
 };
 
 struct TankFireTrigger
 {
 	TankFireTrigger(int identifier)
-	: TankID(identifier)
+	: Tank(identifier)
 	{
 	}
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == TankID)
+		if (Tank.getIdentifier() == Tank)
 			Tank.fire();
 	}
 
-	int TankID;
+	int Tank;
 };
 
 struct TankMissileTrigger
 {
 	TankMissileTrigger(int identifier)
-	: TankID(identifier)
+	: Tank(identifier)
 	{
 	}
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == TankID)
+		if (Tank.getIdentifier() == Tank)
 			Tank.launchMissile();
 	}
 
-	int TankID;
+	int Tank;
 };
 
 
