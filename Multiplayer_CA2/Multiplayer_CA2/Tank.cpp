@@ -302,30 +302,6 @@ void Tank::setIdentifier(int identifier)
 	mIdentifier = identifier;
 }
 
-//void Tank::updateMovementPattern(sf::Time dt)
-//{
-//	// Enemy airplane: Movement pattern
-//	const std::vector<Direction>& directions = Table[mType].directions;
-//	if (!directions.empty())
-//	{
-//		// Moved long enough in current direction: Change direction
-//		if (mTravelledDistance > directions[mDirectionIndex].distance)
-//		{
-//			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-//			mTravelledDistance = 0.f;
-//		}
-//
-//		// Compute velocity from direction
-//		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-//		float vx = getMaxSpeed() * std::cos(radians);
-//		float vy = getMaxSpeed() * std::sin(radians);
-//
-//		setVelocity(vx, vy);
-//
-//		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
-//	}
-//}
-
 void Tank::checkPickupDrop(CommandQueue& commands)
 {
 	// Drop pickup, if enemy airplane, with probability 1/3, if pickup not yet dropped

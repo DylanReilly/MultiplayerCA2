@@ -23,7 +23,8 @@ struct TankMover
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		Tank.accelerate(velocity * Tank.getMaxSpeed());
+		//if (Tank.getIdentifier() == Tank::)
+			Tank.accelerate(velocity * Tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
@@ -184,10 +185,9 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-	mActionBinding[PlayerAction::MoveLeft].action      = derivedAction<Tank>(TankMover(-1,  0, mIdentifier));	
-	mActionBinding[PlayerAction::MoveRight].action     = derivedAction<Tank>(TankMover(+1,  0, mIdentifier));
-	mActionBinding[PlayerAction::MoveUp].action        = derivedAction<Tank>(TankMover( 0, -1, mIdentifier));
-	mActionBinding[PlayerAction::MoveDown].action      = derivedAction<Tank>(TankMover( 0, +1, mIdentifier));
+	mActionBinding[PlayerAction::TurnLeft].action      = derivedAction<Tank>([](Tank& a, sf::Time) { a.rotate(-2.5f); });
+	mActionBinding[PlayerAction::TurnRight].action     = derivedAction<Tank>([](Tank& a, sf::Time) { a.rotate(2.5f); });
+	mActionBinding[PlayerAction::MoveUp].action        = derivedAction<Tank>([](Tank& a, sf::Time) { a.move(1.5f * -sin(toRadian(a.getRotation())), 1.5f * cos(toRadian(a.getRotation()))); });
+	mActionBinding[PlayerAction::MoveDown].action      = derivedAction<Tank>([](Tank& a, sf::Time) { a.move(1.5f * sin(toRadian(a.getRotation())), 1.5f * -cos(toRadian(a.getRotation()))); });
 	mActionBinding[PlayerAction::Fire].action          = derivedAction<Tank>(TankFireTrigger(mIdentifier));
-	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(TankMissileTrigger(mIdentifier));
 }

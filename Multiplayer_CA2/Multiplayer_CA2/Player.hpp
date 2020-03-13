@@ -3,6 +3,7 @@
 
 #include "Command.hpp"
 #include "KeyBinding.hpp"
+#include "Utility.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Window/Event.hpp>

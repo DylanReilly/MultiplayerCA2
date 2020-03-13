@@ -11,8 +11,8 @@ namespace PlayerAction
 {
 	enum Type
 	{
-		MoveLeft,
-		MoveRight,
+		TurnLeft,
+		TurnRight,
 		MoveUp,
 		MoveDown,
 		Fire,
