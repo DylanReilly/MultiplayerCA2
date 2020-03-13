@@ -5,7 +5,7 @@
 #include "ResourceIdentifiers.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
-#include "Aircraft.hpp"
+#include "Tank.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 #include "Pickup.hpp"
@@ -38,20 +38,19 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect						getViewBounds() const;		
 		CommandQueue&						getCommandQueue();
-		Aircraft*							addAircraft(int identifier);
-		void								removeAircraft(int identifier);
+		Tank*							addTank(int identifier);
+		void								removeTank(int identifier);
 		void								setCurrentBattleFieldPosition(float lineY);
 		void								setWorldHeight(float height);
 
-		void								addEnemy(Aircraft::Type type, float relX, float relY);
+		void								addEnemy(Tank::Type type, float relX, float relY);
 		void								sortEnemies();
 
 		bool 								hasAlivePlayer() const;
 		bool 								hasPlayerReachedEnd() const;
 
-		void								setWorldScrollCompensation(float compensation);
 
-		Aircraft*							getAircraft(int identifier) const;
+		Tank*							getTank(int identifier) const;
 		sf::FloatRect						getBattlefieldBounds() const;
 
 		void								createPickup(sf::Vector2f position, Pickup::Type type);
@@ -83,14 +82,14 @@ class World : private sf::NonCopyable
 
 		struct SpawnPoint 
 		{
-			SpawnPoint(Aircraft::Type type, float x, float y)
+			SpawnPoint(Tank::Type type, float x, float y)
 			: type(type)
 			, x(x)
 			, y(y)
 			{
 			}
 
-			Aircraft::Type type;
+			Tank::Type type;
 			float x;
 			float y;
 		};
@@ -112,10 +111,10 @@ class World : private sf::NonCopyable
 		sf::Vector2f						mSpawnPosition;
 		float								mScrollSpeed;
 		float								mScrollSpeedCompensation;
-		std::vector<Aircraft*>				mPlayerAircrafts;
+		std::vector<Tank*>				mPlayerTanks;
 
 		std::vector<SpawnPoint>				mEnemySpawnPoints;
-		std::vector<Aircraft*>				mActiveEnemies;
+		std::vector<Tank*>				mActiveEnemies;
 
 		BloomEffect							mBloomEffect;
 
