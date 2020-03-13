@@ -7,6 +7,7 @@
 #include "SoundNode.hpp"
 #include "NetworkNode.hpp"
 #include "Utility.hpp"
+//#include "Obstacle.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include <algorithm>
@@ -50,7 +51,6 @@ void World::update(sf::Time dt)
 
 	// Setup commands to destroy entities, and guide missiles
 	destroyEntitiesOutsideView();
-	guideMissiles();
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -65,7 +65,6 @@ void World::update(sf::Time dt)
 
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
-	spawnEnemies();
 
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
@@ -335,13 +334,6 @@ void World::buildScene()
 	jungleSprite->setPosition(mWorldBounds.left, mWorldBounds.top - viewHeight);
 	mSceneLayers[Background]->attachChild(std::move(jungleSprite));
 
-	// Add the finish line to the scene
-	sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
-	std::unique_ptr<SpriteNode> finishSprite(new SpriteNode(finishTexture));
-	finishSprite->setPosition(0.f, -76.f);
-	mFinishSprite = finishSprite.get();
-	mSceneLayers[Background]->attachChild(std::move(finishSprite));
-
 	// Add particle node to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
 	mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
@@ -361,80 +353,110 @@ void World::buildScene()
 		mNetworkNode = networkNode.get();
 		mSceneGraph.attachChild(std::move(networkNode));
 	}
-
-	// Add enemy Tank
-	addEnemies();
 }
 
-void World::addEnemies()
+void World::addObstacles() //Set up obstacles - Jason Lynch
 {
-	if (mNetworkedWorld)
-		return;
-
-	// Add enemies to the spawn point container
-	addEnemy(Tank::Raptor,    0.f,  500.f);
-	addEnemy(Tank::Raptor,    0.f, 1000.f);
-	addEnemy(Tank::Raptor, +100.f, 1150.f);
-	addEnemy(Tank::Raptor, -100.f, 1150.f);
-	addEnemy(Tank::Avenger,  70.f, 1500.f);
-	addEnemy(Tank::Avenger, -70.f, 1500.f);
-	addEnemy(Tank::Avenger, -70.f, 1710.f);
-	addEnemy(Tank::Avenger,  70.f, 1700.f);
-	addEnemy(Tank::Avenger,  30.f, 1850.f);
-	addEnemy(Tank::Raptor,  300.f, 2200.f);
-	addEnemy(Tank::Raptor, -300.f, 2200.f);
-	addEnemy(Tank::Raptor,    0.f, 2200.f);
-	addEnemy(Tank::Raptor,    0.f, 2500.f);
-	addEnemy(Tank::Avenger,-300.f, 2700.f);
-	addEnemy(Tank::Avenger,-300.f, 2700.f);
-	addEnemy(Tank::Raptor,    0.f, 3000.f);
-	addEnemy(Tank::Raptor,  250.f, 3250.f);
-	addEnemy(Tank::Raptor, -250.f, 3250.f);
-	addEnemy(Tank::Avenger,   0.f, 3500.f);
-	addEnemy(Tank::Avenger,   0.f, 3700.f);
-	addEnemy(Tank::Raptor,    0.f, 3800.f);
-	addEnemy(Tank::Avenger,   0.f, 4000.f);
-	addEnemy(Tank::Avenger,-200.f, 4200.f);
-	addEnemy(Tank::Raptor,  200.f, 4200.f);
-	addEnemy(Tank::Raptor,    0.f, 4400.f);
-
-	sortEnemies();
+	playerOneBase();
+	playerTwoBase();
+	teslaobstacles();
+	NukeObstacles();
+	borderObstacles();
 }
 
-void World::sortEnemies()
+//Popultaes world with obstacles - Jason Lynch 
+void World::NukeObstacles() {
+	//DA BOMB
+	addObstacle(Obstacles::ID::Nuke, 500, 290, 0.f, 0.05f, 0.05f, Textures::ID::NukeExplosion, sf::Vector2i(323, 182), 9, 2, sf::Vector2f(100.f, 100.f));
+
+	//addObstacle(Obstacles::ID::Barrel, mObstacleSpawnPosition.x + 80, mObstacleSpawnPosition.y + 140, 0.f, 0.25f, 0.25f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	//addObstacle(Obstacles::ID::Barrel, mObstacleSpawnPosition.x + 290, mObstacleSpawnPosition.y + 140, 0.f, 0.25f, 0.25f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 160, mObstacleSpawnPosition.y + 140, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 160, mObstacleSpawnPosition.y + 20, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 160, mObstacleSpawnPosition.y - 100, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 350, mObstacleSpawnPosition.y + 140, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 350, mObstacleSpawnPosition.y + 20, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 350, mObstacleSpawnPosition.y - 100, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 185, mObstacleSpawnPosition.y - 200, 0.0f, .4f, .4f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 315, mObstacleSpawnPosition.y - 200, 0.0f, .4f, .4f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 260, mObstacleSpawnPosition.y, 0.0f, .4f, .4f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Popultaes world with obstacles - Jason Lynch 
+void World::playerOneBase() {
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y + 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y - 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y + 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y - 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Popultaes world with obstacles - Jason Lynch 
+void World::playerTwoBase() {
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 460, mObstacleSpawnPosition.y + 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 460, mObstacleSpawnPosition.y, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 460, mObstacleSpawnPosition.y - 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 500, mObstacleSpawnPosition.y + 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, mObstacleSpawnPosition.x + 500, mObstacleSpawnPosition.y - 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Popultaes world with obstacles - Jason Lynch 
+void World::teslaobstacles() {
+	addObstacle(Obstacles::ID::Wall, 460, 740, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, 510, 665, 0.f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, 560, 740, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Popultaes world with obstacles - Jason Lynch 
+void World::borderObstacles() {
+	addObstacle(Obstacles::ID::Wall, 120, 10, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, 120, 740, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacles::ID::Wall, 920, 740, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacles::ID::Wall, 920, 10, 90.0f, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+}
+
+//Sets up obstacles - Jason Lynch 
+void World::addObstacle(Obstacles::ID type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale) //Add obstacles to Vector of ObstacleSpawnPoint structs - Jason Lynch
 {
-	// Sort all enemies according to their y value, such that lower enemies are checked first for spawning
-	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [] (SpawnPoint lhs, SpawnPoint rhs)
-	{
-		return lhs.y < rhs.y;
-	});
+	ObstacleSpawnPoint spawn(type, posX, posY, rotation, scaleX, scaleY, deathAnimation, frameSize, numberOfFrames, seconds, scale);
+	mObstacles.push_back(spawn);
 }
 
-void World::addEnemy(Tank::Type type, float relX, float relY)
-{
-	SpawnPoint spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
-	mEnemySpawnPoints.push_back(spawn);
-}
-
-void World::spawnEnemies()
+//Spawn obstacles, set scale, rotation, and position - Jason Lynch
+void World::spawnObstacles()
 {
 	// Spawn all enemies entering the view area (including distance) this frame
-	while (!mEnemySpawnPoints.empty()
-		&& mEnemySpawnPoints.back().y > getBattlefieldBounds().top)
+	while (!mObstacles.empty())
 	{
-		SpawnPoint spawn = mEnemySpawnPoints.back();
-		
-		std::unique_ptr<Tank> enemy(new Tank(spawn.type, mTextures, mFonts));
-		enemy->setPosition(spawn.x, spawn.y);
-		enemy->setRotation(180.f);
-		if (mNetworkedWorld) enemy->disablePickups();
+		ObstacleSpawnPoint spawn = mObstacles.back();
 
-		mSceneLayers[UpperAir]->attachChild(std::move(enemy));
+		std::unique_ptr<Obstacle> obstacle(new Obstacle(spawn.type, mTextures, mFonts, spawn.deathAnimation, spawn.frameSize, spawn.numberOfFrames, spawn.seconds, spawn.scale));
+		obstacle->setScale(spawn.scaleX, spawn.scaleY);
+		obstacle->setPosition(spawn.x, spawn.y);
+		obstacle->setRotation(spawn.rotation);
+		//obstacle->setRotation(180.f);
+
+		if (obstacle->getType() == static_cast<int>(Obstacles::ID::Nuke))
+			mSceneLayers[static_cast<int>(Layer::UpperAir)]->attachChild(std::move(obstacle));
+		else
+			mSceneLayers[static_cast<int>(Layer::LowerAir)]->attachChild(std::move(obstacle));
 
 		// Enemy is spawned, remove from the list to spawn
-		mEnemySpawnPoints.pop_back();
+		mObstacles.pop_back();
 	}
 }
+
 
 void World::destroyEntitiesOutsideView()
 {
@@ -447,51 +469,6 @@ void World::destroyEntitiesOutsideView()
 	});
 
 	mCommandQueue.push(command);
-}
-
-void World::guideMissiles()
-{
-	// Setup command that stores all enemies in mActiveEnemies
-	Command enemyCollector;
-	enemyCollector.category = Category::EnemyTank;
-	enemyCollector.action = derivedAction<Tank>([this] (Tank& enemy, sf::Time)
-	{
-		if (!enemy.isDestroyed())
-			mActiveEnemies.push_back(&enemy);
-	});
-
-	// Setup command that guides all missiles to the enemy which is currently closest to the player
-	Command missileGuider;
-	missileGuider.category = Category::AlliedProjectile;
-	missileGuider.action = derivedAction<Projectile>([this] (Projectile& missile, sf::Time)
-	{
-		// Ignore unguided bullets
-		if (!missile.isGuided())
-			return;
-
-		float minDistance = std::numeric_limits<float>::max();
-		Tank* closestEnemy = nullptr;
-
-		// Find closest enemy
-		FOREACH(Tank* enemy, mActiveEnemies)
-		{
-			float enemyDistance = distance(missile, *enemy);
-
-			if (enemyDistance < minDistance)
-			{
-				closestEnemy = enemy;
-				minDistance = enemyDistance;
-			}
-		}
-
-		if (closestEnemy)
-			missile.guideTowards(closestEnemy->getWorldPosition());
-	});
-
-	// Push commands, reset active enemies
-	mCommandQueue.push(enemyCollector);
-	mCommandQueue.push(missileGuider);
-	mActiveEnemies.clear();
 }
 
 sf::FloatRect World::getViewBounds() const

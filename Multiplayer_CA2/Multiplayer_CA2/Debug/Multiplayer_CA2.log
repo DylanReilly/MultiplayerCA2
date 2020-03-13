@@ -1,10 +1,13 @@
 ﻿  Application.cpp
-  DataTables.cpp
-  GameServer.cpp
   GameState.cpp
   MultiplayerGameState.cpp
-  Player.cpp
-  Tank.cpp
+  Obstacle.cpp
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Multiplayer_CA2\Obstacle.cpp(38,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   World.cpp
   Generating Code...
-  Multiplayer_CA2.vcxproj -> D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Debug\Multiplayer_CA2.exe
+Tank.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
+DataTables.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
+ParticleNode.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
+Pickup.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
+Projectile.obj : error LNK2005: "class std::vector<struct ObstacleData,class std::allocator<struct ObstacleData> > __cdecl initializeObstacleData(void)" (?initializeObstacleData@@YA?AV?$vector@UObstacleData@@V?$allocator@UObstacleData@@@std@@@std@@XZ) already defined in Obstacle.obj
+D:\DKIT\Year4_Semester2\Multiplayer\CA2\Multiplayer_CA2\Debug\Multiplayer_CA2.exe : fatal error LNK1169: one or more multiply defined symbols found

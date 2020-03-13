@@ -18,6 +18,7 @@ namespace Category
 		ParticleSystem		= 1 << 7,
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
+		Collidable = 1 << 10, //Added collidable ID - Jason Lynch
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		Projectile = AlliedProjectile | EnemyProjectile,

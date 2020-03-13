@@ -12,6 +12,7 @@
 #include "BloomEffect.hpp"
 #include "SoundPlayer.hpp"
 #include "NetworkProtocol.hpp"
+#include "Obstacle.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -43,9 +44,6 @@ class World : private sf::NonCopyable
 		void								setCurrentBattleFieldPosition(float lineY);
 		void								setWorldHeight(float height);
 
-		void								addEnemy(Tank::Type type, float relX, float relY);
-		void								sortEnemies();
-
 		bool 								hasAlivePlayer() const;
 		bool 								hasPlayerReachedEnd() const;
 
@@ -64,11 +62,20 @@ class World : private sf::NonCopyable
 		void								handleCollisions();
 		void								updateSounds();
 
+		void								addObstacles();
 		void								buildScene();
-		void								addEnemies();
-		void								spawnEnemies();
 		void								destroyEntitiesOutsideView();
-		void								guideMissiles();
+
+		void								addObstacle(Obstacles::ID type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale); //Info for adding an obstacle - Jason Lynch
+		void								addPickups(); //Adds pickups to scene - Jason Lynch 
+		void								playerOneBase(); //Adds obstacles near player one to scene - Jason Lynch 
+		void								playerTwoBase(); //Adds obstacles near player two to scene - Jason Lynch 
+		void								teslaobstacles();//Adds obstacles near tesla pickup to scene - Jason Lynch 
+		void								NukeObstacles();//Adds obstacles near nuke pickup to scene - Jason Lynch 
+		void								borderObstacles();//Adds obstacles around edge of map near other pickups - Jason Lynch 
+		void								addPickup(TankPickup::ID type, float x, float y, float rotation, float scaleX, float scaleY); //Info for creating a pickup - Jason Lynch 
+		void								spawnObstacles(); //Spawns obstacles into scene - Jason Lynch 
+		void								spawnPickups(); //Spawns pickups into scene - Jason Lynch 
 
 
 	private:
@@ -92,6 +99,56 @@ class World : private sf::NonCopyable
 			Tank::Type type;
 			float x;
 			float y;
+		};
+
+		struct ObstacleSpawnPoint //Spawn point for obstacles and all other needed info. Based off above struct - Jason Lynch 
+		{
+			ObstacleSpawnPoint(Obstacles::ID type, float x, float y, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale)
+				: type(type)
+				, x(x)
+				, y(y)
+				, rotation(rotation)
+				, scaleX(scaleX)
+				, scaleY(scaleY)
+				, deathAnimation(deathAnimation)
+				, frameSize(frameSize)
+				, numberOfFrames(numberOfFrames)
+				, seconds(seconds)
+				, scale(scale)
+			{
+			}
+
+			Obstacles::ID type;
+			float x;
+			float y;
+			float rotation;
+			float scaleX;
+			float scaleY;
+			Textures::ID deathAnimation;
+			sf::Vector2i frameSize;
+			int numberOfFrames;
+			int seconds;
+			sf::Vector2f scale;
+		};
+
+		struct PickupSpawnPoint //Pickup spawn point and relevant info. Based off above struct - Jason Lynch
+		{
+			PickupSpawnPoint(TankPickup::ID type, float x, float y, float rotation, float scaleX, float scaleY)
+				: type(type)
+				, x(x)
+				, y(y)
+				, rotation(rotation)
+				, scaleX(scaleX)
+				, scaleY(scaleY)
+			{
+			}
+
+			TankPickup::ID type;
+			float x;
+			float y;
+			float rotation;
+			float scaleX;
+			float scaleY;
 		};
 
 
@@ -121,6 +178,9 @@ class World : private sf::NonCopyable
 		bool								mNetworkedWorld;
 		NetworkNode*						mNetworkNode;
 		SpriteNode*							mFinishSprite;
+
+		sf::Vector2f						mObstacleSpawnPosition;
+		std::vector<ObstacleSpawnPoint>		mObstacles; //Holds obstacle spawn points - Jason Lynch
 };
 
 #endif // BOOK_WORLD_HPP

@@ -9,6 +9,11 @@ Entity::Entity(int hitpoints)
 {
 }
 
+Entity::Entity(int hitpoints, Category::Type category) //Overload to pass down category - Jason Lynch 
+	: SceneNode(category), mVelocity(), mHitpoints(hitpoints)
+{
+}
+
 void Entity::setVelocity(sf::Vector2f velocity)
 {
 	mVelocity = velocity;

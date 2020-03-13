@@ -43,6 +43,32 @@ namespace Textures
 	};
 }
 
+namespace Obstacles
+{
+	enum ID
+	{
+		Wall,
+		Barrel,
+		DestructableWall,
+		Nuke,
+		TypeCount
+	};
+}
+
+namespace TankPickup 
+{
+	enum class ID
+	{
+		HeavyGun, //Heavy gun pickup to change tank texture - Jason Lynch
+		GatlingGun,//Gatling gun pickup to change tank texture - Jason Lynch
+		TeslaGun,//Tesla gun pickup to change tank texture - Jason Lynch
+		Nuke,//Nuke pickup to KILL EM ALL!!!!! - Jason Lynch
+		Repair, //Added for healing - Dylan Reilly 
+		FireRate, //Added for increased fire speed - Dylan Reilly
+		TypeCount
+	};
+}
+
 namespace Shaders
 {
 	enum ID
