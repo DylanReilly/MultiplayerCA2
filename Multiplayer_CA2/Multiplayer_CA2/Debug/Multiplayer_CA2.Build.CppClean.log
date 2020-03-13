@@ -1,6 +1,5 @@
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\vc142.pdb
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\vc142.idb
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayergamestate.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\menustate.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\main.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\label.obj
@@ -19,7 +18,8 @@ d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\bu
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\bloomeffect.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\application.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\animation.obj
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\aircraft.obj
+d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\tank.obj
+d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\obstacle.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\world.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\utility.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\titlestate.obj
@@ -39,10 +39,7 @@ d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\pa
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\particlenode.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\networknode.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\musicplayer.obj
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\tank.obj
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\obstacle.obj
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\debug\multiplayer_ca2.exe
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\debug\multiplayer_ca2.ilk
+d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayergamestate.obj
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\debug\multiplayer_ca2.pdb
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\cl.command.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\cl.read.1.tlog
@@ -51,12 +48,6 @@ d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\mu
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link-cvtres.write.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link-rc.read.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link-rc.write.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492-cvtres.read.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492-cvtres.write.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492-rc.read.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492-rc.write.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492.read.1.tlog
-d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.16492.write.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.command.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.read.1.tlog
 d:\dkit\year4_semester2\multiplayer\ca2\multiplayer_ca2\multiplayer_ca2\debug\multiplayer_ca2.tlog\link.write.1.tlog

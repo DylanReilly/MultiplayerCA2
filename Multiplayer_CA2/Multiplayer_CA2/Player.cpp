@@ -23,8 +23,7 @@ struct TankMover
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == Tank)
-			Tank.accelerate(velocity * Tank.getMaxSpeed());
+		Tank.accelerate(velocity * Tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
@@ -40,8 +39,7 @@ struct TankFireTrigger
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == Tank)
-			Tank.fire();
+		Tank.fire();
 	}
 
 	int Tank;
@@ -56,8 +54,7 @@ struct TankMissileTrigger
 
 	void operator() (Tank& Tank, sf::Time) const
 	{
-		if (Tank.getIdentifier() == Tank)
-			Tank.launchMissile();
+		Tank.launchMissile();
 	}
 
 	int Tank;

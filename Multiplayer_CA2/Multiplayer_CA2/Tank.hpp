@@ -51,7 +51,6 @@ class Tank : public Entity
 		void					createPickup(SceneNode& node, const TextureHolder& textures) const;
 
 		void					updateTexts();
-		void					updateRollAnimation();
 
 
 	private:

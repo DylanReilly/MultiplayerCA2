@@ -104,9 +104,8 @@ void Tank::disablePickups()
 
 void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	// Update texts and roll animation
+	// Update textsn
 	updateTexts();
-	updateRollAnimation();
 
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
