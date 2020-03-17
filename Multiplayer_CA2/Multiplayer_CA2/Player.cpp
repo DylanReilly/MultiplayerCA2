@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Tank.hpp"
+#include "Utility.hpp"
 #include "Foreach.hpp"
 #include "NetworkProtocol.hpp"
 
@@ -12,6 +13,24 @@
 
 
 using namespace std::placeholders;
+
+struct TankRotator
+{
+	TankRotator(float r, int identifier)
+		: rotation(r)
+		, TankID(identifier)
+	{
+	}
+
+	void operator() (Tank& Tank, sf::Time) const
+	{
+		if (Tank.getIdentifier() == TankID)
+			Tank.rotate(rotation);
+	}
+
+	float rotation;
+	int TankID;
+};
 
 struct TankMover
 {
@@ -187,10 +206,13 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-	mActionBinding[PlayerAction::MoveLeft].action      = derivedAction<Tank>(TankMover(-1,  0, mIdentifier));	
-	mActionBinding[PlayerAction::MoveRight].action     = derivedAction<Tank>(TankMover(+1,  0, mIdentifier));
+	mActionBinding[PlayerAction::MoveLeft].action      = derivedAction<Tank>(TankRotator(-5.f, mIdentifier));
+	mActionBinding[PlayerAction::MoveRight].action     = derivedAction<Tank>(TankRotator(5.f, mIdentifier));
 	mActionBinding[PlayerAction::MoveUp].action        = derivedAction<Tank>(TankMover( 0, -1, mIdentifier));
 	mActionBinding[PlayerAction::MoveDown].action      = derivedAction<Tank>(TankMover( 0, +1, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action          = derivedAction<Tank>(TankFireTrigger(mIdentifier));
 	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(TankMissileTrigger(mIdentifier));
 }
+
+//mActionBinding[ActionID::MoveUp].action = derivedAction<Tank>([](Tank& a, sf::Time) { a.move(1.5f * -sin(toRadian(a.getRotation())), 1.5f * cos(toRadian(a.getRotation()))); });
+//mActionBinding[ActionID::MoveDown].action = derivedAction<Tank>([](Tank& a, sf::Time) { a.move(1.5f * sin(toRadian(a.getRotation())), 1.5f * -cos(toRadian(a.getRotation()))); });
