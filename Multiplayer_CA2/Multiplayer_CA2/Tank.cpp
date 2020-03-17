@@ -339,12 +339,17 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 {
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
-	sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
-	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	//Sets projectile spawn position to origin on the tank - Dylan
+	sf::Vector2f offset(xOffset * Tank::getWorldPosition());
 
-	float sign = isAllied() ? -1.f : +1.f;
-	projectile->setPosition(getWorldPosition() + offset * sign);
-	projectile->setVelocity(velocity * sign);
+	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
+	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * sin(toRadian(Tank::getRotation())), 
+		projectile->getMaxSpeed() * 1.5f * -cos(toRadian(Tank::getRotation())));
+
+	//float sign = isAllied() ? -1.f : +1.f;
+	projectile->setPosition(getWorldPosition() + offset);
+	projectile->setVelocity(velocity);
+	projectile->setRotation(Tank::getRotation() + 180.f);
 	node.attachChild(std::move(projectile));
 }
 
