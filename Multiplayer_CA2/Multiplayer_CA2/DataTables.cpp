@@ -15,8 +15,8 @@ std::vector<TankData> initializeTankData()
 	data[Tank::Eagle].hitpoints = 100;
 	data[Tank::Eagle].speed = 1.5f;
 	data[Tank::Eagle].fireInterval = sf::seconds(1);
-	data[Tank::Eagle].texture = Textures::Entities;
-	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 48, 64);
+	data[Tank::Eagle].texture = Textures::Tanks;
+	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 95, 128);
 	data[Tank::Eagle].hasRollAnimation = true;
 
 	data[Tank::Raptor].hitpoints = 20;

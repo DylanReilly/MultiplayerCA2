@@ -343,8 +343,8 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	sf::Vector2f offset(xOffset * Tank::getWorldPosition());
 
 	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
-	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * sin(toRadian(Tank::getRotation())), 
-		projectile->getMaxSpeed() * 1.5f * -cos(toRadian(Tank::getRotation())));
+	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation())), 
+		projectile->getMaxSpeed() * 1.5f * cos(toRadian(Tank::getRotation())));
 
 	//float sign = isAllied() ? -1.f : +1.f;
 	projectile->setPosition(getWorldPosition() + offset);
