@@ -14,6 +14,8 @@
 
 using namespace std::placeholders;
 
+//Dylan Reilly
+//Added to allow the tank to rotate rather than move left and right
 struct TankRotator
 {
 	TankRotator(float r, int identifier)
@@ -32,10 +34,12 @@ struct TankRotator
 	int TankID;
 };
 
+//Dylan Reilly
+//Modified to move in the direction the tank is facing, not just up and down
 struct TankMover
 {
-	TankMover(float vx, float vy, int identifier)
-	: velocity(vx, vy)
+	TankMover(int x, int identifier)
+	: direction(x)
 	, TankID(identifier)
 	{
 	}
@@ -43,10 +47,19 @@ struct TankMover
 	void operator() (Tank& Tank, sf::Time) const
 	{
 		if (Tank.getIdentifier() == TankID)
-			Tank.accelerate(velocity * Tank.getMaxSpeed());
+		{
+			if (direction == 1)
+			{
+				Tank.move(Tank.getMaxSpeed() * sin(toRadian(Tank.getRotation())), Tank.getMaxSpeed() * -cos(toRadian(Tank.getRotation())));
+			}
+			else
+			{
+				Tank.move(Tank.getMaxSpeed() * -sin(toRadian(Tank.getRotation())), Tank.getMaxSpeed() * cos(toRadian(Tank.getRotation())));
+			}
+		}
 	}
 
-	sf::Vector2f velocity;
+	int direction;
 	int TankID;
 };
 
@@ -208,8 +221,8 @@ void Player::initializeActions()
 {
 	mActionBinding[PlayerAction::MoveLeft].action      = derivedAction<Tank>(TankRotator(-5.f, mIdentifier));
 	mActionBinding[PlayerAction::MoveRight].action     = derivedAction<Tank>(TankRotator(5.f, mIdentifier));
-	mActionBinding[PlayerAction::MoveUp].action        = derivedAction<Tank>(TankMover( 0, -1, mIdentifier));
-	mActionBinding[PlayerAction::MoveDown].action      = derivedAction<Tank>(TankMover( 0, +1, mIdentifier));
+	mActionBinding[PlayerAction::MoveUp].action        = derivedAction<Tank>(TankMover(1, mIdentifier));
+	mActionBinding[PlayerAction::MoveDown].action      = derivedAction<Tank>(TankMover(0, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action          = derivedAction<Tank>(TankFireTrigger(mIdentifier));
 	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(TankMissileTrigger(mIdentifier));
 }
