@@ -20,24 +20,24 @@ sf::IpAddress getAddressFromFile()
 
 	// If open/read failed, create new file
 	std::ofstream outputFile("ip.txt");
-	std::string localAddress = "192.168.8.101";
+	std::string localAddress = "127.0.0.1";
 	outputFile << localAddress;
 	return localAddress;
 }
 
 MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, bool isHost)
-: State(stack, context)
-, mWorld(*context.window, *context.fonts, *context.sounds, true)
-, mWindow(*context.window)
-, mTextureHolder(*context.textures)
-, mConnected(false)
-, mGameServer(nullptr)
-, mActiveState(true)
-, mHasFocus(true)
-, mHost(isHost)
-, mGameStarted(false)
-, mClientTimeout(sf::seconds(2.f))
-, mTimeSinceLastPacket(sf::seconds(0.f))
+	: State(stack, context)
+	, mWorld(*context.window, *context.fonts, *context.sounds, true)
+	, mWindow(*context.window)
+	, mTextureHolder(*context.textures)
+	, mConnected(false)
+	, mGameServer(nullptr)
+	, mActiveState(true)
+	, mHasFocus(true)
+	, mHost(isHost)
+	, mGameStarted(false)
+	, mClientTimeout(sf::seconds(2.f))
+	, mTimeSinceLastPacket(sf::seconds(0.f))
 {
 	mBroadcastText.setFont(context.fonts->get(Fonts::Main));
 	mBroadcastText.setPosition(1024.f / 2, 100.f);
@@ -67,13 +67,13 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (isHost)
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
-		ip = "192.168.8.101";
+		ip = "127.0.0.1";
 	}
 	else
 	{
 		ip = getAddressFromFile();
 	}
-	
+
 	if (mSocket.connect(ip, ServerPort, sf::seconds(5.f)) == sf::TcpSocket::Done)
 		mConnected = true;
 	else
@@ -87,23 +87,24 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 
 void MultiplayerGameState::draw()
 {
-	if (mConnected)
-	{
-		mWorld.draw();
+	mWorld.draw();
+	//if (mConnected)
+	//{
+	//	mWorld.draw();
 
-		// Broadcast messages in default view
-		mWindow.setView(mWindow.getDefaultView());
+	//	// Broadcast messages in default view
+	//	mWindow.setView(mWindow.getDefaultView());
 
-		if (!mBroadcasts.empty())
-			mWindow.draw(mBroadcastText);
+	//	if (!mBroadcasts.empty())
+	//		mWindow.draw(mBroadcastText);
 
-		if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
-			mWindow.draw(mPlayerInvitationText);
-	}
-	else
-	{
-		mWindow.draw(mFailedConnectionText);
-	}
+	//	if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
+	//		mWindow.draw(mPlayerInvitationText);
+	//}
+	//else
+	//{
+	//	mWindow.draw(mFailedConnectionText);
+	//}
 }
 
 void MultiplayerGameState::onActivate()
@@ -128,7 +129,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 	if (mConnected)
 	{
 		mWorld.update(dt);
-
+		
 		// Remove players whose Tanks were destroyed
 		bool foundLocalPlane = false;
 		for (auto itr = mPlayers.begin(); itr != mPlayers.end(); )
@@ -162,13 +163,13 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mActiveState && mHasFocus)
 		{
 			CommandQueue& commands = mWorld.getCommandQueue();
-			FOREACH(auto& pair, mPlayers)
+			FOREACH(auto & pair, mPlayers)
 				pair.second->handleRealtimeInput(commands);
 		}
 
 		// Always handle the network input
 		CommandQueue& commands = mWorld.getCommandQueue();
-		FOREACH(auto& pair, mPlayers)
+		FOREACH(auto & pair, mPlayers)
 			pair.second->handleRealtimeNetworkInput(commands);
 
 		// Handle messages from server that may have arrived
@@ -176,9 +177,9 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mSocket.receive(packet) == sf::Socket::Done)
 		{
 			mTimeSinceLastPacket = sf::seconds(0.f);
-			sf::Int32 packetType;	
+			sf::Int32 packetType;
 			packet >> packetType;
-			handlePacket(packetType, packet);	
+			handlePacket(packetType, packet);
 		}
 		else
 		{
@@ -220,11 +221,11 @@ bool MultiplayerGameState::update(sf::Time dt)
 			sf::Packet positionUpdatePacket;
 			positionUpdatePacket << static_cast<sf::Int32>(Client::PositionUpdate);
 			positionUpdatePacket << static_cast<sf::Int32>(mLocalPlayerIdentifiers.size());
-			
+
 			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
-			{			
-				if (Tank* Tank = mWorld.getTank(identifier))
-					positionUpdatePacket << identifier << Tank->getPosition().x << Tank->getPosition().y << static_cast<sf::Int32>(Tank->getHitpoints()) << static_cast<sf::Int32>(Tank->getMissileAmmo());
+			{
+				if (Tank* tank = mWorld.getTank(identifier))
+					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
 			}
 
 			mSocket.send(positionUpdatePacket);
@@ -258,8 +259,8 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 	CommandQueue& commands = mWorld.getCommandQueue();
 
 	// Forward event to all players
-	FOREACH(auto& pair, mPlayers)
-		pair.second->handleEvent(event, commands);	
+	FOREACH(auto & pair, mPlayers)
+		pair.second->handleEvent(event, commands);
 
 	if (event.type == sf::Event::KeyPressed)
 	{
@@ -318,175 +319,175 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	switch (packetType)
 	{
 		// Send message to all clients
-		case Server::BroadcastMessage:
+	case Server::BroadcastMessage:
+	{
+		std::string message;
+		packet >> message;
+		mBroadcasts.push_back(message);
+
+		// Just added first message, display immediately
+		if (mBroadcasts.size() == 1)
 		{
-			std::string message;
-			packet >> message;
-			mBroadcasts.push_back(message);	
+			mBroadcastText.setString(mBroadcasts.front());
+			centerOrigin(mBroadcastText);
+			mBroadcastElapsedTime = sf::Time::Zero;
+		}
+	} break;
 
-			// Just added first message, display immediately
-			if (mBroadcasts.size() == 1)
-			{
-				mBroadcastText.setString(mBroadcasts.front());
-				centerOrigin(mBroadcastText);
-				mBroadcastElapsedTime = sf::Time::Zero;
-			}
-		} break;
+	// Sent by the server to order to spawn player 1 airplane on connect
+	case Server::SpawnSelf:
+	{
+		sf::Int32 TankIdentifier;
+		sf::Vector2f TankPosition;
+		packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
 
-		// Sent by the server to order to spawn player 1 airplane on connect
-		case Server::SpawnSelf:
+		Tank* tank = mWorld.addTank(TankIdentifier);
+		tank->setPosition(TankPosition);
+
+		mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys1));
+		mLocalPlayerIdentifiers.push_back(TankIdentifier);
+
+		mGameStarted = true;
+	} break;
+
+	// 
+	case Server::PlayerConnect:
+	{
+		sf::Int32 TankIdentifier;
+		sf::Vector2f TankPosition;
+		packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+
+		Tank* tank = mWorld.addTank(TankIdentifier);
+		tank->setPosition(TankPosition);
+
+		mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
+	} break;
+
+	// 
+	case Server::PlayerDisconnect:
+	{
+		sf::Int32 TankIdentifier;
+		packet >> TankIdentifier;
+
+		mWorld.removeTank(TankIdentifier);
+		mPlayers.erase(TankIdentifier);
+	} break;
+
+	// 
+	case Server::InitialState:
+	{
+		sf::Int32 TankCount;
+		float worldHeight, currentScroll;
+		packet >> worldHeight >> currentScroll;
+
+		mWorld.setWorldHeight(worldHeight);
+		mWorld.setCurrentBattleFieldPosition(currentScroll);
+
+		packet >> TankCount;
+		for (sf::Int32 i = 0; i < TankCount; ++i)
 		{
 			sf::Int32 TankIdentifier;
+			sf::Int32 hitpoints;
+			sf::Int32 missileAmmo;
 			sf::Vector2f TankPosition;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> hitpoints >> missileAmmo;
 
-			Tank* Tank = mWorld.addTank(TankIdentifier);
-			Tank->setPosition(TankPosition);
-			
-			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys1));
-			mLocalPlayerIdentifiers.push_back(TankIdentifier);
-
-			mGameStarted = true;
-		} break;
-
-		// 
-		case Server::PlayerConnect:
-		{
-			sf::Int32 TankIdentifier;
-			sf::Vector2f TankPosition;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
-
-			Tank* Tank = mWorld.addTank(TankIdentifier);
-			Tank->setPosition(TankPosition);
+			Tank* tank = mWorld.addTank(TankIdentifier);
+			tank->setPosition(TankPosition);
+			tank->setHitpoints(hitpoints);
+			tank->setMissileAmmo(missileAmmo);
 
 			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
-		} break;
+		}
+	} break;
 
-		// 
-		case Server::PlayerDisconnect:
+	//
+	case Server::AcceptCoopPartner:
+	{
+		sf::Int32 TankIdentifier;
+		packet >> TankIdentifier;
+
+		mWorld.addTank(TankIdentifier);
+		mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys2));
+		mLocalPlayerIdentifiers.push_back(TankIdentifier);
+	} break;
+
+	// Player event (like missile fired) occurs
+	case Server::PlayerEvent:
+	{
+		sf::Int32 TankIdentifier;
+		sf::Int32 action;
+		packet >> TankIdentifier >> action;
+
+		auto itr = mPlayers.find(TankIdentifier);
+		if (itr != mPlayers.end())
+			itr->second->handleNetworkEvent(static_cast<Player::Action>(action), mWorld.getCommandQueue());
+	} break;
+
+	// Player's movement or fire keyboard state changes
+	case Server::PlayerRealtimeChange:
+	{
+		sf::Int32 TankIdentifier;
+		sf::Int32 action;
+		bool actionEnabled;
+		packet >> TankIdentifier >> action >> actionEnabled;
+
+		auto itr = mPlayers.find(TankIdentifier);
+		if (itr != mPlayers.end())
+			itr->second->handleNetworkRealtimeChange(static_cast<Player::Action>(action), actionEnabled);
+	} break;
+
+	// New enemy to be created
+	case Server::SpawnEnemy:
+	{
+		float height;
+		sf::Int32 type;
+		float relativeX;
+		packet >> type >> height >> relativeX;
+
+		mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
+		mWorld.sortEnemies();
+	} break;
+
+	// Mission successfully completed
+	case Server::MissionSuccess:
+	{
+		requestStackPush(States::MissionSuccess);
+	} break;
+
+	// Pickup created
+	case Server::SpawnPickup:
+	{
+		sf::Int32 type;
+		sf::Vector2f position;
+		packet >> type >> position.x >> position.y;
+
+		mWorld.createPickup(position, static_cast<Pickup::Type>(type));
+	} break;
+
+	//
+	case Server::UpdateClientState:
+	{
+		float currentWorldPosition;
+		sf::Int32 TankCount;
+		packet >> currentWorldPosition >> TankCount;
+
+		float currentViewPosition = mWorld.getViewBounds().top + mWorld.getViewBounds().height;
+
+		for (sf::Int32 i = 0; i < TankCount; ++i)
 		{
+			sf::Vector2f TankPosition;
 			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier;
+			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
 
-			mWorld.removeTank(TankIdentifier);
-			mPlayers.erase(TankIdentifier);
-		} break;
-
-		// 
-		case Server::InitialState:
-		{
-			sf::Int32 TankCount;
-			float worldHeight, currentScroll;
-			packet >> worldHeight >> currentScroll;
-
-			mWorld.setWorldHeight(worldHeight);
-			mWorld.setCurrentBattleFieldPosition(currentScroll);
-
-			packet >> TankCount;
-			for (sf::Int32 i = 0; i < TankCount; ++i)
+			Tank* Tank = mWorld.getTank(TankIdentifier);
+			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), TankIdentifier) != mLocalPlayerIdentifiers.end();
+			if (Tank && !isLocalPlane)
 			{
-				sf::Int32 TankIdentifier;
-				sf::Int32 hitpoints;
-				sf::Int32 missileAmmo;
-				sf::Vector2f TankPosition;
-				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> hitpoints >> missileAmmo;
-
-				Tank* Tank = mWorld.addTank(TankIdentifier);
-				Tank->setPosition(TankPosition);
-				Tank->setHitpoints(hitpoints);
-				Tank->setMissileAmmo(missileAmmo);
-
-				mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
+				sf::Vector2f interpolatedPosition = Tank->getPosition() + (TankPosition - Tank->getPosition()) * 0.1f;
+				Tank->setPosition(interpolatedPosition);
 			}
-		} break;
-
-		//
-		case Server::AcceptCoopPartner:
-		{
-			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier;
-
-			mWorld.addTank(TankIdentifier);
-			mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, getContext().keys2));
-			mLocalPlayerIdentifiers.push_back(TankIdentifier);
-		} break;
-
-		// Player event (like missile fired) occurs
-		case Server::PlayerEvent:
-		{
-			sf::Int32 TankIdentifier;
-			sf::Int32 action;
-			packet >> TankIdentifier >> action;
-
-			auto itr = mPlayers.find(TankIdentifier);
-			if (itr != mPlayers.end())
-				itr->second->handleNetworkEvent(static_cast<Player::Action>(action), mWorld.getCommandQueue());
-		} break;
-
-		// Player's movement or fire keyboard state changes
-		case Server::PlayerRealtimeChange:
-		{
-			sf::Int32 TankIdentifier;
-			sf::Int32 action;
-			bool actionEnabled;
-			packet >> TankIdentifier >> action >> actionEnabled;
-
-			auto itr = mPlayers.find(TankIdentifier);
-			if (itr != mPlayers.end())
-				itr->second->handleNetworkRealtimeChange(static_cast<Player::Action>(action), actionEnabled);
-		} break;
-
-		// New enemy to be created
-		case Server::SpawnEnemy:
-		{
-			float height;
-			sf::Int32 type;
-			float relativeX;
-			packet >> type >> height >> relativeX;
-
-			mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
-			mWorld.sortEnemies();
-		} break;
-
-		// Mission successfully completed
-		case Server::MissionSuccess:
-		{
-			requestStackPush(States::MissionSuccess);
-		} break;
-
-		// Pickup created
-		case Server::SpawnPickup:
-		{
-			sf::Int32 type;
-			sf::Vector2f position;
-			packet >> type >> position.x >> position.y;
-
-			mWorld.createPickup(position, static_cast<Pickup::Type>(type));
-		} break;
-
-		//
-		case Server::UpdateClientState:
-		{
-			float currentWorldPosition;
-			sf::Int32 TankCount;
-			packet >> currentWorldPosition >> TankCount;
-
-			float currentViewPosition = mWorld.getViewBounds().top + mWorld.getViewBounds().height;
-
-			for (sf::Int32 i = 0; i < TankCount; ++i)
-			{
-				sf::Vector2f TankPosition;
-				sf::Int32 TankIdentifier;
-				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
-
-				Tank* Tank = mWorld.getTank(TankIdentifier);
-				bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), TankIdentifier) != mLocalPlayerIdentifiers.end();
-				if (Tank && !isLocalPlane)
-				{
-					sf::Vector2f interpolatedPosition = Tank->getPosition() + (TankPosition - Tank->getPosition()) * 0.1f;
-					Tank->setPosition(interpolatedPosition);
-				}
-			}
-		} break;
+		}
+	} break;
 	}
 }
