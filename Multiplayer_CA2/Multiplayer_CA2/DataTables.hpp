@@ -2,6 +2,7 @@
 #define BOOK_DATATABLES_HPP
 
 #include "ResourceIdentifiers.hpp"
+#include "Projectile.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -33,7 +34,7 @@ struct TankData
 	sf::IntRect						textureRect;
 	sf::Time						fireInterval;
 	std::vector<Direction>			directions;
-	bool							hasRollAnimation;
+	Projectile::Type				bulletType;
 };
 
 struct ProjectileData
@@ -46,7 +47,7 @@ struct ProjectileData
 
 struct PickupData
 {
-	std::function<void(Tank&)>	action;
+	std::function<void(Tank&)>		action;
 	Textures::ID					texture;
 	sf::IntRect						textureRect;
 };

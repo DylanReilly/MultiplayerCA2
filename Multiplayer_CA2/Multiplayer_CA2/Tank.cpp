@@ -110,7 +110,6 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	// Update texts and roll animation
 	updateTexts();
-	updateRollAnimation();
 
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
@@ -177,9 +176,10 @@ void Tank::remove()
 	mShowExplosion = false;
 }
 
+//Dylan Reilly - Returns is allied for any green tank
 bool Tank::isAllied() const
 {
-	return mType == Eagle;
+	return mType == GreenLmg || GreenHmg || GreenGatling || GreenTesla;
 }
 
 float Tank::getMaxSpeed() const
@@ -312,9 +312,29 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	}
 }
 
+//Returns correct projectile ID based on the tank being used - Dylan Reilly
+Projectile::Type Tank::getProjectile() const
+{
+	switch (mType) {
+	case Tank::GreenLmg:
+	case Tank::RedLmg:
+	case Tank::GreenGatling:
+	case Tank::RedGatling:
+		return Projectile::Type::LmgBullet;
+	case Tank::GreenHmg:
+	case Tank::RedHmg:
+		return Projectile::Type::HmgBullet;
+	case Tank::GreenTesla:
+	case Tank::RedTesla:
+		return Projectile::Type::TeslaBullet;
+	default:
+		return Projectile::Type::LmgBullet;
+	}
+}
+
 void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 {
-	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
+	Projectile::Type type = Tank::getProjectile();
 
 	switch (mSpreadLevel)
 	{
@@ -380,23 +400,5 @@ void Tank::updateTexts()
 			mMissileDisplay->setString("");
 		else
 			mMissileDisplay->setString("M: " + toString(mMissileAmmo));
-	}
-}
-
-void Tank::updateRollAnimation()
-{
-	if (Table[mType].hasRollAnimation)
-	{
-		sf::IntRect textureRect = Table[mType].textureRect;
-
-		// Roll left: Texture rect offset once
-		if (getVelocity().x < 0.f)
-			textureRect.left += textureRect.width;
-
-		// Roll right: Texture rect offset twice
-		else if (getVelocity().x > 0.f)
-			textureRect.left += 2 * textureRect.width;
-
-		mSprite.setTextureRect(textureRect);
 	}
 }

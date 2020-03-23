@@ -14,6 +14,10 @@ class Projectile : public Entity
 		{
 			AlliedBullet,
 			EnemyBullet,
+			LmgBullet,
+			HmgBullet,
+			GatlingBullet,
+			TeslaBullet,
 			Missile,
 			TypeCount
 		};

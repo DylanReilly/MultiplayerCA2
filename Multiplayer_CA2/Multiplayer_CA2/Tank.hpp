@@ -19,6 +19,14 @@ class Tank : public Entity
 			Eagle,
 			Raptor,
 			Avenger,
+			GreenLmg,
+			RedLmg,
+			GreenHmg,
+			RedHmg,
+			GreenGatling,
+			RedGatling,
+			GreenTesla,
+			RedTesla,
 			TypeCount
 		};
 
@@ -45,6 +53,7 @@ class Tank : public Entity
 		void					setIdentifier(int identifier);
 		int						getMissileAmmo() const;
 		void					setMissileAmmo(int ammo);
+		Projectile::Type		getProjectile() const;
 
 
 	private:
@@ -59,7 +68,6 @@ class Tank : public Entity
 		void					createPickup(SceneNode& node, const TextureHolder& textures) const;
 
 		void					updateTexts();
-		void					updateRollAnimation();
 
 
 	private:
