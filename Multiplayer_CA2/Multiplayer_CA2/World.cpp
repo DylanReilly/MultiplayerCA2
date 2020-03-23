@@ -118,7 +118,7 @@ void World::removeTank(int identifier)
 
 Tank* World::addTank(int identifier)
 {
-	std::unique_ptr<Tank> player(new Tank(Tank::GreenHmg, mTextures, mFonts));
+	std::unique_ptr<Tank> player(new Tank(Tank::GreenTesla, mTextures, mFonts));
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 
@@ -342,13 +342,17 @@ void World::buildScene()
 	mFinishSprite = finishSprite.get();
 	mSceneLayers[Background]->attachChild(std::move(finishSprite));
 
-	// Add particle node to the scene
-	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
-	mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
+	// Add bulletSmoke particle node to the scene
+	std::unique_ptr<ParticleNode> bulletSmokeNode(new ParticleNode(Particle::BulletSmoke, mTextures));
+	mSceneLayers[LowerAir]->attachChild(std::move(bulletSmokeNode));
 
-	// Add propellant particle node to the scene
-	std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(Particle::Propellant, mTextures));
-	mSceneLayers[LowerAir]->attachChild(std::move(propellantNode));
+	// Add teslaSmoke particle node to the scene
+	std::unique_ptr<ParticleNode> teslaSmokeNode(new ParticleNode(Particle::TeslaSmoke, mTextures));
+	mSceneLayers[LowerAir]->attachChild(std::move(teslaSmokeNode));
+
+	// Add tankSmoke particle node to the scene
+	std::unique_ptr<ParticleNode> tankDustNode(new ParticleNode(Particle::TankDust, mTextures));
+	mSceneLayers[LowerAir]->attachChild(std::move(tankDustNode));
 
 	// Add sound effect node
 	std::unique_ptr<SoundNode> soundNode(new SoundNode(mSounds));

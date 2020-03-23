@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "Animation.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -44,6 +45,7 @@ class Projectile : public Entity
 		Type					mType;
 		sf::Sprite				mSprite;
 		sf::Vector2f			mTargetDirection;
+		Animation				mFiringAnimation;
 };
 
 #endif // BOOK_PROJECTILE_HPP

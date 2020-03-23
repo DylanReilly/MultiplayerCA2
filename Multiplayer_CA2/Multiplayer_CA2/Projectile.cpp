@@ -21,20 +21,30 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 , mTargetDirection()
+, mFiringAnimation(textures.get(Textures::TeslaBullet))
 {
-	centerOrigin(mSprite);
+	//Initializes animation for tesla bullet - Dylan Reilly
+	mFiringAnimation.setFrameSize(sf::Vector2i(128, 128));
+	mFiringAnimation.setScale(0.5f, 0.5f); //Reduce scale of tesla bullet - Jason Lynch
+	mFiringAnimation.setNumFrames(12);
+	mFiringAnimation.setDuration(sf::seconds(2));
 
-	// Add particle system for missiles
-	if (isGuided())
+	centerOrigin(mSprite);
+	centerOrigin(mFiringAnimation);
+
+	//Add particle system for projectiles - Dylan Reilly
+	if (mType == Projectile::Type::HmgBullet)
 	{
-		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke));
+		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::BulletSmoke));
 		smoke->setPosition(0.f, getBoundingRect().height / 2.f);
 		attachChild(std::move(smoke));
+	}
 
-		std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant));
-		propellant->setPosition(0.f, getBoundingRect().height / 2.f);
-		attachChild(std::move(propellant));
-
+	if (mType == Projectile::Type::TeslaBullet)
+	{
+		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::TeslaSmoke));
+		smoke->setPosition(0.f, getBoundingRect().height / 2.f);
+		attachChild(std::move(smoke));
 	}
 }
 
@@ -63,12 +73,26 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 		setVelocity(newVelocity);
 	}
 
+	//Updates the firing animation if it shoots a tesla bullet - Dylan Reilly
+	if (mType == Projectile::Type::TeslaBullet)
+	{
+		mFiringAnimation.update(dt);
+	}
+
 	Entity::updateCurrent(dt, commands);
 }
 
 void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(mSprite, states);
+	//Draws tesla animation if it shoots a tesla bullet, elses draws plain sprite
+	if (mType == Projectile::Type::TeslaBullet)
+	{
+		target.draw(mFiringAnimation, states);
+	}
+	else
+	{
+		target.draw(mSprite, states);
+	}
 }
 
 unsigned int Projectile::getCategory() const

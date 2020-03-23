@@ -6,6 +6,7 @@
 #include "SoundNode.hpp"
 #include "NetworkNode.hpp"
 #include "ResourceHolder.hpp"
+#include "EmitterNode.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -79,6 +80,16 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 		mMissileDisplay = missileDisplay.get();
 		attachChild(std::move(missileDisplay));
 	}
+
+	// Dust trails for tank treads - Dylan
+	//Adds trail to the front left & right of the sprite
+	std::unique_ptr<EmitterNode> smokeLeft(new EmitterNode(Particle::Type::TankDust));
+	smokeLeft->setPosition(-40.f, getBoundingRect().height / 2.f);
+	attachChild(std::move(smokeLeft));
+
+	std::unique_ptr<EmitterNode> smokeRight(new EmitterNode(Particle::Type::TankDust));
+	smokeRight->setPosition(40.f, getBoundingRect().height / 2.f);
+	attachChild(std::move(smokeRight));
 
 	updateTexts();
 }
