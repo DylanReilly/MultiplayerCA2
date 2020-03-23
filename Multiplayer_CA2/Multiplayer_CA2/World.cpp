@@ -23,8 +23,8 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 , mSounds(sounds)
 , mSceneGraph()
 , mSceneLayers()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, mWorldView.getSize().y)
-, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldView.getSize().y / 2.f)
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 5000.0f)
+, mSpawnPosition(0.0f, 0.0f)
 , mScrollSpeed(0.0f)
 , mScrollSpeedCompensation(0.0f)
 , mPlayerTanks()
@@ -40,7 +40,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	buildScene();
 
 	// Prepare the view
-	mWorldView.setCenter(mSpawnPosition);
+	mWorldView.setCenter(mWorldView.getSize().x/2.f, mWorldView.getSize().y / 2.f);
 }
 
 void World::update(sf::Time dt)
@@ -172,7 +172,7 @@ void World::loadTextures()
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");
 	mTextures.load(Textures::ID::DestructableWall, "Media/Textures/Arena/Blocks/Block_B_01.png");
-	mTextures.load(Textures::ID::Jungle, "Media/Textures/Gamebackground.png");
+	mTextures.load(Textures::ID::Jungle, "Media/Textures/Jungle.png");
 	mTextures.load(Textures::ID::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::ID::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::ID::FinishLine, "Media/Textures/FinishLine.png");
