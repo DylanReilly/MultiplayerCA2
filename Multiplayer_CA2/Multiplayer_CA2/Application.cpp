@@ -7,7 +7,9 @@
 #include "MultiplayerGameState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+#include "HowToPlayState.hpp"
 #include "SettingsState.hpp"
+#include "KeyboardControlState.hpp"
 #include "GameOverState.hpp"
 
 
@@ -29,11 +31,12 @@ Application::Application()
 	mWindow.setKeyRepeatEnabled(false);
 	mWindow.setVerticalSyncEnabled(true);
 
-	mFonts.load(Fonts::Main, 	"Media/Sansation.ttf");
+	mFonts.load(Fonts::Main, 	"Media/EvilEmpire.otf");//Added font - Jason Lynch 
 
-	mTextures.load(Textures::TitleScreen,	"Media/Textures/TitleScreen.png");
+	mTextures.load(Textures::TitleScreen,	"Media/Textures/Title.png");
+	mTextures.load(Textures::HowToPlay,		"Media/Textures/HowToPlay.png");//Added background - Jason Lynch 
 	mTextures.load(Textures::Buttons,		"Media/Textures/Buttons.png");
-
+	
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10u);
@@ -116,12 +119,14 @@ void Application::registerStates()
 {
 	mStateStack.registerState<TitleState>(States::Title);
 	mStateStack.registerState<MenuState>(States::Menu);
+	mStateStack.registerState<HowToPlayState>(States::HowToPlay); //Added state - Jason Lynch 
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<MultiplayerGameState>(States::HostGame, true);
 	mStateStack.registerState<MultiplayerGameState>(States::JoinGame, false);
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<PauseState>(States::NetworkPause, true);
 	mStateStack.registerState<SettingsState>(States::Settings);
+	mStateStack.registerState<KeyboardControlState>(States::Keyboardcontrol);
 	mStateStack.registerState<GameOverState>(States::GameOver, "Mission Failed!");
 	mStateStack.registerState<GameOverState>(States::MissionSuccess, "Mission Successful!");
 }

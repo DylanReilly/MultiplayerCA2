@@ -9,8 +9,8 @@
 
 
 MenuState::MenuState(StateStack& stack, Context context)
-: State(stack, context)
-, mGUIContainer()
+	: State(stack, context)
+	, mGUIContainer()
 {
 	sf::Texture& texture = context.textures->get(Textures::TitleScreen);
 	mBackgroundSprite.setTexture(texture);
@@ -18,49 +18,58 @@ MenuState::MenuState(StateStack& stack, Context context)
 	auto playButton = std::make_shared<GUI::Button>(context);
 	playButton->setPosition(100, 300);
 	playButton->setText("Play");
-	playButton->setCallback([this] ()
-	{
-		requestStackPop();
-		requestStackPush(States::Game);
-	});
+	playButton->setCallback([this]()
+		{
+			requestStackPop();
+			requestStackPush(States::Game);
+		});
 
 	auto hostPlayButton = std::make_shared<GUI::Button>(context);
 	hostPlayButton->setPosition(100, 350);
 	hostPlayButton->setText("Host");
-	hostPlayButton->setCallback([this] ()
-	{
-		requestStackPop();
-		requestStackPush(States::HostGame);
-	});
+	hostPlayButton->setCallback([this]()
+		{
+			requestStackPop();
+			requestStackPush(States::HostGame);
+		});
 
 	auto joinPlayButton = std::make_shared<GUI::Button>(context);
 	joinPlayButton->setPosition(100, 400);
 	joinPlayButton->setText("Join");
-	joinPlayButton->setCallback([this] ()
-	{
-		requestStackPop();
-		requestStackPush(States::JoinGame);
-	});
+	joinPlayButton->setCallback([this]()
+		{
+			requestStackPop();
+			requestStackPush(States::JoinGame);
+		});
+
+	auto howToPlayButton = std::make_shared<GUI::Button>(context);
+	howToPlayButton->setPosition(100, 450);
+	howToPlayButton->setText("How To Play");
+	howToPlayButton->setCallback([this]()
+		{
+			requestStackPush(States::HowToPlay);
+		});
 
 	auto settingsButton = std::make_shared<GUI::Button>(context);
-	settingsButton->setPosition(100, 450);
+	settingsButton->setPosition(100, 500);
 	settingsButton->setText("Settings");
-	settingsButton->setCallback([this] ()
-	{
-		requestStackPush(States::Settings);
-	});
+	settingsButton->setCallback([this]()
+		{
+			requestStackPush(States::Settings);
+		});
 
 	auto exitButton = std::make_shared<GUI::Button>(context);
-	exitButton->setPosition(100, 500);
+	exitButton->setPosition(100, 550);
 	exitButton->setText("Exit");
-	exitButton->setCallback([this] ()
-	{
-		requestStackPop();
-	});
+	exitButton->setCallback([this]()
+		{
+			requestStackPop();
+		});
 
 	mGUIContainer.pack(playButton);
 	mGUIContainer.pack(hostPlayButton);
 	mGUIContainer.pack(joinPlayButton);
+	mGUIContainer.pack(howToPlayButton);
 	mGUIContainer.pack(settingsButton);
 	mGUIContainer.pack(exitButton);
 

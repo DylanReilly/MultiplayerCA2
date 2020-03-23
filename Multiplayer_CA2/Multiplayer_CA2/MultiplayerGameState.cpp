@@ -20,7 +20,7 @@ sf::IpAddress getAddressFromFile()
 
 	// If open/read failed, create new file
 	std::ofstream outputFile("ip.txt");
-	std::string localAddress = "127.0.0.1";
+	std::string localAddress = "92.51.253.48";
 	outputFile << localAddress;
 	return localAddress;
 }
@@ -67,7 +67,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (isHost)
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
-		ip = "127.0.0.1";
+		ip = "192.168.178.23";
 	}
 	else
 	{
@@ -87,24 +87,24 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 
 void MultiplayerGameState::draw()
 {
-	mWorld.draw();
-	//if (mConnected)
-	//{
-	//	mWorld.draw();
+	//mWorld.draw();
+	if (mConnected)
+	{
+		mWorld.draw();
 
-	//	// Broadcast messages in default view
-	//	mWindow.setView(mWindow.getDefaultView());
+		// Broadcast messages in default view
+		mWindow.setView(mWindow.getDefaultView());
 
-	//	if (!mBroadcasts.empty())
-	//		mWindow.draw(mBroadcastText);
+		if (!mBroadcasts.empty())
+			mWindow.draw(mBroadcastText);
 
-	//	if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
-	//		mWindow.draw(mPlayerInvitationText);
-	//}
-	//else
-	//{
-	//	mWindow.draw(mFailedConnectionText);
-	//}
+		if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
+			mWindow.draw(mPlayerInvitationText);
+	}
+	else
+	{
+		mWindow.draw(mFailedConnectionText);
+	}
 }
 
 void MultiplayerGameState::onActivate()
