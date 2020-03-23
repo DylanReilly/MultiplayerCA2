@@ -20,7 +20,7 @@ sf::IpAddress getAddressFromFile()
 
 	// If open/read failed, create new file
 	std::ofstream outputFile("ip.txt");
-	std::string localAddress = "92.51.249.152";
+	std::string localAddress = "127.0.0.1";
 	outputFile << localAddress;
 	return localAddress;
 }
@@ -67,7 +67,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (isHost)
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
-		ip = "192.168.178.23";
+		ip = "127.0.0.1";
 		
 	}
 	else
@@ -226,7 +226,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
 			{
 				if (Tank* tank = mWorld.getTank(identifier))
-					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
+					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getRotation());
 			}
 
 			mSocket.send(positionUpdatePacket);
@@ -479,7 +479,9 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		{
 			sf::Vector2f TankPosition;
 			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+			sf::Int32 TankHitpoints;
+			float TankRotation;
+			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> TankHitpoints >> TankRotation;
 
 			Tank* Tank = mWorld.getTank(TankIdentifier);
 			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), TankIdentifier) != mLocalPlayerIdentifiers.end();
@@ -487,6 +489,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			{
 				sf::Vector2f interpolatedPosition = Tank->getPosition() + (TankPosition - Tank->getPosition()) * 0.1f;
 				Tank->setPosition(interpolatedPosition);
+				Tank->setRotation(TankRotation);
 			}
 		}
 	} break;
