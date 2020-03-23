@@ -142,8 +142,10 @@ bool World::pollGameAction(GameActions::Action& out)
 
 void World::setCurrentBattleFieldPosition(float lineY)
 {
-	mWorldView.setCenter(mWorldView.getCenter().x, lineY - mWorldView.getSize().y/2);
-	mSpawnPosition.y = mWorldBounds.height; 
+	//mWorldView.setCenter(mWorldView.getCenter().x, lineY - mWorldView.getSize().y/2);
+	mWorldView.setCenter(mWorldView.getSize().x / 2.0f, mWorldView.getSize().y / 2.0f);
+	//mSpawnPosition.y = mWorldBounds.height; 
+	mSpawnPosition.y = mWorldView.getSize().y/2.0f;
 }
 
 void World::setWorldHeight(float height)
@@ -208,17 +210,17 @@ void World::adaptPlayerPosition()
 
 void World::adaptPlayerVelocity()
 {
-	FOREACH(Tank* Tank, mPlayerTanks)
-	{
-		sf::Vector2f velocity = Tank->getVelocity();
+	//FOREACH(Tank* Tank, mPlayerTanks)
+	//{
+	//	sf::Vector2f velocity = Tank->getVelocity();
 
-		// If moving diagonally, reduce velocity (to have always same velocity)
-		if (velocity.x != 0.f && velocity.y != 0.f)
-			Tank->setVelocity(velocity / std::sqrt(2.f));
+	//	// If moving diagonally, reduce velocity (to have always same velocity)
+	//	if (velocity.x != 0.f && velocity.y != 0.f)
+	//		Tank->setVelocity(velocity / std::sqrt(2.f));
 
-		// Add scrolling velocity
-		Tank->accelerate(0.f, mScrollSpeed);
-	}
+	//	// Add scrolling velocity
+	//	//Tank->accelerate(0.f, mScrollSpeed); -TEST COMMENT OUT
+	//}
 }
 
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
