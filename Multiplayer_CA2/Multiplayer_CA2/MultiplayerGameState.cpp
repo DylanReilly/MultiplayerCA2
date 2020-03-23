@@ -69,11 +69,8 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (isHost)
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
-<<<<<<< HEAD
 		ip = HostIpAddress;
-=======
-		ip = "127.0.0.1";
->>>>>>> f56584c14e77cac8f4fb3ca24c87ebda69ecf1c1
+		//ip = "127.0.0.1";
 		
 	}
 	else
