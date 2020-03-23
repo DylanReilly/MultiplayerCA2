@@ -16,7 +16,7 @@
 class MultiplayerGameState : public State
 {
 	public:
-									MultiplayerGameState(StateStack& stack, Context context, bool isHost);
+									MultiplayerGameState(StateStack& stack, Context context, bool isHost, const std::string* ip);
 
 		virtual void				draw();
 		virtual bool				update(sf::Time dt);

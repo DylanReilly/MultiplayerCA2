@@ -1,16 +1,20 @@
 #include "Application.hpp"
+#include "IpConfigs.hpp"
 #include "Utility.hpp"
 #include "State.hpp"
 #include "StateIdentifiers.hpp"
 #include "TitleState.hpp"
 #include "GameState.hpp"
 #include "MultiplayerGameState.hpp"
+#include "HostIpEntryState.hpp"
+#include "JoinIpEntryState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
 #include "HowToPlayState.hpp"
 #include "SettingsState.hpp"
 #include "KeyboardControlState.hpp"
 #include "GameOverState.hpp"
+#include "NetworkProtocol.hpp"
 
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
@@ -121,8 +125,10 @@ void Application::registerStates()
 	mStateStack.registerState<MenuState>(States::Menu);
 	mStateStack.registerState<HowToPlayState>(States::HowToPlay); //Added state - Jason Lynch 
 	mStateStack.registerState<GameState>(States::Game);
-	mStateStack.registerState<MultiplayerGameState>(States::HostGame, true);
-	mStateStack.registerState<MultiplayerGameState>(States::JoinGame, false);
+	mStateStack.registerState<MultiplayerGameState>(States::HostGame, true, HostIp);
+	mStateStack.registerState<HostIpEntryState>(States::HostIpEntry);
+	mStateStack.registerState<MultiplayerGameState>(States::JoinGame, false, JoinIp);
+	mStateStack.registerState<JoinIpEntryState>(States::JoinIpEntry);
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<PauseState>(States::NetworkPause, true);
 	mStateStack.registerState<SettingsState>(States::Settings);

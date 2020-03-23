@@ -150,7 +150,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="HostIpEntryState.hpp" />
     <ClInclude Include="HowToPlayState.hpp" />
+    <ClInclude Include="IpConfigs.hpp" />
+    <ClInclude Include="JoinIpEntryState.hpp" />
     <ClInclude Include="KeyboardControlState.hpp" />
     <ClInclude Include="Tank.hpp" />
     <ClInclude Include="Animation.hpp" />
@@ -199,7 +202,9 @@
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HostIpEntryState.cpp" />
     <ClCompile Include="HowToPlayState.cpp" />
+    <ClCompile Include="JoinIpEntryState.cpp" />
     <ClCompile Include="KeyboardControlState.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Animation.cpp" />

@@ -19,7 +19,9 @@ namespace States
 		GameOver,
 		MissionSuccess,
 		HostGame,
+		HostIpEntry,
 		JoinGame,
+		JoinIpEntry
 	};
 }
 

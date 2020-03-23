@@ -1,8 +1,10 @@
+
 #ifndef BOOK_NETWORKPROTOCOL_HPP
 #define BOOK_NETWORKPROTOCOL_HPP
 
 #include <SFML/Config.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <string>
 
 
 const unsigned short ServerPort = 50005;

@@ -156,6 +156,15 @@
     <ClInclude Include="KeyboardControlState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HostIpEntryState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IpConfigs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JoinIpEntryState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -279,6 +288,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardControlState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HostIpEntryState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JoinIpEntryState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

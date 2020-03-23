@@ -8,6 +8,8 @@
 
 #include <fstream>
 
+extern std::string HostIpAddress;
+extern std::string JoinIpAddress;
 
 sf::IpAddress getAddressFromFile()
 {
@@ -25,7 +27,7 @@ sf::IpAddress getAddressFromFile()
 	return localAddress;
 }
 
-MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, bool isHost)
+MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, bool isHost, const std::string* ipAddress)
 	: State(stack, context)
 	, mWorld(*context.window, *context.fonts, *context.sounds, true)
 	, mWindow(*context.window)
@@ -67,12 +69,13 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	if (isHost)
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
-		ip = "192.168.178.23";
+		ip = HostIpAddress;
 		
 	}
 	else
 	{
-		ip = getAddressFromFile();
+		/*ip = getAddressFromFile();*/
+		ip = JoinIpAddress;
 	}
 
 	if (mSocket.connect(ip, ServerPort, sf::seconds(5.f)) == sf::TcpSocket::Done)
