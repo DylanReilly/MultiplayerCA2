@@ -118,7 +118,18 @@ void World::removeTank(int identifier)
 
 Tank* World::addTank(int identifier)
 {
-	std::unique_ptr<Tank> player(new Tank(Tank::GreenTesla, mTextures, mFonts));
+	Tank::Type type;
+
+	if (identifier % 2 > 0)
+	{
+		type = Tank::Type::GreenLmg;
+	}
+	else
+	{
+		type = Tank::Type::RedLmg;
+	}
+
+	std::unique_ptr<Tank> player(new Tank(type, mTextures, mFonts));
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 
