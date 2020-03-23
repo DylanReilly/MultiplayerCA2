@@ -59,7 +59,7 @@ class Tank : public Entity
 	private:
 		virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 		virtual void 			updateCurrent(sf::Time dt, CommandQueue& commands);
-		void					updateMovementPattern(sf::Time dt);
+		//void					updateMovementPattern(sf::Time dt);
 		void					checkPickupDrop(CommandQueue& commands);
 		void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
 

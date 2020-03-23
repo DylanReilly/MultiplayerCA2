@@ -43,8 +43,8 @@ class World : private sf::NonCopyable
 		void								setCurrentBattleFieldPosition(float lineY);
 		void								setWorldHeight(float height);
 
-		void								addEnemy(Tank::Type type, float relX, float relY);
-		void								sortEnemies();
+		/*void								addEnemy(Tank::Type type, float relX, float relY);
+		void								sortEnemies();*/
 
 		bool 								hasAlivePlayer() const;
 		bool 								hasPlayerReachedEnd() const;
@@ -65,10 +65,10 @@ class World : private sf::NonCopyable
 		void								updateSounds();
 
 		void								buildScene();
-		void								addEnemies();
-		void								spawnEnemies();
+		/*void								addEnemies();
+		void								spawnEnemies();*/
 		void								destroyEntitiesOutsideView();
-		void								guideMissiles();
+		//void								guideMissiles();
 
 
 	private:

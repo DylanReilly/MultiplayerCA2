@@ -135,8 +135,9 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
 			playLocalSound(commands, soundEffect);
 
+			//To remove
 			// Emit network game action for enemy explosions
-			if (!isAllied())
+			/*if (!isAllied())
 			{
 				sf::Vector2f position = getWorldPosition();
 
@@ -150,7 +151,7 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 				commands.push(command);
 			}
 
-			mExplosionBegan = true;
+			mExplosionBegan = true;*/
 		}
 		return;
 	}
@@ -159,14 +160,14 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	checkProjectileLaunch(dt, commands);
 
 	// Update enemy movement pattern; apply velocity
-	updateMovementPattern(dt);
+	//updateMovementPattern(dt);
 	Entity::updateCurrent(dt, commands);
 }
 
 unsigned int Tank::getCategory() const
 {
 	if (isAllied())
-		return Category::PlayerTank;
+		return Category::AlliedTank;
 	else
 		return Category::EnemyTank;
 }
@@ -190,7 +191,7 @@ void Tank::remove()
 //Dylan Reilly - Returns is allied for any green tank
 bool Tank::isAllied() const
 {
-	return mType == GreenLmg || GreenHmg || GreenGatling || GreenTesla;
+	return mType == GreenLmg || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla;
 }
 
 float Tank::getMaxSpeed() const
@@ -256,29 +257,29 @@ void Tank::setIdentifier(int identifier)
 	mIdentifier = identifier;
 }
 
-void Tank::updateMovementPattern(sf::Time dt)
-{
-	// Enemy airplane: Movement pattern
-	const std::vector<Direction>& directions = Table[mType].directions;
-	if (!directions.empty())
-	{
-		// Moved long enough in current direction: Change direction
-		if (mTravelledDistance > directions[mDirectionIndex].distance)
-		{
-			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-			mTravelledDistance = 0.f;
-		}
-
-		// Compute velocity from direction
-		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-		float vx = getMaxSpeed() * std::cos(radians);
-		float vy = getMaxSpeed() * std::sin(radians);
-
-		setVelocity(vx, vy);
-
-		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
-	}
-}
+//void Tank::updateMovementPattern(sf::Time dt)
+//{
+//	// Enemy airplane: Movement pattern
+//	const std::vector<Direction>& directions = Table[mType].directions;
+//	if (!directions.empty())
+//	{
+//		// Moved long enough in current direction: Change direction
+//		if (mTravelledDistance > directions[mDirectionIndex].distance)
+//		{
+//			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
+//			mTravelledDistance = 0.f;
+//		}
+//
+//		// Compute velocity from direction
+//		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
+//		float vx = getMaxSpeed() * std::cos(radians);
+//		float vy = getMaxSpeed() * std::sin(radians);
+//
+//		setVelocity(vx, vy);
+//
+//		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
+//	}
+//}
 
 void Tank::checkPickupDrop(CommandQueue& commands)
 {
@@ -293,15 +294,15 @@ void Tank::checkPickupDrop(CommandQueue& commands)
 void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies try to fire all the time
-	if (!isAllied())
-		fire();
+	/*if (!isAllied())
+		fire();*/
 
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
+		playLocalSound(commands,SoundEffect::AlliedGunfire);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
 		mIsFiring = false;

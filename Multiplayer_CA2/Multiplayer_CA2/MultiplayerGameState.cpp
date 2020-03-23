@@ -446,8 +446,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		float relativeX;
 		packet >> type >> height >> relativeX;
 
-		mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
-		mWorld.sortEnemies();
+		/*mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
+		mWorld.sortEnemies();*/
 	} break;
 
 	// Mission successfully completed
