@@ -42,7 +42,7 @@ class MultiplayerGameState : public State
 		TextureHolder&				mTextureHolder;
 
 		std::map<int, PlayerPtr>	mPlayers;
-		std::vector<sf::Int32>		mLocalPlayerIdentifiers;
+		std::vector<sf::Int8>		mLocalPlayerIdentifiers;
 		sf::TcpSocket				mSocket;
 		bool						mConnected;
 		std::unique_ptr<GameServer> mGameServer;

@@ -123,7 +123,7 @@ void MultiplayerGameState::onDestroy()
 	{
 		// Inform server this client is dying
 		sf::Packet packet;
-		packet << static_cast<sf::Int32>(Client::Quit);
+		packet << static_cast<sf::Int8>(Client::Quit);
 		mSocket.send(packet);
 	}
 }
@@ -212,8 +212,8 @@ bool MultiplayerGameState::update(sf::Time dt)
 		while (mWorld.pollGameAction(gameAction))
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Client::GameEvent);
-			packet << static_cast<sf::Int32>(gameAction.type);
+			packet << static_cast<sf::Int8>(Client::GameEvent);
+			packet << static_cast<sf::Int8>(gameAction.type);
 			packet << gameAction.position.x;
 			packet << gameAction.position.y;
 
@@ -224,13 +224,13 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mTickClock.getElapsedTime() > sf::seconds(1.f / 20.f))
 		{
 			sf::Packet positionUpdatePacket;
-			positionUpdatePacket << static_cast<sf::Int32>(Client::PositionUpdate);
-			positionUpdatePacket << static_cast<sf::Int32>(mLocalPlayerIdentifiers.size());
+			positionUpdatePacket << static_cast<sf::Int8>(Client::PositionUpdate);
+			positionUpdatePacket << static_cast<sf::Int8>(mLocalPlayerIdentifiers.size());
 
-			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
+			FOREACH(sf::Int8 identifier, mLocalPlayerIdentifiers)
 			{
 				if (Tank* tank = mWorld.getTank(identifier))
-					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << tank->getRotation();
+					positionUpdatePacket << static_cast<sf::Int8>(identifier) << static_cast<sf::Int16>(tank->getPosition().x) << static_cast<sf::Int16>(tank->getPosition().y) << static_cast<sf::Int8>(tank->getHitpoints()) << static_cast<sf::Int16>(tank->getRotation());
 			}
 
 			mSocket.send(positionUpdatePacket);
