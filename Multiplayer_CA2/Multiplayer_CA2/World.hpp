@@ -39,7 +39,7 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect						getViewBounds() const;		
 		CommandQueue&						getCommandQueue();
-		Tank*							addTank(int identifier);
+		Tank*								addTank(int identifier);
 		void								removeTank(int identifier);
 		void								setCurrentBattleFieldPosition(float lineY);
 		void								setWorldHeight(float height);
@@ -60,10 +60,12 @@ class World : private sf::NonCopyable
 		void								adaptPlayerPosition();
 		void								handleCollisions();
 		void								updateSounds();
-		void								playerOneBase(); //Adds obstacles near player one to scene - Jason Lynch 
 		void								addObstacle(Obstacle::Type type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale); //Info for adding an obstacle - Jason Lynch
 		void								spawnObstacles();
 		void								addBuildings();
+
+		void								greenBase();
+		void								redBase();
 
 		void								buildScene();
 		void								destroyEntitiesOutsideView();

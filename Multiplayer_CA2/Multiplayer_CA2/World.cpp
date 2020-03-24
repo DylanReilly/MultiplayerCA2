@@ -23,7 +23,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 , mSounds(sounds)
 , mSceneGraph()
 , mSceneLayers()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 5000.0f)
+, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, mWorldView.getSize().y)
 , mSpawnPosition(0.0f, 0.0f)
 , mScrollSpeed(0.0f)
 , mObstacleSpawnPosition(mWorldView.getSize().x * .25f, mWorldView.getSize().y / 2.f)
@@ -133,9 +133,10 @@ Tank* World::addTank(int identifier)
 	std::unique_ptr<Tank> player(new Tank(type, mTextures, mFonts));
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
+	player->setScale(0.6f, 0.6f);
 
 	mPlayerTanks.push_back(player.get());
-	mSceneLayers[UpperAir]->attachChild(std::move(player));
+	mSceneLayers[LowerAir]->attachChild(std::move(player));
 	return mPlayerTanks.back();
 }
 
@@ -144,7 +145,7 @@ void World::createPickup(sf::Vector2f position, Pickup::Type type)
 	std::unique_ptr<Pickup> pickup(new Pickup(type, mTextures));
 	pickup->setPosition(position);
 	pickup->setVelocity(0.f, 1.f);
-	mSceneLayers[UpperAir]->attachChild(std::move(pickup));
+	mSceneLayers[LowerAir]->attachChild(std::move(pickup));
 }
 
 bool World::pollGameAction(GameActions::Action& out)
@@ -183,7 +184,7 @@ void World::loadTextures()
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");
-	mTextures.load(Textures::ID::DestructableWall, "Media/Textures/Arena/Blocks/Block_B_01.png");
+	mTextures.load(Textures::ID::DestructableWall, "Media/Textures/Arena/Buildings/Building_B_02.png");
 	mTextures.load(Textures::ID::Jungle, "Media/Textures/Gamebackground.png");
 	mTextures.load(Textures::ID::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::ID::Particle, "Media/Textures/Particle.png");
@@ -220,7 +221,8 @@ void World::adaptPlayerPosition()
 
 void World::addBuildings()
 {
-	
+	greenBase();
+	redBase();
 }
 
 //Sets up obstacles - Jason Lynch 
@@ -231,12 +233,16 @@ void World::addObstacle(Obstacle::Type type, float posX, float posY, float rotat
 }
 
 //Popultaes world with obstacles - Jason Lynch 
-void World::playerOneBase() {
-	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y + 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y - 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));					
-	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y + 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y - 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+void World::greenBase() {
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y, 90.0f, .72f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 30, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+void World::redBase() {
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 460, mObstacleSpawnPosition.y, 90.0f, .72f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 540, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 540, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 }
 
 //Spawn obstacles, set scale, rotation, and position - Jason Lynch
@@ -297,8 +303,7 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::AlliedTank, Category::AlliedProjectile)
-			  || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::AlliedTank, Category::AlliedProjectile) || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -306,6 +311,53 @@ void World::handleCollisions()
 			// Apply projectile damage to Tank, destroy projectile
 			tank.damage(projectile.getDamage());
 			projectile.destroy();
+		}
+
+		else if (matchesCategories(pair, Category::AlliedTank, Category::Collidable) || matchesCategories(pair, Category::EnemyTank, Category::Collidable))
+		{
+			auto& tank = static_cast<Tank&>(*pair.first);
+			auto& obstacle = static_cast<Obstacle&>(*pair.second);
+			
+			float borderDistance = 40.f;
+			sf::Vector2f position = tank.getPosition();
+
+			//Left of object
+			if (tank.getPosition().x < obstacle.getBoundingRect().left)
+			{
+				if (tank.getPosition().y > obstacle.getBoundingRect().top && tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
+				{
+					position.x = std::min(position.x, obstacle.getBoundingRect().left - borderDistance);
+				}
+			}
+
+			//Right of object
+			if (tank.getPosition().x > obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
+			{
+				if (tank.getPosition().y > obstacle.getBoundingRect().top && tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
+				{
+					position.x = std::max(position.x, obstacle.getBoundingRect().left + obstacle.getBoundingRect().width + borderDistance);
+				}
+			}
+
+			//Below object
+			if (tank.getPosition().y > obstacle.getBoundingRect().top)
+			{
+				if (tank.getPosition().x > obstacle.getBoundingRect().left && tank.getPosition().x < obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
+				{
+					position.y = std::max(position.y, obstacle.getBoundingRect().top + obstacle.getBoundingRect().height + borderDistance);
+				}
+			}
+
+			//Above object
+			if (tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
+			{
+				if (tank.getPosition().x > obstacle.getBoundingRect().left&& tank.getPosition().x < obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
+				{
+					position.y = std::min(position.y, obstacle.getBoundingRect().top - borderDistance);
+				}
+			}
+			tank.setPosition(position);
+
 		}
 	}
 }
@@ -393,7 +445,7 @@ void World::buildScene()
 		mSceneGraph.attachChild(std::move(networkNode));
 	}
 
-	playerOneBase();
+	addBuildings();
 }
 
 void World::destroyEntitiesOutsideView()
@@ -418,8 +470,8 @@ sf::FloatRect World::getBattlefieldBounds() const
 {
 	// Return view bounds + some area at top, where enemies spawn
 	sf::FloatRect bounds = getViewBounds();
-	bounds.top -= 100.f;
-	bounds.height += 100.f;
+	bounds.top;
+	bounds.height;
 
 	return bounds;
 }
