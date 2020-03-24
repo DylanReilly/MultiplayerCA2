@@ -134,24 +134,6 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 			// Play sound effect
 			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
 			playLocalSound(commands, soundEffect);
-
-			//To remove
-			// Emit network game action for enemy explosions
-			/*if (!isAllied())
-			{
-				sf::Vector2f position = getWorldPosition();
-
-				Command command;
-				command.category = Category::Network;
-				command.action = derivedAction<NetworkNode>([position] (NetworkNode& node, sf::Time)
-				{
-					node.notifyGameAction(GameActions::EnemyExplode, position);
-				});
-
-				commands.push(command);
-			}
-
-			mExplosionBegan = true;*/
 		}
 		return;
 	}
@@ -159,8 +141,6 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	// Check if bullets or missiles are fired
 	checkProjectileLaunch(dt, commands);
 
-	// Update enemy movement pattern; apply velocity
-	//updateMovementPattern(dt);
 	Entity::updateCurrent(dt, commands);
 }
 
@@ -257,30 +237,6 @@ void Tank::setIdentifier(int identifier)
 	mIdentifier = identifier;
 }
 
-//void Tank::updateMovementPattern(sf::Time dt)
-//{
-//	// Enemy airplane: Movement pattern
-//	const std::vector<Direction>& directions = Table[mType].directions;
-//	if (!directions.empty())
-//	{
-//		// Moved long enough in current direction: Change direction
-//		if (mTravelledDistance > directions[mDirectionIndex].distance)
-//		{
-//			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-//			mTravelledDistance = 0.f;
-//		}
-//
-//		// Compute velocity from direction
-//		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-//		float vx = getMaxSpeed() * std::cos(radians);
-//		float vy = getMaxSpeed() * std::sin(radians);
-//
-//		setVelocity(vx, vy);
-//
-//		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
-//	}
-//}
-
 void Tank::checkPickupDrop(CommandQueue& commands)
 {
 	// Drop pickup, if enemy airplane, with probability 1/3, if pickup not yet dropped
@@ -293,10 +249,6 @@ void Tank::checkPickupDrop(CommandQueue& commands)
 
 void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
-	// Enemies try to fire all the time
-	/*if (!isAllied())
-		fire();*/
-
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero)
 	{
@@ -372,7 +324,7 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
 	//Sets projectile spawn position to origin on the tank - Dylan
-	sf::Vector2f offset(115.f * -sin(toRadian(Tank::getRotation())), 115.f * cos(toRadian(Tank::getRotation())));
+	sf::Vector2f offset(75.f * -sin(toRadian(Tank::getRotation())), 75.f * cos(toRadian(Tank::getRotation())));
 
 	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
 	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation())), 

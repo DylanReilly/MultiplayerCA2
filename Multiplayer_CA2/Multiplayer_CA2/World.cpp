@@ -313,6 +313,14 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 
+		else if (matchesCategories(pair, Category::AlliedProjectile, Category::Collidable) || matchesCategories(pair, Category::EnemyProjectile, Category::Collidable))
+		{
+			auto& projectile = static_cast<Projectile&>(*pair.first);
+
+			//Destroy projectile when it hits a wall
+			projectile.destroy();
+		}
+
 		else if (matchesCategories(pair, Category::AlliedTank, Category::Collidable) || matchesCategories(pair, Category::EnemyTank, Category::Collidable))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
