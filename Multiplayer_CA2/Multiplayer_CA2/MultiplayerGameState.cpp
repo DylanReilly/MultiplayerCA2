@@ -483,7 +483,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		{
 			sf::Vector2f TankPosition;
 			sf::Int32 TankIdentifier;
-			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
+			float TankRotation;
+			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> TankRotation;
 
 			Tank* Tank = mWorld.getTank(TankIdentifier);
 			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), TankIdentifier) != mLocalPlayerIdentifiers.end();
@@ -491,6 +492,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			{
 				sf::Vector2f interpolatedPosition = Tank->getPosition() + (TankPosition - Tank->getPosition()) * 0.1f;
 				Tank->setPosition(interpolatedPosition);
+				Tank->setRotation(TankRotation);
 			}
 		}
 	} break;

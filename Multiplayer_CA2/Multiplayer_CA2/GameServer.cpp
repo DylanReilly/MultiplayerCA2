@@ -363,7 +363,7 @@ void GameServer::updateClientState()
 	updateClientStatePacket << static_cast<sf::Int32>(mTankInfo.size());
 
 	FOREACH(auto Tank, mTankInfo)
-		updateClientStatePacket << Tank.first << Tank.second.position.x << Tank.second.position.y;
+		updateClientStatePacket << Tank.first << Tank.second.position.x << Tank.second.position.y << Tank.second.rotation;
 
 	sendToAll(updateClientStatePacket);
 }
