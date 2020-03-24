@@ -213,7 +213,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 		{
 			sf::Packet packet;
 			packet << static_cast<sf::Int8>(Client::GameEvent);
-			packet << static_cast<sf::Int8>(gameAction.type);
+			packet << static_cast<sf::Int32>(gameAction.type);
 			packet << gameAction.position.x;
 			packet << gameAction.position.y;
 
@@ -224,13 +224,13 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mTickClock.getElapsedTime() > sf::seconds(1.f / 20.f))
 		{
 			sf::Packet positionUpdatePacket;
-			positionUpdatePacket << static_cast<sf::Int8>(Client::PositionUpdate);
-			positionUpdatePacket << static_cast<sf::Int8>(mLocalPlayerIdentifiers.size());
+			positionUpdatePacket << static_cast<sf::Int32>(Client::PositionUpdate);
+			positionUpdatePacket << static_cast<sf::Int32>(mLocalPlayerIdentifiers.size());
 
-			FOREACH(sf::Int8 identifier, mLocalPlayerIdentifiers)
+			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
 			{
 				if (Tank* tank = mWorld.getTank(identifier))
-					positionUpdatePacket << static_cast<sf::Int8>(identifier) << static_cast<sf::Int16>(tank->getPosition().x) << static_cast<sf::Int16>(tank->getPosition().y) << static_cast<sf::Int8>(tank->getHitpoints()) << static_cast<sf::Int16>(tank->getRotation());
+					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << tank->getRotation();
 			}
 
 			mSocket.send(positionUpdatePacket);
@@ -254,7 +254,7 @@ void MultiplayerGameState::disableAllRealtimeActions()
 {
 	mActiveState = false;
 
-	FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
+	FOREACH(sf::Int8 identifier, mLocalPlayerIdentifiers)
 		mPlayers[identifier]->disableAllRealtimeActions();
 }
 
@@ -273,7 +273,7 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::Return && mLocalPlayerIdentifiers.size() == 1)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Client::RequestCoopPartner);
+			packet << static_cast<sf::Int8>(Client::RequestCoopPartner);
 
 			mSocket.send(packet);
 		}
@@ -342,7 +342,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Sent by the server to order to spawn player 1 airplane on connect
 	case Server::SpawnSelf:
 	{
-		sf::Int32 TankIdentifier;
+		sf::Int8 TankIdentifier;
 		sf::Vector2f TankPosition;
 		packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
 
@@ -358,7 +358,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::PlayerConnect:
 	{
-		sf::Int32 TankIdentifier;
+		sf::Int8 TankIdentifier;
 		sf::Vector2f TankPosition;
 		packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
 
@@ -371,7 +371,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::PlayerDisconnect:
 	{
-		sf::Int32 TankIdentifier;
+		sf::Int8 TankIdentifier;
 		packet >> TankIdentifier;
 
 		mWorld.removeTank(TankIdentifier);
@@ -381,7 +381,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::InitialState:
 	{
-		sf::Int32 TankCount;
+		sf::Int8 TankCount;
 		float worldHeight, currentScroll;
 		packet >> worldHeight >> currentScroll;
 
@@ -389,11 +389,11 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		mWorld.setCurrentBattleFieldPosition(currentScroll);
 
 		packet >> TankCount;
-		for (sf::Int32 i = 0; i < TankCount; ++i)
+		for (sf::Int8 i = 0; i < TankCount; ++i)
 		{
-			sf::Int32 TankIdentifier;
-			sf::Int32 hitpoints;
-			sf::Int32 missileAmmo;
+			sf::Int8 TankIdentifier;
+			sf::Int8 hitpoints;
+			sf::Int8 missileAmmo;
 			sf::Vector2f TankPosition;
 			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> hitpoints >> missileAmmo;
 
@@ -409,7 +409,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	//
 	case Server::AcceptCoopPartner:
 	{
-		sf::Int32 TankIdentifier;
+		sf::Int8 TankIdentifier;
 		packet >> TankIdentifier;
 
 		mWorld.addTank(TankIdentifier);
@@ -420,8 +420,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Player event (like missile fired) occurs
 	case Server::PlayerEvent:
 	{
-		sf::Int32 TankIdentifier;
-		sf::Int32 action;
+		sf::Int8 TankIdentifier;
+		sf::Int8 action;
 		packet >> TankIdentifier >> action;
 
 		auto itr = mPlayers.find(TankIdentifier);
@@ -432,8 +432,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Player's movement or fire keyboard state changes
 	case Server::PlayerRealtimeChange:
 	{
-		sf::Int32 TankIdentifier;
-		sf::Int32 action;
+		sf::Int8 TankIdentifier;
+		sf::Int8 action;
 		bool actionEnabled;
 		packet >> TankIdentifier >> action >> actionEnabled;
 
@@ -446,12 +446,10 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::SpawnEnemy:
 	{
 		float height;
-		sf::Int32 type;
+		sf::Int8 type;
 		float relativeX;
 		packet >> type >> height >> relativeX;
 
-		/*mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
-		mWorld.sortEnemies();*/
 	} break;
 
 	// Mission successfully completed
@@ -463,7 +461,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Pickup created
 	case Server::SpawnPickup:
 	{
-		sf::Int32 type;
+		sf::Int8 type;
 		sf::Vector2f position;
 		packet >> type >> position.x >> position.y;
 
@@ -474,15 +472,15 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::UpdateClientState:
 	{
 		float currentWorldPosition;
-		sf::Int32 TankCount;
+		sf::Int8 TankCount;
 		packet >> currentWorldPosition >> TankCount;
 
 		float currentViewPosition = mWorld.getViewBounds().top + mWorld.getViewBounds().height;
 
-		for (sf::Int32 i = 0; i < TankCount; ++i)
+		for (sf::Int8 i = 0; i < TankCount; ++i)
 		{
 			sf::Vector2f TankPosition;
-			sf::Int32 TankIdentifier;
+			sf::Int8 TankIdentifier;
 			float TankRotation;
 			packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> TankRotation;
 
