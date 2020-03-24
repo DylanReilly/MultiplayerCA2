@@ -97,16 +97,16 @@ struct TankMissileTrigger
 
 
 Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* binding)
-: mKeyBinding(binding)
-, mCurrentMissionStatus(MissionRunning)
-, mIdentifier(identifier)
-, mSocket(socket)
+	: mKeyBinding(binding)
+	, mCurrentMissionStatus(MissionRunning)
+	, mIdentifier(identifier)
+	, mSocket(socket)
 {
 	// Set initial action bindings
 	initializeActions();
 
 	// Assign all categories to player's Tank
-	FOREACH(auto& pair, mActionBinding)
+	FOREACH(auto & pair, mActionBinding)
 		pair.second.category = Category::AlliedTank;
 }
 

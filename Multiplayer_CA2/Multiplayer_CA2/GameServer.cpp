@@ -284,7 +284,7 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 			receivingPeer.TankIdentifiers.push_back(mTankIdentifierCounter);
 			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.top + mBattleFieldRect.height / 2);
 			mTankInfo[mTankIdentifierCounter].hitpoints = 100;
-			mTankInfo[mTankIdentifierCounter].missileAmmo = 2;
+			mTankInfo[mTankIdentifierCounter].rotation = 0.f;
 
 			sf::Packet requestPacket;
 			requestPacket << static_cast<sf::Int32>(Server::AcceptCoopPartner);
@@ -320,12 +320,12 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 			{
 				sf::Int32 TankIdentifier;
 				sf::Int32 TankHitpoints;
-				sf::Int32 missileAmmo;
+				float TankRotation;
 				sf::Vector2f TankPosition;
-				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> TankHitpoints >> missileAmmo;
+				packet >> TankIdentifier >> TankPosition.x >> TankPosition.y >> TankHitpoints >> TankRotation;
 				mTankInfo[TankIdentifier].position = TankPosition;
 				mTankInfo[TankIdentifier].hitpoints = TankHitpoints;
-				mTankInfo[TankIdentifier].missileAmmo = missileAmmo;
+				mTankInfo[TankIdentifier].rotation = TankRotation;
 			}
 		} break;
 
@@ -378,7 +378,7 @@ void GameServer::handleIncomingConnections()
 		// order the new client to spawn its own plane ( player 1 )
 		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.top + mBattleFieldRect.height / 2);
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
-		mTankInfo[mTankIdentifierCounter].missileAmmo = 2;
+		mTankInfo[mTankIdentifierCounter].rotation = 0.f;
 
 		sf::Packet packet;
 		packet << static_cast<sf::Int32>(Server::SpawnSelf);
@@ -453,7 +453,7 @@ void GameServer::informWorldState(sf::TcpSocket& socket)
 		if (mPeers[i]->ready)
 		{
 			FOREACH(sf::Int32 identifier, mPeers[i]->TankIdentifiers)
-				packet << identifier << mTankInfo[identifier].position.x << mTankInfo[identifier].position.y << mTankInfo[identifier].hitpoints << mTankInfo[identifier].missileAmmo;
+				packet << identifier << mTankInfo[identifier].position.x << mTankInfo[identifier].position.y << mTankInfo[identifier].hitpoints << mTankInfo[identifier].rotation;
 		}
 	}
 

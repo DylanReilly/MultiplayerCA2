@@ -282,7 +282,7 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)
+		else if (matchesCategories(pair, Category::AlliedTank, Category::AlliedProjectile)
 			  || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);

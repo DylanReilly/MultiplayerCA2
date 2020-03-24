@@ -43,7 +43,7 @@ class GameServer
 		{
 			sf::Vector2f				position;
 			sf::Int32					hitpoints;
-			sf::Int32                   missileAmmo;
+			float						rotation;
 			std::map<sf::Int32, bool>	realtimeActions;
 		};
 
@@ -84,7 +84,7 @@ class GameServer
 		float								mBattleFieldScrollSpeed;
 
 		std::size_t							mTankCount;
-		std::map<sf::Int32, TankInfo>	mTankInfo;
+		std::map<sf::Int32, TankInfo>		mTankInfo;
 
 		std::vector<PeerPtr>				mPeers;
 		sf::Int32							mTankIdentifierCounter;

@@ -372,7 +372,7 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
 	//Sets projectile spawn position to origin on the tank - Dylan
-	sf::Vector2f offset(xOffset * Tank::getWorldPosition());
+	sf::Vector2f offset(115.f * -sin(toRadian(Tank::getRotation())), 115.f * cos(toRadian(Tank::getRotation())));
 
 	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
 	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation())), 
