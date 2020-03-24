@@ -10,7 +10,6 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SFML/Graphics/RenderStates.hpp"
-#include "ResourceIdentifiers.hpp"
 
 #include <cmath>
 
@@ -20,8 +19,8 @@ namespace //Gets data from tables - Jason Lynch
 }
 
 //Created by me to handle obstacles, since they come in all forms and sizes a lot of variables needed to be passed in - Jason Lynch 
-Obstacle::Obstacle(Obstacles::ID type, const TextureHolder& textures, const FontHolder& fonts, const Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale)
-	: Entity(Table[type].hitpoints, Category::Type::Collidable)
+Obstacle::Obstacle(Obstacle::Type type, const TextureHolder& textures, const FontHolder& fonts, const Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale)
+	: Entity(Table[type].hitpoints)
 	, mType(type)
 	, mSprite(textures.get(Table[static_cast<int>(type)].texture)/*, Table[static_cast<int>(type)].textureRect*/)
 	, mExplosion(textures.get(deathAnimation))
@@ -39,11 +38,18 @@ Obstacle::Obstacle(Obstacles::ID type, const TextureHolder& textures, const Font
 
 	centerOrigin(mSprite);
 	centerOrigin(mExplosion);
+
+	//std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, "", sf::Color::Black)); //Health bar 
+	//mHealthDisplay = healthDisplay.get();
+	//mHealthDisplay->setScale(1.5f, 1.5f);
+	//attachChild(std::move(healthDisplay));
+
+	//updateTexts();
 }
 
 unsigned int Obstacle::getCategory() const //Returns collidable as category - Jason Lynch
 {
-	return static_cast<int>(Category::Type::Collidable);
+	return static_cast<int>(Category::Collidable);
 }
 
 unsigned int Obstacle::getType() const { //Returns the type e.g barrel - Jason Lynch 
@@ -70,7 +76,7 @@ void Obstacle::playerLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 	sf::Vector2f worldPosition = getWorldPosition();
 
 	Command command;
-	command.category = static_cast<int>(Category::Type::SoundEffect);
+	command.category = static_cast<int>(Category::SoundEffect);
 	command.action = derivedAction<SoundNode>(
 		[effect, worldPosition](SoundNode& node, sf::Time)
 		{
@@ -98,7 +104,7 @@ void Obstacle::updateCurrent(sf::Time dt, CommandQueue& commands)
 		//Play explosion sound
 		if (!mPlayedExplosionSound)
 		{
-			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::ID::Explosion1 : SoundEffect::ID::Explosion2;
+			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
 			playerLocalSound(commands, soundEffect);
 
 			mPlayedExplosionSound = true;

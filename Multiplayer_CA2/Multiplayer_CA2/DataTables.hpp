@@ -45,6 +45,14 @@ struct ProjectileData
 	sf::IntRect						textureRect;
 };
 
+struct ObstacleData //Struct for obstacles in world - Jason Lynch
+{
+	int hitpoints; //Hitpoints of obstacle - Jason Lynch
+	int damage; //Damage done to player colliding with obstacle - Jason Lynch
+	Textures::ID texture; //Texture of Obstacle - Jason Lynch
+	//sf::IntRect textureRect;
+};
+
 struct PickupData
 {
 	std::function<void(Tank&)>		action;
@@ -59,9 +67,10 @@ struct ParticleData
 };
 
 
-std::vector<TankData>	initializeTankData();
+std::vector<TankData>		initializeTankData();
 std::vector<ProjectileData>	initializeProjectileData();
 std::vector<PickupData>		initializePickupData();
 std::vector<ParticleData>	initializeParticleData();
+std::vector<ObstacleData>	initializeObstacleData();
 
 #endif // BOOK_DATATABLES_HPP

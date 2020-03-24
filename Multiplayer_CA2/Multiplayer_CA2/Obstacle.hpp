@@ -2,6 +2,7 @@
 //Dylan Reilly D00194504
 #pragma once
 #include "Entity.hpp"
+#include "ResourceIdentifiers.hpp"
 #include "CommandQueue.hpp"
 #include "TextNode.hpp"
 #include "Projectile.hpp"
@@ -10,7 +11,16 @@
 class Obstacle : public Entity //Built from tank.hpp framework. Handles all environmental objects in ObstacleID - Jason Lynch
 {
 public:
-	Obstacle(Obstacles::ID type, const TextureHolder& textures, const FontHolder& fonts, const Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrmaes, int seconds, sf::Vector2f scale); //Constructor - Jason Lynch
+	enum Type
+	{
+		Wall,
+		Barrel,
+		DestructableWall,
+		TypeCount
+	};
+
+public:
+	Obstacle(Type type, const TextureHolder& textures, const FontHolder& fonts, const Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrmaes, int seconds, sf::Vector2f scale); //Constructor - Jason Lynch
 	virtual unsigned int getCategory() const; //Returns collidable. Used for collision - Jason Lynch
 	virtual unsigned int getType() const; //Returns Obstacle ID. USed for identifying type - Jason Lynch
 	virtual sf::FloatRect getBoundingRect() const; //Returns bounding rect. Used for collision - Jason Lynch
@@ -25,7 +35,7 @@ private:
 	void updateTexts(); //Updates Hp of Object - Jason Lynch
 
 private:
-	Obstacles::ID mType;
+	Type mType;
 	sf::Sprite mSprite;
 	Animation mExplosion;
 	TextNode* mHealthDisplay;

@@ -3,6 +3,7 @@
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "Particle.hpp"
+#include "Obstacle.hpp"
 
 
 // For std::bind() placeholders _1, _2, ...
@@ -78,28 +79,6 @@ std::vector<TankData> initializeTankData()
 	data[Tank::Eagle].texture = Textures::Tanks;
 	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 95, 128);
 	data[Tank::Eagle].bulletType = Projectile::Type::HmgBullet;
-
-
-	data[Tank::Raptor].hitpoints = 20;
-	data[Tank::Raptor].speed = 80.f;
-	data[Tank::Raptor].texture = Textures::Entities;
-	data[Tank::Raptor].textureRect = sf::IntRect(144, 0, 84, 64);
-	data[Tank::Raptor].directions.push_back(Direction(+45.f, 80.f));
-	data[Tank::Raptor].directions.push_back(Direction(-45.f, 160.f));
-	data[Tank::Raptor].directions.push_back(Direction(+45.f, 80.f));
-	data[Tank::Raptor].fireInterval = sf::Time::Zero;
-
-
-	data[Tank::Avenger].hitpoints = 40;
-	data[Tank::Avenger].speed = 50.f;
-	data[Tank::Avenger].texture = Textures::Entities;
-	data[Tank::Avenger].textureRect = sf::IntRect(228, 0, 60, 59);
-	data[Tank::Avenger].directions.push_back(Direction(+45.f,  50.f));
-	data[Tank::Avenger].directions.push_back(Direction(  0.f,  50.f));
-	data[Tank::Avenger].directions.push_back(Direction(-45.f, 100.f));
-	data[Tank::Avenger].directions.push_back(Direction(  0.f,  50.f));
-	data[Tank::Avenger].directions.push_back(Direction(+45.f,  50.f));
-	data[Tank::Avenger].fireInterval = sf::seconds(2);
 
 	return data;
 }
@@ -183,6 +162,25 @@ std::vector<ParticleData> initializeParticleData()
 
 	data[Particle::BulletSmoke].color = sf::Color(103, 103, 103);
 	data[Particle::BulletSmoke].lifetime = sf::seconds(4.f);
+
+	return data;
+}
+
+std::vector<ObstacleData> initializeObstacleData() //Obstacle data. Holds possibly shifting values associated with barrels, walls, etc - Jason Lynch
+{
+	std::vector<ObstacleData> data(Obstacle::Type::TypeCount); //Get number of different types - Jason Lynch
+
+	data[Obstacle::Type::Wall].damage = 1; //Damage done to player on collision - Jason Lynch
+	data[Obstacle::Type::Wall].hitpoints = 25; //Hitpoints of wall - Jason Lynch
+	data[Obstacle::Type::Wall].texture = Textures::ID::Wall; //Texture for wall - Jason Lynch
+
+	data[Obstacle::Type::Barrel].damage = 40; //Damage done to player on collision - Jason Lynch
+	data[Obstacle::Type::Barrel].hitpoints = 10; //Hitpoints of barrel - Jason Lynch
+	data[Obstacle::Type::Barrel].texture = Textures::ID::Barrel; //Texture for barrel - Jason Lynch
+
+	data[Obstacle::Type::DestructableWall].damage = 2; //Damage done to player on collision - Jason Lynch
+	data[Obstacle::Type::DestructableWall].hitpoints = 50; //Hitpoints of destructable wall - Jason Lynch
+	data[Obstacle::Type::DestructableWall].texture = Textures::ID::DestructableWall; //Texture for destructable wall - Jason Lynch
 
 	return data;
 }

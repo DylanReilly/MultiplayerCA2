@@ -155,6 +155,7 @@
     <ClInclude Include="IpConfigs.hpp" />
     <ClInclude Include="JoinIpEntryState.hpp" />
     <ClInclude Include="KeyboardControlState.hpp" />
+    <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Tank.hpp" />
     <ClInclude Include="Animation.hpp" />
     <ClInclude Include="Application.hpp" />
@@ -206,6 +207,7 @@
     <ClCompile Include="HowToPlayState.cpp" />
     <ClCompile Include="JoinIpEntryState.cpp" />
     <ClCompile Include="KeyboardControlState.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
