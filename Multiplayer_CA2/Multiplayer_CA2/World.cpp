@@ -52,7 +52,6 @@ void World::update(sf::Time dt)
 
 	// Setup commands to destroy entities, and guide missiles
 	destroyEntitiesOutsideView();
-	//guideMissiles();
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -67,7 +66,6 @@ void World::update(sf::Time dt)
 
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
-	//spawnEnemies();
 
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
@@ -220,20 +218,6 @@ void World::adaptPlayerPosition()
 	}
 }
 
-void World::adaptPlayerVelocity()
-{
-	//FOREACH(Tank* Tank, mPlayerTanks)
-	//{
-	//	sf::Vector2f velocity = Tank->getVelocity();
-
-	//	// If moving diagonally, reduce velocity (to have always same velocity)
-	//	if (velocity.x != 0.f && velocity.y != 0.f)
-	//		Tank->setVelocity(velocity / std::sqrt(2.f));
-
-	//	// Add scrolling velocity
-	//	//Tank->accelerate(0.f, mScrollSpeed); -TEST COMMENT OUT
-	//}
-}
 void World::addBuildings()
 {
 	
@@ -267,10 +251,9 @@ void World::spawnObstacles()
 		obstacle->setScale(spawn.scaleX, spawn.scaleY);
 		obstacle->setPosition(spawn.x, spawn.y);
 		obstacle->setRotation(spawn.rotation);
-		//obstacle->setRotation(180.f);
 		mSceneLayers[Layer::LowerAir]->attachChild(std::move(obstacle));
 
-		// Enemy is spawned, remove from the list to spawn
+		// Object is spawned, remove from the list to spawn
 		mObstacles.pop_back();
 	}
 }
@@ -303,17 +286,6 @@ void World::handleCollisions()
 
 	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		//if (matchesCategories(pair, Category::PlayerTank, Category::EnemyTank))
-		//{
-		//	auto& player = static_cast<Tank&>(*pair.first);
-		//	auto& enemy = static_cast<Tank&>(*pair.second);
-
-		//	// Collision: Player damage = enemy's remaining HP
-		//	player.damage(enemy.getHitpoints());
-		//	enemy.destroy();
-		//}
-
-		//else 
 		if (matchesCategories(pair, Category::PlayerTank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
@@ -422,79 +394,7 @@ void World::buildScene()
 	}
 
 	playerOneBase();
-	// Add enemy Tank
-	//addEnemies();
 }
-
-//void World::addEnemies()
-//{
-//	if (mNetworkedWorld)
-//		return;
-//
-//	// Add enemies to the spawn point container
-//	addEnemy(Tank::Raptor,    0.f,  500.f);
-//	addEnemy(Tank::Raptor,    0.f, 1000.f);
-//	addEnemy(Tank::Raptor, +100.f, 1150.f);
-//	addEnemy(Tank::Raptor, -100.f, 1150.f);
-//	addEnemy(Tank::Avenger,  70.f, 1500.f);
-//	addEnemy(Tank::Avenger, -70.f, 1500.f);
-//	addEnemy(Tank::Avenger, -70.f, 1710.f);
-//	addEnemy(Tank::Avenger,  70.f, 1700.f);
-//	addEnemy(Tank::Avenger,  30.f, 1850.f);
-//	addEnemy(Tank::Raptor,  300.f, 2200.f);
-//	addEnemy(Tank::Raptor, -300.f, 2200.f);
-//	addEnemy(Tank::Raptor,    0.f, 2200.f);
-//	addEnemy(Tank::Raptor,    0.f, 2500.f);
-//	addEnemy(Tank::Avenger,-300.f, 2700.f);
-//	addEnemy(Tank::Avenger,-300.f, 2700.f);
-//	addEnemy(Tank::Raptor,    0.f, 3000.f);
-//	addEnemy(Tank::Raptor,  250.f, 3250.f);
-//	addEnemy(Tank::Raptor, -250.f, 3250.f);
-//	addEnemy(Tank::Avenger,   0.f, 3500.f);
-//	addEnemy(Tank::Avenger,   0.f, 3700.f);
-//	addEnemy(Tank::Raptor,    0.f, 3800.f);
-//	addEnemy(Tank::Avenger,   0.f, 4000.f);
-//	addEnemy(Tank::Avenger,-200.f, 4200.f);
-//	addEnemy(Tank::Raptor,  200.f, 4200.f);
-//	addEnemy(Tank::Raptor,    0.f, 4400.f);
-//
-//	sortEnemies();
-//}
-//
-//void World::sortEnemies()
-//{
-//	// Sort all enemies according to their y value, such that lower enemies are checked first for spawning
-//	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [] (SpawnPoint lhs, SpawnPoint rhs)
-//	{
-//		return lhs.y < rhs.y;
-//	});
-//}
-//
-//void World::addEnemy(Tank::Type type, float relX, float relY)
-//{
-//	SpawnPoint spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
-//	mEnemySpawnPoints.push_back(spawn);
-//}
-//
-//void World::spawnEnemies()
-//{
-//	// Spawn all enemies entering the view area (including distance) this frame
-//	while (!mEnemySpawnPoints.empty()
-//		&& mEnemySpawnPoints.back().y > getBattlefieldBounds().top)
-//	{
-//		SpawnPoint spawn = mEnemySpawnPoints.back();
-//		
-//		std::unique_ptr<Tank> enemy(new Tank(spawn.type, mTextures, mFonts));
-//		enemy->setPosition(spawn.x, spawn.y);
-//		enemy->setRotation(180.f);
-//		if (mNetworkedWorld) enemy->disablePickups();
-//
-//		mSceneLayers[UpperAir]->attachChild(std::move(enemy));
-//
-//		// Enemy is spawned, remove from the list to spawn
-//		mEnemySpawnPoints.pop_back();
-//	}
-//}
 
 void World::destroyEntitiesOutsideView()
 {
@@ -508,51 +408,6 @@ void World::destroyEntitiesOutsideView()
 
 	mCommandQueue.push(command);
 }
-
-//void World::guideMissiles()
-//{
-//	// Setup command that stores all enemies in mActiveEnemies
-//	Command enemyCollector;
-//	enemyCollector.category = Category::EnemyTank;
-//	enemyCollector.action = derivedAction<Tank>([this] (Tank& enemy, sf::Time)
-//	{
-//		if (!enemy.isDestroyed())
-//			mActiveEnemies.push_back(&enemy);
-//	});
-//
-//	// Setup command that guides all missiles to the enemy which is currently closest to the player
-//	Command missileGuider;
-//	missileGuider.category = Category::AlliedProjectile;
-//	missileGuider.action = derivedAction<Projectile>([this] (Projectile& missile, sf::Time)
-//	{
-//		// Ignore unguided bullets
-//		if (!missile.isGuided())
-//			return;
-//
-//		float minDistance = std::numeric_limits<float>::max();
-//		Tank* closestEnemy = nullptr;
-//
-//		// Find closest enemy
-//		FOREACH(Tank* enemy, mActiveEnemies)
-//		{
-//			float enemyDistance = distance(missile, *enemy);
-//
-//			if (enemyDistance < minDistance)
-//			{
-//				closestEnemy = enemy;
-//				minDistance = enemyDistance;
-//			}
-//		}
-//
-//		if (closestEnemy)
-//			missile.guideTowards(closestEnemy->getWorldPosition());
-//	});
-//
-//	// Push commands, reset active enemies
-//	mCommandQueue.push(enemyCollector);
-//	mCommandQueue.push(missileGuider);
-//	mActiveEnemies.clear();
-//}
 
 sf::FloatRect World::getViewBounds() const
 {

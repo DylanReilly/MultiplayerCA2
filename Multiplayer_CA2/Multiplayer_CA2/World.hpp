@@ -44,14 +44,11 @@ class World : private sf::NonCopyable
 		void								setCurrentBattleFieldPosition(float lineY);
 		void								setWorldHeight(float height);
 
-		/*void								addEnemy(Tank::Type type, float relX, float relY);
-		void								sortEnemies();*/
-
 		bool 								hasAlivePlayer() const;
 		bool 								hasPlayerReachedEnd() const;
 
 
-		Tank*							getTank(int identifier) const;
+		Tank*								getTank(int identifier) const;
 		sf::FloatRect						getBattlefieldBounds() const;
 
 		void								createPickup(sf::Vector2f position, Pickup::Type type);
@@ -61,7 +58,6 @@ class World : private sf::NonCopyable
 	private:
 		void								loadTextures();
 		void								adaptPlayerPosition();
-		void								adaptPlayerVelocity();
 		void								handleCollisions();
 		void								updateSounds();
 		void								playerOneBase(); //Adds obstacles near player one to scene - Jason Lynch 
@@ -70,10 +66,7 @@ class World : private sf::NonCopyable
 		void								addBuildings();
 
 		void								buildScene();
-		/*void								addEnemies();
-		void								spawnEnemies();*/
 		void								destroyEntitiesOutsideView();
-		//void								guideMissiles();
 
 
 	private:
