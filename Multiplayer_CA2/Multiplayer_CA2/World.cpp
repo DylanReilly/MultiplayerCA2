@@ -70,6 +70,7 @@ void World::update(sf::Time dt)
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
 
+	adaptPlayerPosition();
 	spawnObstacles();
 	updateSounds();
 }
