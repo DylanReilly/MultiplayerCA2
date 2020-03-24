@@ -26,8 +26,10 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 , mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 5000.0f)
 , mSpawnPosition(0.0f, 0.0f)
 , mScrollSpeed(0.0f)
+, mObstacleSpawnPosition(mWorldView.getSize().x * .25f, mWorldView.getSize().y / 2.f)
 , mScrollSpeedCompensation(0.0f)
 , mPlayerTanks()
+, mObstacles()
 , mEnemySpawnPoints()
 , mActiveEnemies()
 , mNetworkedWorld(networked)
@@ -70,6 +72,7 @@ void World::update(sf::Time dt)
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
 
+	spawnObstacles();
 	updateSounds();
 }
 
@@ -183,7 +186,7 @@ void World::loadTextures()
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");
 	mTextures.load(Textures::ID::DestructableWall, "Media/Textures/Arena/Blocks/Block_B_01.png");
-	mTextures.load(Textures::ID::Jungle, "Media/Textures/Jungle.png");
+	mTextures.load(Textures::ID::Jungle, "Media/Textures/Gamebackground.png");
 	mTextures.load(Textures::ID::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::ID::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::ID::FinishLine, "Media/Textures/FinishLine.png");
@@ -230,6 +233,46 @@ void World::adaptPlayerVelocity()
 	//	// Add scrolling velocity
 	//	//Tank->accelerate(0.f, mScrollSpeed); -TEST COMMENT OUT
 	//}
+}
+void World::addBuildings()
+{
+	
+}
+
+//Sets up obstacles - Jason Lynch 
+void World::addObstacle(Obstacle::Type type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale) //Add obstacles to Vector of ObstacleSpawnPoint structs - Jason Lynch
+{
+	ObstacleSpawnPoint spawn(type, posX, posY, rotation, scaleX, scaleY, deathAnimation, frameSize, numberOfFrames, seconds, scale);
+	mObstacles.push_back(spawn);
+}
+
+//Popultaes world with obstacles - Jason Lynch 
+void World::playerOneBase() {
+	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y + 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y - 100, 90.0f, .3f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));					
+	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y + 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Wall, mObstacleSpawnPosition.x + 20, mObstacleSpawnPosition.y - 180, 0, .4f, .2f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Spawn obstacles, set scale, rotation, and position - Jason Lynch
+void World::spawnObstacles()
+{
+	// Spawn all enemies entering the view area (including distance) this frame
+	while (!mObstacles.empty())
+	{
+		ObstacleSpawnPoint spawn = mObstacles.back();
+
+		std::unique_ptr<Obstacle> obstacle(new Obstacle(spawn.type, mTextures, mFonts, spawn.deathAnimation, spawn.frameSize, spawn.numberOfFrames, spawn.seconds, spawn.scale));
+		obstacle->setScale(spawn.scaleX, spawn.scaleY);
+		obstacle->setPosition(spawn.x, spawn.y);
+		obstacle->setRotation(spawn.rotation);
+		//obstacle->setRotation(180.f);
+		mSceneLayers[Layer::LowerAir]->attachChild(std::move(obstacle));
+
+		// Enemy is spawned, remove from the list to spawn
+		mObstacles.pop_back();
+	}
 }
 
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
@@ -378,6 +421,7 @@ void World::buildScene()
 		mSceneGraph.attachChild(std::move(networkNode));
 	}
 
+	playerOneBase();
 	// Add enemy Tank
 	//addEnemies();
 }

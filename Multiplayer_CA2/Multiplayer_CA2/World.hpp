@@ -12,6 +12,7 @@
 #include "BloomEffect.hpp"
 #include "SoundPlayer.hpp"
 #include "NetworkProtocol.hpp"
+#include "Obstacle.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -63,6 +64,10 @@ class World : private sf::NonCopyable
 		void								adaptPlayerVelocity();
 		void								handleCollisions();
 		void								updateSounds();
+		void								playerOneBase(); //Adds obstacles near player one to scene - Jason Lynch 
+		void								addObstacle(Obstacle::Type type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale); //Info for adding an obstacle - Jason Lynch
+		void								spawnObstacles();
+		void								addBuildings();
 
 		void								buildScene();
 		/*void								addEnemies();
@@ -94,6 +99,36 @@ class World : private sf::NonCopyable
 			float y;
 		};
 
+		struct ObstacleSpawnPoint //Spawn point for obstacles and all other needed info. Based off above struct - Jason Lynch 
+		{
+			ObstacleSpawnPoint(Obstacle::Type type, float x, float y, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale)
+				: type(type)
+				, x(x)
+				, y(y)
+				, rotation(rotation)
+				, scaleX(scaleX)
+				, scaleY(scaleY)
+				, deathAnimation(deathAnimation)
+				, frameSize(frameSize)
+				, numberOfFrames(numberOfFrames)
+				, seconds(seconds)
+				, scale(scale)
+			{
+			}
+
+			Obstacle::Type type;
+			float x;
+			float y;
+			float rotation;
+			float scaleX;
+			float scaleY;
+			Textures::ID deathAnimation;
+			sf::Vector2i frameSize;
+			int numberOfFrames;
+			int seconds;
+			sf::Vector2f scale;
+		};
+
 
 	private:
 		sf::RenderTarget&					mTarget;
@@ -109,12 +144,14 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect						mWorldBounds;
 		sf::Vector2f						mSpawnPosition;
+		sf::Vector2f						mObstacleSpawnPosition;
 		float								mScrollSpeed;
 		float								mScrollSpeedCompensation;
-		std::vector<Tank*>				mPlayerTanks;
+		std::vector<Tank*>					mPlayerTanks;
 
+		std::vector<ObstacleSpawnPoint>		mObstacles; //Holds obstacle spawn points - Jason Lynch
 		std::vector<SpawnPoint>				mEnemySpawnPoints;
-		std::vector<Tank*>				mActiveEnemies;
+		std::vector<Tank*>					mActiveEnemies;
 
 		BloomEffect							mBloomEffect;
 
