@@ -363,7 +363,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		packet >> TankIdentifier >> TankPosition.x >> TankPosition.y;
 
 		Tank* tank = mWorld.addTank(TankIdentifier);
-		tank->setPosition(0.0f, 0.0f);
+		tank->setPosition(TankPosition);
 
 		mPlayers[TankIdentifier].reset(new Player(&mSocket, TankIdentifier, nullptr));
 	} break;
