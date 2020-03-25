@@ -330,6 +330,12 @@ void World::handleCollisions()
 			float borderDistance = 40.f;
 			sf::Vector2f position = tank.getPosition();
 
+			if (obstacle.getType() == Obstacle::Type::Barrel) {
+				tank.damage(obstacle.getDamage());
+				obstacle.destroy();
+				tank.playLocalSound(mCommandQueue, SoundEffect::TankHitBullet);
+			}
+
 			//Left of object
 			if (tank.getPosition().x < obstacle.getBoundingRect().left)
 			{
@@ -455,6 +461,18 @@ void World::buildScene()
 	}
 
 	addBuildings();
+	addObstacles();
+}
+
+void World::addObstacles() //Set up obstacles - Jason Lynch
+{
+	addBarrels();
+	/*NukeObstacles();
+	borderObstacles();*/
+}
+
+void World::addBarrels() {
+	addObstacle(Obstacle::Type::Barrel, mObstacleSpawnPosition.x, mObstacleSpawnPosition.y, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 }
 
 void World::destroyEntitiesOutsideView()

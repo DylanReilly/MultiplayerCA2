@@ -19,13 +19,21 @@ SoundPlayer::SoundPlayer()
 : mSoundBuffers()
 , mSounds()
 {
-	mSoundBuffers.load(SoundEffect::AlliedGunfire,	"Media/Sound/AlliedGunfire.wav");
-	mSoundBuffers.load(SoundEffect::EnemyGunfire,	"Media/Sound/EnemyGunfire.wav");
-	mSoundBuffers.load(SoundEffect::Explosion1,		"Media/Sound/Explosion1.wav");
-	mSoundBuffers.load(SoundEffect::Explosion2,		"Media/Sound/Explosion2.wav");
-	mSoundBuffers.load(SoundEffect::LaunchMissile,	"Media/Sound/LaunchMissile.wav");
-	mSoundBuffers.load(SoundEffect::CollectPickup,	"Media/Sound/CollectPickup.wav");
-	mSoundBuffers.load(SoundEffect::Button,			"Media/Sound/Button.wav");
+	
+	mSoundBuffers.load(SoundEffect::AlliedGunfire, "Media/Sound/AlliedGunfire.wav");
+	mSoundBuffers.load(SoundEffect::EnemyGunfire, "Media/Sound/EnemyGunfire.wav");
+	mSoundBuffers.load(SoundEffect::Explosion1, "Media/Sound/Explosion1.wav");
+	mSoundBuffers.load(SoundEffect::Explosion2, "Media/Sound/Explosion2.wav");
+	mSoundBuffers.load(SoundEffect::LaunchMissile, "Media/Sound/LaunchMissile.wav");
+	mSoundBuffers.load(SoundEffect::CollectPickup, "Media/Sound/CollectPickup.wav"); //New pickup collection sound - Jason Lynch
+	mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav");
+	mSoundBuffers.load(SoundEffect::TankLMG, "Media/Sound/TankLMG.wav"); //Tank Lmg sound - Jason Lynch 
+	mSoundBuffers.load(SoundEffect::TankGatling, "Media/Sound/TankGatling.wav"); //Tank gatling gun sound - Jason Lynch
+	mSoundBuffers.load(SoundEffect::TankCannon1, "Media/Sound/TankCannon1.wav"); //1st tank fire sound - Jason Lynch
+	mSoundBuffers.load(SoundEffect::TankCannon2, "Media/Sound/TankCannon2.wav"); // 2nd tank Cannon fire sound - Jason Lynch 
+	mSoundBuffers.load(SoundEffect::TankDestroyed, "Media/Sound/TankDestroyed.wav"); //Tank destroyed sound - Jason Lynch 
+	mSoundBuffers.load(SoundEffect::TankHitBullet, "Media/Sound/ProjectileImpactTank.wav"); //Sound for bullet impacting tank - Jason Lynch 
+	mSoundBuffers.load(SoundEffect::TeslaBullet, "Media/Sound/TeslaShot.wav"); //Sound for Tesla bullet - Jason Lynch 
 
 	// Listener points towards the screen (default in SFML)
 	sf::Listener::setDirection(0.f, 0.f, -1.f);

@@ -68,7 +68,7 @@ HostIpEntryState::HostIpEntryState(StateStack& stack, Context context)
 	mGUIContainer.pack(backButton);
 
 	// Play menu theme
-	context.music->play(Music::MenuTheme);
+	//context.music->play(Music::MenuTheme);
 }
 
 void HostIpEntryState::draw()

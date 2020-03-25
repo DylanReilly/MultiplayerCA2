@@ -61,6 +61,8 @@ class World : private sf::NonCopyable
 		void								handleCollisions();
 		void								updateSounds();
 		void								addObstacle(Obstacle::Type type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale); //Info for adding an obstacle - Jason Lynch
+		void								addObstacles();
+		void								addBarrels();
 		void								spawnObstacles();
 		void								addBuildings();
 
