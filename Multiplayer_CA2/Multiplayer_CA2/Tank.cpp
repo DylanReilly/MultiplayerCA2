@@ -25,6 +25,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+, mTextures(textures) //Needed to change tank texture on powerup pickup - Jason Lynch
 , mExplosion(textures.get(Textures::Explosion))
 , mFireCommand()
 , mMissileCommand()
@@ -254,7 +255,7 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		playLocalSound(commands,SoundEffect::AlliedGunfire);
+		playLocalSound(commands,SoundEffect::TankLMG);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
 		mIsFiring = false;
@@ -364,5 +365,66 @@ void Tank::updateTexts()
 			mMissileDisplay->setString("");
 		else
 			mMissileDisplay->setString("M: " + toString(mMissileAmmo));
+	}
+}
+
+void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e.g pickups) - Jason Lynch
+	if (val == 1) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank) //2 id player 1, 8 is player 2 - Jason Lynch
+		{
+		case 4:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenHmg)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::GreenHmg)].textureRect);
+			mType = Tank::GreenHmg;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::RedHmg)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::RedHmg)].textureRect);
+			mType = Tank::RedHmg;
+			break;
+		}
+	}
+	else if (val == 2) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank)
+		{
+		case 4:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenGatling)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::GreenGatling)].textureRect);
+			mType = Tank::GreenGatling;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::RedGatling)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::RedGatling)].textureRect);
+			mType = Tank::RedGatling;
+			break;
+		}
+		increaseFireRate();
+	}
+	else if (val == 3) //Checks for type of tank to change to - Jason Lynch
+	{
+		int tank = getCategory();
+		switch (tank)
+		{
+		case 4:
+			//Assigns new texture to player one tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenTesla)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::GreenTesla)].textureRect);
+			mType = Tank::GreenTesla;
+			break;
+		case 8:
+			//Assigns new texture to player two tank - Jason Lynch
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::RedTesla)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::RedTesla)].textureRect);
+			mType = Tank::RedTesla;
+			break;
+		}
 	}
 }

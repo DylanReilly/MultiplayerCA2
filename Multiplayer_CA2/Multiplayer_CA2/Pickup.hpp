@@ -15,6 +15,10 @@ class Pickup : public Entity
 	public:
 		enum Type
 		{
+			HeavyGun, //Heavy gun pickup to change tank texture - Jason Lynch
+			GatlingGun,//Gatling gun pickup to change tank texture - Jason Lynch
+			TeslaGun,//Tesla gun pickup to change tank texture - Jason Lynch
+			Nuke,//Nuke pickup to KILL EM ALL!!!!! - Jason Lynch
 			HealthRefill,
 			MissileRefill,
 			FireSpread,

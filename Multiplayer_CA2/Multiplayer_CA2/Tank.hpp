@@ -41,6 +41,7 @@ class Tank : public Entity
 		bool					isAllied() const;
 		float					getMaxSpeed() const;
 		void					disablePickups();
+		void					setTankTexture(unsigned int val);
 
 		void					increaseFireRate();
 		void					increaseSpread();
@@ -68,6 +69,7 @@ class Tank : public Entity
 		void					createPickup(SceneNode& node, const TextureHolder& textures) const;
 
 		void					updateTexts();
+		
 
 
 	private:
@@ -93,6 +95,8 @@ class Tank : public Entity
 		std::size_t				mDirectionIndex;
 		TextNode*				mHealthDisplay;
 		TextNode*				mMissileDisplay;
+		const					TextureHolder& mTextures; //Hold texture for tank changes - Jason Lynch
+
 	
 		int						mIdentifier;};
 

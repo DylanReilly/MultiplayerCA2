@@ -30,6 +30,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 , mScrollSpeedCompensation(0.0f)
 , mPlayerTanks()
 , mObstacles()
+, mPickups()
 , mEnemySpawnPoints()
 , mActiveEnemies()
 , mNetworkedWorld(networked)
@@ -72,6 +73,7 @@ void World::update(sf::Time dt)
 
 	adaptPlayerPosition();
 	spawnObstacles();
+	spawnPickups();
 	updateSounds();
 }
 
@@ -265,6 +267,26 @@ void World::spawnObstacles()
 	}
 }
 
+//Spawn pickups, set scale, rotation, and position - Jason Lynch
+void World::spawnPickups()//Spawn Tank pickups, set scale, rotation, and position - Jason Lynch
+{
+	// Spawn all pickups - Jason Lynch
+	while (!mPickups.empty())
+	{
+		PickupSpawnPoint spawn = mPickups.back();
+
+		std::unique_ptr<Pickup> pickup(new Pickup(spawn.type, mTextures));
+		pickup->setScale(spawn.scaleX, spawn.scaleY);
+		pickup->setRotation(spawn.rotation);
+		pickup->setPosition(spawn.x, spawn.y);
+
+		mSceneLayers[static_cast<int>(Layer::LowerAir)]->attachChild(std::move(pickup));
+
+		// Enemy is spawned, remove from the list to spawn
+		mPickups.pop_back();
+	}
+}
+
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
 {
 	unsigned int category1 = colliders.first->getCategory();
@@ -293,7 +315,7 @@ void World::handleCollisions()
 
 	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		if (matchesCategories(pair, Category::PlayerTank, Category::Pickup))
+		if (matchesCategories(pair, Category::AlliedTank, Category::Pickup) || matchesCategories(pair, Category::EnemyTank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -317,6 +339,11 @@ void World::handleCollisions()
 		else if (matchesCategories(pair, Category::AlliedProjectile, Category::Collidable) || matchesCategories(pair, Category::EnemyProjectile, Category::Collidable))
 		{
 			auto& projectile = static_cast<Projectile&>(*pair.first);
+			auto& obstacle = static_cast<Obstacle&>(*pair.second);
+
+			if (obstacle.getType() == Obstacle::Type::Barrel) {
+				obstacle.damage(projectile.getDamage());
+			}
 
 			//Destroy projectile when it hits a wall
 			projectile.destroy();
@@ -462,6 +489,7 @@ void World::buildScene()
 
 	addBuildings();
 	addObstacles();
+	addPickups();
 }
 
 void World::addObstacles() //Set up obstacles - Jason Lynch
@@ -473,6 +501,27 @@ void World::addObstacles() //Set up obstacles - Jason Lynch
 
 void World::addBarrels() {
 	addObstacle(Obstacle::Type::Barrel, mObstacleSpawnPosition.x, mObstacleSpawnPosition.y, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+//Populates world with pickups - Jason Lynch
+void World::addPickups()
+{
+	addPickup(Pickup::Type::HeavyGun, 40, 30, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::GatlingGun, 40, 740, 0.f, 1.3f, 1.3f);
+	addPickup(Pickup::Type::HeavyGun, 980, 740, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::GatlingGun, 980, 30, 0.f, 1.3f, 1.3f);
+	addPickup(Pickup::Type::TeslaGun, 512, 740, 0.f, 1.3f, 1.3f);
+	addPickup(Pickup::Type::HealthRefill, 720, 740, 0.f, 1.2f, 1.2f);
+	addPickup(Pickup::Type::HealthRefill, 360, 30, 0.f, 1.2f, 1.2f);
+	addPickup(Pickup::Type::FireRate, 310, 740, 0.f, 1.2f, 1.2f);
+	addPickup(Pickup::Type::FireRate, 660, 30, 0.f, 1.2f, 1.2f);
+}
+
+//Sets up Pickups, set scale, rotation, and position - Jason Lynch
+void World::addPickup(Pickup::Type type, float posX, float posY, float rotation, float scaleX, float scaleY)//Add Tank Pickups to Vector of PickupSpawnPoint structs - Jason Lynch
+{
+	PickupSpawnPoint spawn(type, posX, posY, rotation, scaleX, scaleY);
+	mPickups.push_back(spawn);
 }
 
 void World::destroyEntitiesOutsideView()

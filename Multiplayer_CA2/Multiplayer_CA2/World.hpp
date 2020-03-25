@@ -63,7 +63,10 @@ class World : private sf::NonCopyable
 		void								addObstacle(Obstacle::Type type, float posX, float posY, float rotation, float scaleX, float scaleY, Textures::ID deathAnimation, sf::Vector2i frameSize, int numberOfFrames, int seconds, sf::Vector2f scale); //Info for adding an obstacle - Jason Lynch
 		void								addObstacles();
 		void								addBarrels();
+		void								addPickups();
+		void								addPickup(Pickup::Type type, float posX, float posY, float rotation, float scaleX, float scaleY);//Add Tank Pickups to Vector of PickupSpawnPoint structs - Jason Lynch
 		void								spawnObstacles();
+		void								spawnPickups();
 		void								addBuildings();
 
 		void								greenBase();
@@ -126,6 +129,25 @@ class World : private sf::NonCopyable
 			sf::Vector2f scale;
 		};
 
+		struct PickupSpawnPoint //Pickup spawn point and relevant info. Based off above struct - Jason Lynch
+		{
+			PickupSpawnPoint(Pickup::Type type, float x, float y, float rotation, float scaleX, float scaleY)
+				: type(type)
+				, x(x)
+				, y(y)
+				, rotation(rotation)
+				, scaleX(scaleX)
+				, scaleY(scaleY)
+			{
+			}
+
+			Pickup::Type type;
+			float x;
+			float y;
+			float rotation;
+			float scaleX;
+			float scaleY;
+		};
 
 	private:
 		sf::RenderTarget&					mTarget;
@@ -147,6 +169,7 @@ class World : private sf::NonCopyable
 		std::vector<Tank*>					mPlayerTanks;
 
 		std::vector<ObstacleSpawnPoint>		mObstacles; //Holds obstacle spawn points - Jason Lynch
+		std::vector<PickupSpawnPoint>		mPickups; //Holds pickups spawn points - Jason Lynch
 		std::vector<SpawnPoint>				mEnemySpawnPoints;
 		std::vector<Tank*>					mActiveEnemies;
 
