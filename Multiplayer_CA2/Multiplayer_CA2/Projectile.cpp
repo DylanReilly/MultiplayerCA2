@@ -33,14 +33,14 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
 	centerOrigin(mFiringAnimation);
 
 	//Add particle system for projectiles - Dylan Reilly
-	if (mType == Projectile::Type::HmgBullet)
+	if (mType == Projectile::Type::GreenHmgBullet || mType == Projectile::Type::RedHmgBullet)
 	{
 		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::BulletSmoke));
 		smoke->setPosition(0.f, getBoundingRect().height / 2.f);
 		attachChild(std::move(smoke));
 	}
 
-	if (mType == Projectile::Type::TeslaBullet)
+	if (mType == Projectile::Type::GreenTeslaBullet || mType == Projectile::Type::RedTeslaBullet)
 	{
 		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::TeslaSmoke));
 		smoke->setPosition(0.f, getBoundingRect().height / 2.f);
@@ -74,7 +74,7 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 	}
 
 	//Updates the firing animation if it shoots a tesla bullet - Dylan Reilly
-	if (mType == Projectile::Type::TeslaBullet)
+	if (mType == Projectile::Type::GreenTeslaBullet || mType == Projectile::Type::RedTeslaBullet)
 	{
 		mFiringAnimation.update(dt);
 	}
@@ -85,7 +85,7 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	//Draws tesla animation if it shoots a tesla bullet, elses draws plain sprite
-	if (mType == Projectile::Type::TeslaBullet)
+	if (mType == Projectile::Type::GreenTeslaBullet || mType == Projectile::Type::RedTeslaBullet)
 	{
 		target.draw(mFiringAnimation, states);
 	}
@@ -97,7 +97,7 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 
 unsigned int Projectile::getCategory() const
 {
-	if (mType == EnemyBullet)
+	if (mType == RedLmgBullet || mType == RedHmgBullet || mType == RedGatlingBullet || mType == RedTeslaBullet)
 		return Category::EnemyProjectile;
 	else
 		return Category::AlliedProjectile;

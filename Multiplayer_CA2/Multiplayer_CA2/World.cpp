@@ -326,11 +326,21 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::AlliedTank, Category::AlliedProjectile) || matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::AlliedTank, Category::EnemyProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
 			
+			// Apply projectile damage to Tank, destroy projectile
+			tank.damage(projectile.getDamage());
+			projectile.destroy();
+		}
+
+		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile))
+		{
+			auto& tank = static_cast<Tank&>(*pair.first);
+			auto& projectile = static_cast<Projectile&>(*pair.second);
+
 			// Apply projectile damage to Tank, destroy projectile
 			tank.damage(projectile.getDamage());
 			projectile.destroy();
@@ -362,7 +372,7 @@ void World::handleCollisions()
 				obstacle.destroy();
 				tank.playLocalSound(mCommandQueue, SoundEffect::TankHitBullet);
 			}
-
+			//Collision to stop tanks phasing through walls - Dylan
 			//Left of object
 			if (tank.getPosition().x < obstacle.getBoundingRect().left)
 			{
@@ -495,8 +505,6 @@ void World::buildScene()
 void World::addObstacles() //Set up obstacles - Jason Lynch
 {
 	addBarrels();
-	/*NukeObstacles();
-	borderObstacles();*/
 }
 
 void World::addBarrels() {

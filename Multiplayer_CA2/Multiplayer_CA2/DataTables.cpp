@@ -18,28 +18,28 @@ std::vector<TankData> initializeTankData()
 	data[Tank::GreenLmg].fireInterval = sf::seconds(1);
 	data[Tank::GreenLmg].texture = Textures::Tanks;
 	data[Tank::GreenLmg].textureRect = sf::IntRect(0, 0, 95, 128);
-	data[Tank::GreenLmg].bulletType = Projectile::Type::LmgBullet;
+	data[Tank::GreenLmg].bulletType = Projectile::Type::GreenLmgBullet;
 
 	data[Tank::GreenHmg].hitpoints = 100;
 	data[Tank::GreenHmg].speed = 1.5f;
 	data[Tank::GreenHmg].fireInterval = sf::seconds(2);
 	data[Tank::GreenHmg].texture = Textures::Tanks;
 	data[Tank::GreenHmg].textureRect = sf::IntRect(285, 0, 95, 128);
-	data[Tank::GreenHmg].bulletType = Projectile::Type::HmgBullet;
+	data[Tank::GreenHmg].bulletType = Projectile::Type::GreenHmgBullet;
 
 	data[Tank::GreenGatling].hitpoints = 100;
 	data[Tank::GreenGatling].speed = 1.5f;
 	data[Tank::GreenGatling].fireInterval = sf::seconds(0.8);
 	data[Tank::GreenGatling].texture = Textures::Tanks;
 	data[Tank::GreenGatling].textureRect = sf::IntRect(570, 0, 95, 128);
-	data[Tank::GreenGatling].bulletType = Projectile::Type::LmgBullet;
+	data[Tank::GreenGatling].bulletType = Projectile::Type::GreenLmgBullet;
 
 	data[Tank::GreenTesla].hitpoints = 100;
 	data[Tank::GreenTesla].speed = 1.5f;
 	data[Tank::GreenTesla].fireInterval = sf::seconds(3);
 	data[Tank::GreenTesla].texture = Textures::Tanks;
 	data[Tank::GreenTesla].textureRect = sf::IntRect(855, 0, 95, 128);
-	data[Tank::GreenTesla].bulletType = Projectile::Type::TeslaBullet;
+	data[Tank::GreenTesla].bulletType = Projectile::Type::GreenTeslaBullet;
 
 	//-----------------------------------------------------------------------------------------
 	// RED TANK
@@ -50,35 +50,35 @@ std::vector<TankData> initializeTankData()
 	data[Tank::RedLmg].fireInterval = sf::seconds(1);
 	data[Tank::RedLmg].texture = Textures::Tanks;
 	data[Tank::RedLmg].textureRect = sf::IntRect(0, 128, 95, 112);
-	data[Tank::RedLmg].bulletType = Projectile::Type::LmgBullet;
+	data[Tank::RedLmg].bulletType = Projectile::Type::RedLmgBullet;
 			   
 	data[Tank::RedHmg].hitpoints = 100;
 	data[Tank::RedHmg].speed = 1.5f;
 	data[Tank::RedHmg].fireInterval = sf::seconds(2);
 	data[Tank::RedHmg].texture = Textures::Tanks;
 	data[Tank::RedHmg].textureRect = sf::IntRect(285, 128, 95, 112);
-	data[Tank::RedHmg].bulletType = Projectile::Type::HmgBullet;
+	data[Tank::RedHmg].bulletType = Projectile::Type::RedHmgBullet;
 			   
 	data[Tank::RedGatling].hitpoints = 100;
 	data[Tank::RedGatling].speed = 1.5f;
 	data[Tank::RedGatling].fireInterval = sf::seconds(0.8);
 	data[Tank::RedGatling].texture = Textures::Tanks;
 	data[Tank::RedGatling].textureRect = sf::IntRect(570, 128, 95, 112);
-	data[Tank::RedGatling].bulletType = Projectile::Type::LmgBullet;
+	data[Tank::RedGatling].bulletType = Projectile::Type::RedLmgBullet;
 			   
 	data[Tank::RedTesla].hitpoints = 100;
 	data[Tank::RedTesla].speed = 1.5f;
 	data[Tank::RedTesla].fireInterval = sf::seconds(3);
 	data[Tank::RedTesla].texture = Textures::Tanks;
 	data[Tank::RedTesla].textureRect = sf::IntRect(855, 128, 95, 112);
-	data[Tank::RedTesla].bulletType = Projectile::Type::TeslaBullet;
+	data[Tank::RedTesla].bulletType = Projectile::Type::RedTeslaBullet;
 
 	data[Tank::Eagle].hitpoints = 100;
 	data[Tank::Eagle].speed = 1.5f;
 	data[Tank::Eagle].fireInterval = sf::seconds(1);
 	data[Tank::Eagle].texture = Textures::Tanks;
 	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 95, 128);
-	data[Tank::Eagle].bulletType = Projectile::Type::HmgBullet;
+	data[Tank::Eagle].bulletType = Projectile::Type::RedHmgBullet;
 
 	return data;
 }
@@ -103,26 +103,45 @@ std::vector<ProjectileData> initializeProjectileData()
 	data[Projectile::Missile].textureRect = sf::IntRect(160, 64, 15, 32);
 
 	//Dylan Reilly - Load in data or bullets
-	data[Projectile::LmgBullet].damage = 10;
-	data[Projectile::LmgBullet].speed = 150.f;
-	data[Projectile::LmgBullet].texture = Textures::Entities;
-	data[Projectile::LmgBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+	data[Projectile::GreenLmgBullet].damage = 10;
+	data[Projectile::GreenLmgBullet].speed = 150.f;
+	data[Projectile::GreenLmgBullet].texture = Textures::Entities;
+	data[Projectile::GreenLmgBullet].textureRect = sf::IntRect(175, 64, 3, 14);
 
-	data[Projectile::HmgBullet].damage = 20;
-	data[Projectile::HmgBullet].speed = 130.f;
-	data[Projectile::HmgBullet].texture = Textures::Entities;
-	data[Projectile::HmgBullet].textureRect = sf::IntRect(184, 66, 30, 38);
+	data[Projectile::GreenHmgBullet].damage = 20;
+	data[Projectile::GreenHmgBullet].speed = 130.f;
+	data[Projectile::GreenHmgBullet].texture = Textures::Entities;
+	data[Projectile::GreenHmgBullet].textureRect = sf::IntRect(184, 66, 30, 38);
 
-	data[Projectile::GatlingBullet].damage = 8;
-	data[Projectile::GatlingBullet].speed = 150.f;
-	data[Projectile::GatlingBullet].texture = Textures::Entities;
-	data[Projectile::GatlingBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+	data[Projectile::GreenGatlingBullet].damage = 8;
+	data[Projectile::GreenGatlingBullet].speed = 150.f;
+	data[Projectile::GreenGatlingBullet].texture = Textures::Entities;
+	data[Projectile::GreenGatlingBullet].textureRect = sf::IntRect(175, 64, 3, 14);
 
-	data[Projectile::TeslaBullet].damage = 30;
-	data[Projectile::TeslaBullet].speed = 110.f;
-	data[Projectile::TeslaBullet].texture = Textures::Entities;
-	data[Projectile::TeslaBullet].textureRect = sf::IntRect(160, 54, 15, 32);
+	data[Projectile::GreenTeslaBullet].damage = 30;
+	data[Projectile::GreenTeslaBullet].speed = 110.f;
+	data[Projectile::GreenTeslaBullet].texture = Textures::Entities;
+	data[Projectile::GreenTeslaBullet].textureRect = sf::IntRect(160, 54, 15, 32);
 
+	data[Projectile::RedLmgBullet].damage = 10;
+	data[Projectile::RedLmgBullet].speed = 150.f;
+	data[Projectile::RedLmgBullet].texture = Textures::Entities;
+	data[Projectile::RedLmgBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+					 
+	data[Projectile::RedHmgBullet].damage = 20;
+	data[Projectile::RedHmgBullet].speed = 130.f;
+	data[Projectile::RedHmgBullet].texture = Textures::Entities;
+	data[Projectile::RedHmgBullet].textureRect = sf::IntRect(184, 66, 30, 38);
+					 
+	data[Projectile::RedGatlingBullet].damage = 8;
+	data[Projectile::RedGatlingBullet].speed = 150.f;
+	data[Projectile::RedGatlingBullet].texture = Textures::Entities;
+	data[Projectile::RedGatlingBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+					 
+	data[Projectile::RedTeslaBullet].damage = 30;
+	data[Projectile::RedTeslaBullet].speed = 110.f;
+	data[Projectile::RedTeslaBullet].texture = Textures::Entities;
+	data[Projectile::RedTeslaBullet].textureRect = sf::IntRect(160, 54, 15, 32);
 
 	return data;
 }

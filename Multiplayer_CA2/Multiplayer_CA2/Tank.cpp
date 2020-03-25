@@ -172,7 +172,14 @@ void Tank::remove()
 //Dylan Reilly - Returns is allied for any green tank
 bool Tank::isAllied() const
 {
-	return mType == GreenLmg || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla;
+	if (mType == GreenLmg || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	} 
 }
 
 float Tank::getMaxSpeed() const
@@ -280,20 +287,37 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 //Returns correct projectile ID based on the tank being used - Dylan Reilly
 Projectile::Type Tank::getProjectile() const
 {
-	switch (mType) {
-	case Tank::GreenLmg:
-	case Tank::RedLmg:
-	case Tank::GreenGatling:
-	case Tank::RedGatling:
-		return Projectile::Type::LmgBullet;
-	case Tank::GreenHmg:
-	case Tank::RedHmg:
-		return Projectile::Type::HmgBullet;
-	case Tank::GreenTesla:
-	case Tank::RedTesla:
-		return Projectile::Type::TeslaBullet;
-	default:
-		return Projectile::Type::LmgBullet;
+	if (mType == Type::GreenLmg)
+	{
+		return Projectile::Type::GreenLmgBullet;
+	}
+	if (mType == Type::GreenHmg)
+	{
+		return Projectile::Type::GreenHmgBullet;
+	}
+	if (mType == Type::GreenGatling)
+	{
+		return Projectile::Type::GreenGatlingBullet;
+	}
+	if (mType == Type::GreenTesla)
+	{
+		return Projectile::Type::GreenTeslaBullet;
+	}
+	if (mType == Type::RedLmg)
+	{
+		return Projectile::Type::RedLmgBullet;
+	}
+	if (mType == Type::RedHmg)
+	{
+		return Projectile::Type::RedHmgBullet;
+	}
+	if (mType == Type::RedGatling)
+	{
+		return Projectile::Type::RedGatlingBullet;
+	}
+	if (mType == Type::RedTesla)
+	{
+		return Projectile::Type::RedTeslaBullet;
 	}
 }
 
@@ -322,16 +346,17 @@ void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 
 void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
 {
-	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+	Projectile::Type bulletType = getProjectile();
+
+	std::unique_ptr<Projectile> projectile(new Projectile(bulletType, textures));
 
 	//Sets projectile spawn position to origin on the tank - Dylan
-	sf::Vector2f offset(75.f * -sin(toRadian(Tank::getRotation())), 75.f * cos(toRadian(Tank::getRotation())));
+	sf::Vector2f offset(15.f * -sin(toRadian(Tank::getRotation())), 15.f * cos(toRadian(Tank::getRotation())));
 
 	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
 	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation())), 
 		projectile->getMaxSpeed() * 1.5f * cos(toRadian(Tank::getRotation())));
 
-	//float sign = isAllied() ? -1.f : +1.f;
 	projectile->setPosition(getWorldPosition() + offset);
 	projectile->setVelocity(velocity);
 	projectile->setRotation(Tank::getRotation() + 180.f);

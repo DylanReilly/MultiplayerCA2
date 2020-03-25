@@ -21,6 +21,7 @@ namespace Category
 		Collidable			= 1 << 10,
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
+		
 		Projectile = AlliedProjectile | EnemyProjectile,
 	};
 }

@@ -13,12 +13,16 @@ class Projectile : public Entity
 	public:
 		enum Type
 		{
-			AlliedBullet,
-			EnemyBullet,
-			LmgBullet,
-			HmgBullet,
-			GatlingBullet,
-			TeslaBullet,
+			GreenLmgBullet,
+			GreenHmgBullet,
+			GreenGatlingBullet,
+			GreenTeslaBullet,
+			RedLmgBullet,
+			RedHmgBullet,
+			RedGatlingBullet,
+			RedTeslaBullet,
+			AlliedBullet = GreenLmgBullet | GreenHmgBullet | GreenGatlingBullet | GreenTeslaBullet,
+			EnemyBullet = RedLmgBullet | RedHmgBullet | RedGatlingBullet | RedTeslaBullet,
 			Missile,
 			TypeCount
 		};
