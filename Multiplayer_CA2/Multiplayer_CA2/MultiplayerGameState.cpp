@@ -442,16 +442,6 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			itr->second->handleNetworkRealtimeChange(static_cast<Player::Action>(action), actionEnabled);
 	} break;
 
-	// New enemy to be created
-	case Server::SpawnEnemy:
-	{
-		float height;
-		sf::Int32 type;
-		float relativeX;
-		packet >> type >> height >> relativeX;
-
-	} break;
-
 	// Mission successfully completed
 	case Server::MissionSuccess:
 	{
