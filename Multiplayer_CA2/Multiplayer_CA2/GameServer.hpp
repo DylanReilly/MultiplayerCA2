@@ -78,10 +78,12 @@ class GameServer
 
 		std::size_t							mMaxConnectedPlayers;
 		std::size_t							mConnectedPlayers;
+		std::size_t							mMaxSpawnPoints;
 
 		float								mWorldHeight;
 		sf::FloatRect						mBattleFieldRect;
 		float								mBattleFieldScrollSpeed;
+		std::vector<sf::Vector2f>			mSpawnPoints;
 
 		std::size_t							mTankCount;
 		std::map<sf::Int32, TankInfo>		mTankInfo;

@@ -60,7 +60,7 @@ void World::update(sf::Time dt)
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
 
 	// Collision detection and response (may destroy entities)
-	//handleCollisions();
+	handleCollisions();
 
 	// Remove Tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mPlayerTank)
 	auto firstToRemove = std::remove_if(mPlayerTanks.begin(), mPlayerTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
@@ -219,6 +219,10 @@ void World::loadTextures()
 {
 	//Both added some new textures - Jason Lynch, Dylan Reilly
 	mTextures.load(Textures::ID::Tanks, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTank, "Media/Textures/HostTank.png");
+	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/TankSpriteSheet.png");
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");
@@ -626,9 +630,9 @@ void World::addPickups()
 
 	addPickup(Pickup::Type::HealthRefill, 290, 740, 0.f, 1.2f, 1.2f);
 	addPickup(Pickup::Type::HealthRefill, 740, 740, 0.f, 1.2f, 1.2f);
-	//addPickup(Pickup::Type::HealthRefill, 360, 30, 0.f, 1.2f, 1.2f);
-	//addPickup(Pickup::Type::FireRate, 310, 740, 0.f, 1.2f, 1.2f);
-	//addPickup(Pickup::Type::FireRate, 660, 30, 0.f, 1.2f, 1.2f);
+
+
+	//addPickup(Pickup::Type::HealthRefill, 50, 50, 0.f, 1.2f, 1.2f);
 }
 
 //Sets up Pickups, set scale, rotation, and position - Jason Lynch

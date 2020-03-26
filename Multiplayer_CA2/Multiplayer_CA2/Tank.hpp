@@ -31,6 +31,9 @@ class Tank : public Entity
 			RedGatling,
 			GreenTesla,
 			RedTesla,
+			HostLmg,
+			HostHmg,
+			HostTesla,
 			TypeCount
 		};
 

@@ -19,9 +19,11 @@ GameServer::GameServer(sf::Vector2f battlefieldSize)
 , mListeningState(false)
 , mClientTimeoutTime(sf::seconds(3.f))
 , mMaxConnectedPlayers(10)
+,mMaxSpawnPoints(0)
 , mConnectedPlayers(0)
 , mWorldHeight(768.f)
 , mBattleFieldRect(0.f, mWorldHeight - battlefieldSize.y, battlefieldSize.x, battlefieldSize.y)
+,mSpawnPoints()
 , mBattleFieldScrollSpeed(0.0f)
 , mTankCount(0)
 , mPeers(1)
@@ -33,6 +35,19 @@ GameServer::GameServer(sf::Vector2f battlefieldSize)
 	mListenerSocket.setBlocking(false);
 	mPeers[0].reset(new RemotePeer());
 	mThread.launch();
+
+	mSpawnPoints.push_back(sf::Vector2f(50,80));
+	mSpawnPoints.push_back(sf::Vector2f(974,80));
+	mSpawnPoints.push_back(sf::Vector2f(50, 205));
+	mSpawnPoints.push_back(sf::Vector2f(974, 205));
+	mSpawnPoints.push_back(sf::Vector2f(50, 330));
+	mSpawnPoints.push_back(sf::Vector2f(974, 330));
+	mSpawnPoints.push_back(sf::Vector2f(50, 455));
+	mSpawnPoints.push_back(sf::Vector2f(974, 455));
+	mSpawnPoints.push_back(sf::Vector2f(50, 580));
+	mSpawnPoints.push_back(sf::Vector2f(974, 580));
+	mSpawnPoints.push_back(sf::Vector2f(50, 705));
+	mSpawnPoints.push_back(sf::Vector2f(974, 705));
 }
 
 GameServer::~GameServer()
@@ -337,7 +352,7 @@ void GameServer::handleIncomingConnections()
 	if (mListenerSocket.accept(mPeers[mConnectedPlayers]->socket) == sf::TcpListener::Done)
 	{
 		// order the new client to spawn its own plane ( player 1 )
-		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.top + mBattleFieldRect.height / 2);
+		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mSpawnPoints[mMaxSpawnPoints].x, mSpawnPoints[mMaxSpawnPoints].y);//sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.top + mBattleFieldRect.height / 2);
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
 		mTankInfo[mTankIdentifierCounter].rotation = 0.f;
 
@@ -363,6 +378,12 @@ void GameServer::handleIncomingConnections()
 			setListening(false);
 		else // Add a new waiting peer
 			mPeers.push_back(PeerPtr(new RemotePeer()));
+
+		mMaxSpawnPoints++;
+
+		if (mMaxSpawnPoints >= mSpawnPoints.size()) {
+			mMaxSpawnPoints = 0;
+		}
 	}
 }
 
