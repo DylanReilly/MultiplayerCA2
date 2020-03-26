@@ -60,7 +60,7 @@ void World::update(sf::Time dt)
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
 
 	// Collision detection and response (may destroy entities)
-	handleCollisions();
+	//handleCollisions();
 
 	// Remove Tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mPlayerTank)
 	auto firstToRemove = std::remove_if(mPlayerTanks.begin(), mPlayerTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
@@ -589,21 +589,46 @@ void World::addObstacles() //Set up obstacles - Jason Lynch
 }
 
 void World::addBarrels() {
-	addObstacle(Obstacle::Type::Barrel, mObstacleSpawnPosition.x, mObstacleSpawnPosition.y, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Barrel, 225, 260, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Barrel, 285, 480, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacle::Type::Barrel, 800, 260, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Barrel, 735, 480, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacle::Type::Barrel, 512, 270, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Barrel, 512, 530, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacle::Type::Barrel, 450, 670, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::Barrel, 580, 670, 0.f, 0.25f, 0.25f, Textures::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 }
 
 //Populates world with pickups - Jason Lynch
 void World::addPickups()
 {
-	addPickup(Pickup::Type::HeavyGun, 40, 30, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::GatlingGun, 40, 740, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::HeavyGun, 980, 740, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::GatlingGun, 980, 30, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::HeavyGun, 165, 90, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::HealthRefill, 165, 180, 0.f, 1.0f, 1.0f);
+
+	addPickup(Pickup::Type::HeavyGun, 860, 90, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::HealthRefill, 860, 180, 0.f, 1.0f, 1.0f);
+
+	addPickup(Pickup::Type::GatlingGun, 250, 580, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::FireRate, 320, 580, 0.f, 1.0f, 1.0f);
+
+	addPickup(Pickup::Type::GatlingGun, 770, 580, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::FireRate, 700, 580, 0.f, 1.0f, 1.0f);
+
+	addPickup(Pickup::Type::HeavyGun, 470, 440, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::HeavyGun, 550, 360, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::GatlingGun, 470, 360, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::GatlingGun, 550, 440, 0.f, .3f, .3f);
+
 	addPickup(Pickup::Type::TeslaGun, 512, 740, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::HealthRefill, 720, 740, 0.f, 1.2f, 1.2f);
-	addPickup(Pickup::Type::HealthRefill, 360, 30, 0.f, 1.2f, 1.2f);
-	addPickup(Pickup::Type::FireRate, 310, 740, 0.f, 1.2f, 1.2f);
-	addPickup(Pickup::Type::FireRate, 660, 30, 0.f, 1.2f, 1.2f);
+
+	addPickup(Pickup::Type::HealthRefill, 290, 740, 0.f, 1.2f, 1.2f);
+	addPickup(Pickup::Type::HealthRefill, 740, 740, 0.f, 1.2f, 1.2f);
+	//addPickup(Pickup::Type::HealthRefill, 360, 30, 0.f, 1.2f, 1.2f);
+	//addPickup(Pickup::Type::FireRate, 310, 740, 0.f, 1.2f, 1.2f);
+	//addPickup(Pickup::Type::FireRate, 660, 30, 0.f, 1.2f, 1.2f);
 }
 
 //Sets up Pickups, set scale, rotation, and position - Jason Lynch
