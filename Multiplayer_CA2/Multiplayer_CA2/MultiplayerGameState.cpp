@@ -87,7 +87,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	mSocket.setBlocking(false);
 
 	// Play game theme
-	context.music->play(Music::MissionTheme);
+	//context.music->play(Music::MissionTheme);
 }
 
 void MultiplayerGameState::draw()
@@ -229,6 +229,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 
 			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
 			{
+				//Now also passes rotation to keep the tanks synced across the network
 				if (Tank* tank = mWorld.getTank(identifier))
 					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << tank->getRotation();
 			}
@@ -458,7 +459,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		mWorld.createPickup(position, static_cast<Pickup::Type>(type));
 	} break;
 
-	//
+	
 	case Server::UpdateClientState:
 	{
 		float currentWorldPosition;

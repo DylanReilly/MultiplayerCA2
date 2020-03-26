@@ -172,7 +172,7 @@ void Tank::remove()
 //Dylan Reilly - Returns is allied for any green tank
 bool Tank::isAllied() const
 {
-	if (mType == GreenLmg || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla)
+	if (mType == GreenLmg || mType == GreenLmg2 || mType == GreenLmg3 || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla)
 	{
 		return true;
 	}
@@ -287,7 +287,7 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 //Returns correct projectile ID based on the tank being used - Dylan Reilly
 Projectile::Type Tank::getProjectile() const
 {
-	if (mType == Type::GreenLmg)
+	if (mType == Type::GreenLmg || mType == Type::GreenLmg2 || mType == Type::GreenLmg3)
 	{
 		return Projectile::Type::GreenLmgBullet;
 	}
@@ -303,7 +303,7 @@ Projectile::Type Tank::getProjectile() const
 	{
 		return Projectile::Type::GreenTeslaBullet;
 	}
-	if (mType == Type::RedLmg)
+	if (mType == Type::RedLmg || mType == Type::RedLmg2 || mType == Type::RedLmg3)
 	{
 		return Projectile::Type::RedLmgBullet;
 	}

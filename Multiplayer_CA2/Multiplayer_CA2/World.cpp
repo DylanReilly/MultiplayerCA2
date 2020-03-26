@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <fstream>
 
 
 World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, bool networked)
@@ -124,13 +125,47 @@ Tank* World::addTank(int identifier)
 {
 	Tank::Type type;
 
+	std::ifstream fileIn;
+	int scores;
+	fileIn.open("scores.txt");
+	if (!fileIn)
+	{
+		std::ofstream outputFile("scores.txt");
+		scores = 0;
+		outputFile << scores;
+	}
+	fileIn >> scores;
+	fileIn.close();
+
 	if (identifier % 2 > 0)
 	{
-		type = Tank::Type::GreenLmg;
+		if (scores >= 50)
+		{
+			type = Tank::Type::GreenLmg3;
+		}
+		else if (scores >= 20)
+		{
+			type = Tank::Type::GreenLmg2;
+		}
+		else
+		{
+			type = Tank::Type::GreenLmg;
+		}
 	}
 	else
 	{
-		type = Tank::Type::RedLmg;
+		if (scores >= 50)
+		{
+			type = Tank::Type::RedLmg3;
+		}
+		else if (scores >= 20)
+		{
+			type = Tank::Type::RedLmg2;
+		}
+		else
+		{
+			type = Tank::Type::RedLmg;
+		}
 	}
 
 	std::unique_ptr<Tank> player(new Tank(type, mTextures, mFonts));
@@ -326,7 +361,7 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::AlliedTank, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::AlliedTank, Category::EnemyProjectile) || matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -334,18 +369,27 @@ void World::handleCollisions()
 			// Apply projectile damage to Tank, destroy projectile
 			tank.damage(projectile.getDamage());
 			projectile.destroy();
+
+			if (tank.getHitpoints() <= projectile.getDamage())
+			{
+       			std::ifstream fileIn;
+				int scores;
+				fileIn.open("scores.txt");
+				if (!fileIn)
+				{
+					std::ofstream outputFile("scores.txt");
+					scores = 0;
+					outputFile << scores;
+				}
+				fileIn >> scores;
+				scores += 5;
+				std::ofstream outputFile("scores.txt");
+				outputFile << scores;
+				fileIn.close();
+			}
 		}
 
-		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile))
-		{
-			auto& tank = static_cast<Tank&>(*pair.first);
-			auto& projectile = static_cast<Projectile&>(*pair.second);
-
-			// Apply projectile damage to Tank, destroy projectile
-			tank.damage(projectile.getDamage());
-			projectile.destroy();
-		}
-
+		//Destroy projectile when it hits a wall - Dylan
 		else if (matchesCategories(pair, Category::AlliedProjectile, Category::Collidable) || matchesCategories(pair, Category::EnemyProjectile, Category::Collidable))
 		{
 			auto& projectile = static_cast<Projectile&>(*pair.first);
@@ -359,6 +403,7 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 
+		//Collision to stop tanks phasing through walls - Dylan
 		else if (matchesCategories(pair, Category::AlliedTank, Category::Collidable) || matchesCategories(pair, Category::EnemyTank, Category::Collidable))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
@@ -372,7 +417,6 @@ void World::handleCollisions()
 				obstacle.destroy();
 				tank.playLocalSound(mCommandQueue, SoundEffect::TankHitBullet);
 			}
-			//Collision to stop tanks phasing through walls - Dylan
 			//Left of object
 			if (tank.getPosition().x < obstacle.getBoundingRect().left)
 			{
