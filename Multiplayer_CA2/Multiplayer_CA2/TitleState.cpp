@@ -50,5 +50,10 @@ bool TitleState::handleEvent(const sf::Event& event)
 		requestStackPush(States::Menu);
 	}
 
+	if (sf::Joystick::isButtonPressed(0, 9)) {
+		requestStackPop();
+		requestStackPush(States::Menu);
+	}
+
 	return true;
 }

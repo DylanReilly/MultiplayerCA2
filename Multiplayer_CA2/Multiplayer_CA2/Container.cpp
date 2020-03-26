@@ -35,17 +35,17 @@ void Container::handleEvent(const sf::Event& event)
 	{
 		mChildren[mSelectedChild]->handleEvent(event);
 	}
-	else if (event.type == sf::Event::KeyReleased)
+	else if (event.type == sf::Event::KeyReleased || event.type == sf::Event::JoystickButtonPressed)
 	{
-		if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
+		if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up || event.joystickButton.button == 4)
 		{
 			selectPrevious();
 		}
-		else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
+		else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down || event.joystickButton.button == 5)
 		{
 			selectNext();
 		}
-		else if (event.key.code == sf::Keyboard::Return || event.key.code == sf::Keyboard::Space)
+		else if (event.key.code == sf::Keyboard::Return || event.key.code == sf::Keyboard::Space || event.joystickButton.button == 1)
 		{
 			if (hasSelection())
 				mChildren[mSelectedChild]->activate();
