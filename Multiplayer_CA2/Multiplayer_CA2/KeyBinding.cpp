@@ -138,7 +138,7 @@ std::vector<KeyBinding::Action> KeyBinding::getRealtimeActions() const
 
 	FOREACH(auto pair, mControllerBinding)
 	{
-		// If key is pressed and an action is a realtime action, store it
+		// If joystick is pressed and an action is a realtime action, store it
 		if (sf::Joystick::isButtonPressed(mController, pair.first) && isRealtimeAction(pair.second))
 			actions.push_back(pair.second);
 	}

@@ -261,6 +261,8 @@ void World::addBuildings()
 {
 	greenBase();
 	redBase();
+	hostBase();
+	worldWalls();
 }
 
 //Sets up obstacles - Jason Lynch 
@@ -272,15 +274,37 @@ void World::addObstacle(Obstacle::Type type, float posX, float posY, float rotat
 
 //Popultaes world with obstacles - Jason Lynch 
 void World::greenBase() {
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 50, mObstacleSpawnPosition.y, 90.0f, .72f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 30, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 100,140, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 100, 650, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	//addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 30, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	//addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 }
 
 void World::redBase() {
+	addObstacle(Obstacle::Type::DestructableWall, 924, 140, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	
 	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 460, mObstacleSpawnPosition.y, 90.0f, .72f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 540, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 540, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+}
+
+void World::hostBase() {
+	addObstacle(Obstacle::Type::DestructableWall, 370, 10, 90.0f, .5f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 660, 10, 90.0f, .5f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 400, 130, 0.0f, .16f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 630, 130, 0.0f, .16f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+}
+
+void World::worldWalls() {
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 230, 90.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x-90, mObstacleSpawnPosition.y - 250, 0.0f, .25f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x +30, mObstacleSpawnPosition.y + 250, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+80, mObstacleSpawnPosition.y + 190, 90.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 30, mObstacleSpawnPosition.y + 130, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x, mObstacleSpawnPosition.y, 90.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 }
 
 //Spawn obstacles, set scale, rotation, and position - Jason Lynch
@@ -559,10 +583,10 @@ void World::addBarrels() {
 void World::addPickups()
 {
 	addPickup(Pickup::Type::HeavyGun, 40, 30, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::GatlingGun, 40, 740, 0.f, 1.3f, 1.3f);
+	addPickup(Pickup::Type::GatlingGun, 40, 740, 0.f, .3f, .3f);
 	addPickup(Pickup::Type::HeavyGun, 980, 740, 0.f, .3f, .3f);
-	addPickup(Pickup::Type::GatlingGun, 980, 30, 0.f, 1.3f, 1.3f);
-	addPickup(Pickup::Type::TeslaGun, 512, 740, 0.f, 1.3f, 1.3f);
+	addPickup(Pickup::Type::GatlingGun, 980, 30, 0.f, .3f, .3f);
+	addPickup(Pickup::Type::TeslaGun, 512, 740, 0.f, .3f, .3f);
 	addPickup(Pickup::Type::HealthRefill, 720, 740, 0.f, 1.2f, 1.2f);
 	addPickup(Pickup::Type::HealthRefill, 360, 30, 0.f, 1.2f, 1.2f);
 	addPickup(Pickup::Type::FireRate, 310, 740, 0.f, 1.2f, 1.2f);
