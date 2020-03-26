@@ -13,12 +13,29 @@ std::vector<TankData> initializeTankData()
 {
 	std::vector<TankData> data(Tank::TypeCount);
 	//Dylan Reilly - Load in data for tanks
+	//Starter tank
 	data[Tank::GreenLmg].hitpoints = 100;
 	data[Tank::GreenLmg].speed = 1.5f;
 	data[Tank::GreenLmg].fireInterval = sf::seconds(1);
 	data[Tank::GreenLmg].texture = Textures::Tanks;
 	data[Tank::GreenLmg].textureRect = sf::IntRect(0, 0, 95, 128);
 	data[Tank::GreenLmg].bulletType = Projectile::Type::GreenLmgBullet;
+
+	//Level up 1 tank - more hit pooints
+	data[Tank::GreenLmg2].hitpoints = 120;
+	data[Tank::GreenLmg2].speed = 1.5f;
+	data[Tank::GreenLmg2].fireInterval = sf::seconds(1);
+	data[Tank::GreenLmg2].textureRect = sf::IntRect(95, 0, 95, 128);
+	data[Tank::GreenLmg2].texture = Textures::ID::Tanks;
+	data[Tank::GreenLmg2].bulletType = Projectile::Type::GreenLmgBullet;
+
+	//Level up 2 tank - more hitpoints and faster movement
+	data[Tank::GreenLmg3].hitpoints = 120;
+	data[Tank::GreenLmg3].speed = 2.f;
+	data[Tank::GreenLmg3].fireInterval = sf::seconds(1);
+	data[Tank::GreenLmg3].textureRect = sf::IntRect(190, 0, 95, 128);
+	data[Tank::GreenLmg3].texture = Textures::ID::Tanks;
+	data[Tank::GreenLmg3].bulletType = Projectile::Type::GreenLmgBullet;
 
 	data[Tank::GreenHmg].hitpoints = 100;
 	data[Tank::GreenHmg].speed = 1.5f;
@@ -51,6 +68,22 @@ std::vector<TankData> initializeTankData()
 	data[Tank::RedLmg].texture = Textures::Tanks;
 	data[Tank::RedLmg].textureRect = sf::IntRect(0, 128, 95, 112);
 	data[Tank::RedLmg].bulletType = Projectile::Type::RedLmgBullet;
+
+	//Level up 1 tank - more hit pooints
+	data[Tank::RedLmg2].hitpoints = 120;
+	data[Tank::RedLmg2].speed = 1.5f;
+	data[Tank::RedLmg2].fireInterval = sf::seconds(1);
+	data[Tank::RedLmg2].textureRect = sf::IntRect(95, 128, 95, 112);
+	data[Tank::RedLmg2].texture = Textures::ID::Tanks;
+	data[Tank::RedLmg2].bulletType = Projectile::Type::RedLmgBullet;
+				   
+	//Level up 2 tank - more hitpoints and faster movement
+	data[Tank::RedLmg3].hitpoints = 120;
+	data[Tank::RedLmg3].speed = 2.f;
+	data[Tank::RedLmg3].fireInterval = sf::seconds(1);
+	data[Tank::RedLmg3].textureRect = sf::IntRect(190, 128, 95, 112);
+	data[Tank::RedLmg3].texture = Textures::ID::Tanks;
+	data[Tank::RedLmg3].bulletType = Projectile::Type::RedLmgBullet;
 			   
 	data[Tank::RedHmg].hitpoints = 100;
 	data[Tank::RedHmg].speed = 1.5f;
