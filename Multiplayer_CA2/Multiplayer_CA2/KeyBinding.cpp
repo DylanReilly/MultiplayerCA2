@@ -7,6 +7,7 @@
 
 KeyBinding::KeyBinding(int controlPreconfiguration)
 : mKeyMap()
+,mControllerBinding()
 , mController(controlPreconfiguration)
 {
 	// Set initial key bindings for player 1
@@ -34,6 +35,12 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
 		mKeyMap[sf::Keyboard::S] = PlayerAction::MoveDown;
 		mKeyMap[sf::Keyboard::F] = PlayerAction::Fire;
 		mKeyMap[sf::Keyboard::R] = PlayerAction::LaunchMissile;
+
+		mControllerBinding[1] = PlayerAction::MoveDown;
+		mControllerBinding[3] = PlayerAction::MoveUp;
+		mControllerBinding[0] = PlayerAction::MoveLeft;
+		mControllerBinding[2] = PlayerAction::MoveRight;
+		mControllerBinding[5] = PlayerAction::Fire;
 	}
 }
 
@@ -131,7 +138,7 @@ std::vector<KeyBinding::Action> KeyBinding::getRealtimeActions() const
 
 	FOREACH(auto pair, mControllerBinding)
 	{
-		// If key is pressed and an action is a realtime action, store it
+		// If joystick is pressed and an action is a realtime action, store it
 		if (sf::Joystick::isButtonPressed(mController, pair.first) && isRealtimeAction(pair.second))
 			actions.push_back(pair.second);
 	}

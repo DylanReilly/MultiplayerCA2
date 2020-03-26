@@ -188,9 +188,11 @@ std::vector<PickupData> initializePickupData()
 	data[Pickup::HeavyGun].action = std::bind(&Tank::setTankTexture, std::placeholders::_1, 1); //Bind texture changing function to the action associated with pickup - Jason Lynch
 
 	data[Pickup::GatlingGun].texture = Textures::GatlingGunPickup; //Set HeavyGun Pickup to assosiated texture - Jason Lynch
+	data[Pickup::GatlingGun].textureRect = sf::IntRect(0, 0, 256, 256);
 	data[Pickup::GatlingGun].action = std::bind(&Tank::setTankTexture, std::placeholders::_1, 2); //Bind texture changing function to the action associated with pickup - Jason Lynch
 
 	data[Pickup::TeslaGun].texture = Textures::TeslaGunPickup; //Set HeavyGun Pickup to assosiated texture - Jason Lynch
+	data[Pickup::TeslaGun].textureRect = sf::IntRect(0, 0, 256, 256);
 	data[Pickup::TeslaGun].action = std::bind(&Tank::setTankTexture, std::placeholders::_1, 3); //Bind texture changing function to the action associated with pickup - Jason Lynch
 
 	data[Pickup::HealthRefill].texture = Textures::Entities;

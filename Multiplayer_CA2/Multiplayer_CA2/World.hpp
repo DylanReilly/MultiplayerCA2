@@ -71,6 +71,8 @@ class World : private sf::NonCopyable
 
 		void								greenBase();
 		void								redBase();
+		void								hostBase();
+		void								worldWalls();
 
 		void								buildScene();
 		void								destroyEntitiesOutsideView();
