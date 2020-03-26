@@ -136,6 +136,29 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 		}
 	}
 
+	if (event.type == sf::Event::JoystickButtonPressed)
+	{
+		Action action;
+		if (mKeyBinding && mKeyBinding->checkControllerAction(event.joystickButton.button, action) && !isRealtimeAction(action))
+		{
+			// Network connected -> send event over network
+			if (mSocket)
+			{
+				sf::Packet packet;
+				packet << static_cast<sf::Int32>(Client::PlayerEvent);
+				packet << mIdentifier;
+				packet << static_cast<sf::Int32>(action);
+				mSocket->send(packet);
+			}
+
+			// Network disconnected -> local event
+			else
+			{
+				commands.push(mActionBinding[action]);
+			}
+		}
+	}
+
 	// Realtime change (network connected)
 	if ((event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) && mSocket)
 	{
@@ -148,6 +171,21 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 			packet << mIdentifier;
 			packet << static_cast<sf::Int32>(action);
 			packet << (event.type == sf::Event::KeyPressed);
+			mSocket->send(packet);
+		}
+	}
+
+	if ((event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::JoystickButtonReleased) && mSocket)
+	{
+		Action action;
+		if (mKeyBinding && mKeyBinding->checkControllerAction(event.joystickButton.button, action) && isRealtimeAction(action))
+		{
+			// Send realtime change over network
+			sf::Packet packet;
+			packet << static_cast<sf::Int32>(Client::PlayerRealtimeChange);
+			packet << mIdentifier;
+			packet << static_cast<sf::Int32>(action);
+			packet << (event.type == sf::Event::JoystickButtonPressed);
 			mSocket->send(packet);
 		}
 	}
