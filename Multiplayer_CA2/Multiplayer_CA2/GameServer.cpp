@@ -414,7 +414,7 @@ void GameServer::handleDisconnections()
 				setListening(true);
 			}
 				
-			broadcastMessage("An ally has disconnected.");
+			broadcastMessage("A Player has disconnected.");
 		}
 		else
 		{

@@ -47,7 +47,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	mPlayerInvitationText.setFont(context.fonts->get(Fonts::Main));
 	mPlayerInvitationText.setCharacterSize(20);
 	mPlayerInvitationText.setFillColor(sf::Color::White);
-	mPlayerInvitationText.setString("Press Enter to spawn player 2");
+	mPlayerInvitationText.setString("");//Press Enter to spawn player 2
 	mPlayerInvitationText.setPosition(1000 - mPlayerInvitationText.getLocalBounds().width, 760 - mPlayerInvitationText.getLocalBounds().height);
 
 	// We reuse this text for "Attempt to connect" and "Failed to connect" messages
@@ -273,10 +273,10 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 		// Enter pressed, add second player co-op (only if we are one player)
 		if (event.key.code == sf::Keyboard::Return && mLocalPlayerIdentifiers.size() == 1)
 		{
-			sf::Packet packet;
+			/*sf::Packet packet;
 			packet << static_cast<sf::Int32>(Client::RequestCoopPartner);
 
-			mSocket.send(packet);
+			mSocket.send(packet);*/
 		}
 
 		// Escape pressed, trigger the pause screen
