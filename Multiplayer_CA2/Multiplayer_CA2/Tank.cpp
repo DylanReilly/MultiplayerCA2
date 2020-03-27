@@ -74,13 +74,13 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	mHealthDisplay = healthDisplay.get();
 	attachChild(std::move(healthDisplay));
 
-	if (getCategory() == Category::PlayerTank)
+	/*if (getCategory() == Category::PlayerTank)
 	{
 		std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
 		missileDisplay->setPosition(0, 70);
 		mMissileDisplay = missileDisplay.get();
 		attachChild(std::move(missileDisplay));
-	}
+	}*/
 
 	// Dust trails for tank treads - Dylan
 	//Adds trail to the front left & right of the sprite
@@ -147,10 +147,12 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 unsigned int Tank::getCategory() const
 {
-	if (isAllied())
+	if (mType == GreenLmg || mType == GreenLmg2 || mType == GreenLmg3 || mType == GreenHmg || mType == GreenGatling || mType == GreenTesla)
 		return Category::AlliedTank;
-	else
+	else if (mType == RedLmg || mType == RedLmg2 || mType == RedLmg3 || mType == RedHmg || mType == RedGatling || mType == RedTesla)
 		return Category::EnemyTank;
+	else
+		return Category::HostTank;
 }
 
 sf::FloatRect Tank::getBoundingRect() const
@@ -415,6 +417,11 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 		int tank = getCategory();
 		switch (tank) //2 id player 1, 8 is player 2 - Jason Lynch
 		{
+		case 4096:
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostHmg)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostHmg)].textureRect);
+			mType = Tank::HostHmg;
+			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenHmg)].texture), false);
@@ -434,6 +441,11 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 		int tank = getCategory();
 		switch (tank)
 		{
+		case 4096:
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostGatlingGun)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostGatlingGun)].textureRect);
+			mType = Tank::HostGatlingGun;
+			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenGatling)].texture), false);
@@ -454,6 +466,11 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 		int tank = getCategory();
 		switch (tank)
 		{
+		case 4096:
+			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostTesla)].texture), false);
+			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostTesla)].textureRect);
+			mType = Tank::HostTesla;
+			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::GreenTesla)].texture), false);

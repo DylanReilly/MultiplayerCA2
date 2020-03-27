@@ -223,9 +223,9 @@ void World::loadTextures()
 	//Both added some new textures - Jason Lynch, Dylan Reilly
 	mTextures.load(Textures::ID::Tanks, "Media/Textures/TankSpriteSheet.png");
 	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/HostTank.png");
-	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/HostTankHmg.png");
 	mTextures.load(Textures::ID::HostTankGatling, "Media/Textures/HostTank.png");
-	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/HostTank.png");
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");
@@ -394,7 +394,7 @@ void World::handleCollisions()
 
 	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		if (matchesCategories(pair, Category::AlliedTank, Category::Pickup) || matchesCategories(pair, Category::EnemyTank, Category::Pickup))
+		if (matchesCategories(pair, Category::AlliedTank, Category::Pickup) || matchesCategories(pair, Category::EnemyTank, Category::Pickup) || matchesCategories(pair, Category::HostTank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);

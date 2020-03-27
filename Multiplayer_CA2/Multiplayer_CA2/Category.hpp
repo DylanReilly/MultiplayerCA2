@@ -7,11 +7,11 @@ namespace Category
 {
 	enum Type
 	{
-		None				= 0,
+		None = 0,
 		SceneAirLayer		= 1 << 0,
-		PlayerTank		= 1 << 1,
-		AlliedTank		= 1 << 2,
-		EnemyTank		= 1 << 3,
+		Player			= 1 << 1,
+		AlliedTank			= 1 << 2,
+		EnemyTank			= 1 << 3,
 		Pickup				= 1 << 4,
 		AlliedProjectile	= 1 << 5,
 		EnemyProjectile		= 1 << 6,
@@ -20,9 +20,11 @@ namespace Category
 		Network				= 1 << 9,
 		Collidable			= 1 << 10,
 		HostProjectile		= 1 << 11,
+		HostTank			= 1 << 12,
 
-		Tank = PlayerTank | AlliedTank | EnemyTank,
-		
+
+		Tank =  Player | AlliedTank | EnemyTank | HostTank,
+
 		Projectile = AlliedProjectile | EnemyProjectile | HostProjectile,
 	};
 }
