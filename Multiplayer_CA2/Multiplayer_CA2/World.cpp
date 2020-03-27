@@ -225,7 +225,7 @@ void World::loadTextures()
 	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/HostTank.png");
 	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/HostTankHmg.png");
 	mTextures.load(Textures::ID::HostTankGatling, "Media/Textures/HostTank.png");
-	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/HostTank.png");
+	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/HostTankTesla.png");
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
 	mTextures.load(Textures::ID::Wall, "Media/Textures/Arena/Blocks/Block_B_01.png");

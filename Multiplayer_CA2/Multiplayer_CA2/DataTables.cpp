@@ -122,10 +122,25 @@ std::vector<TankData> initializeTankData()
 
 	data[Tank::HostHmg].hitpoints = 500;
 	data[Tank::HostHmg].speed = 1.0f;
-	data[Tank::HostHmg].fireInterval = sf::seconds(1);
+	data[Tank::HostHmg].fireInterval = sf::seconds(2);
 	data[Tank::HostHmg].texture = Textures::HostTankHmg;
 	data[Tank::HostHmg].textureRect = sf::IntRect(0, 0, 146, 161);
 	data[Tank::HostHmg].bulletType = Projectile::Type::HostHmgBullet;
+
+	data[Tank::HostGatlingGun].hitpoints = 500;
+	data[Tank::HostGatlingGun].speed = 1.0f;
+	data[Tank::HostGatlingGun].fireInterval = sf::seconds(.8f);
+	data[Tank::HostGatlingGun].texture = Textures::HostTankGatling;
+	data[Tank::HostGatlingGun].textureRect = sf::IntRect(0, 0, 146, 161);
+	data[Tank::HostGatlingGun].bulletType = Projectile::Type::HostGatlingBullet;
+
+	data[Tank::HostTesla].hitpoints = 500;
+	data[Tank::HostTesla].speed = 1.0f;
+	data[Tank::HostTesla].fireInterval = sf::seconds(3.0f);
+	data[Tank::HostTesla].texture = Textures::HostTankTesla;
+	data[Tank::HostTesla].textureRect = sf::IntRect(0, 0, 146, 161);
+	data[Tank::HostTesla].bulletType = Projectile::Type::HostTeslaBullet;
+
 
 	return data;
 }
