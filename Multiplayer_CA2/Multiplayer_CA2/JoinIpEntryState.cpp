@@ -13,6 +13,7 @@ JoinIpEntryState::JoinIpEntryState(StateStack& stack, Context context)
 	: State(stack, context)
 	, mGUIContainer()
 	, mIpAddress("")
+	, mUserName("")
 {
 	sf::Texture& texture = context.textures->get(Textures::TitleScreen);
 	mBackgroundSprite.setTexture(texture);
@@ -34,7 +35,9 @@ JoinIpEntryState::JoinIpEntryState(StateStack& stack, Context context)
 	connectButton->setText("Connect");
 	connectButton->setCallback([this]()
 		{
+			mUserName = mUserName;
 			JoinIpAddress = mIpAddress;
+
 			requestStackPop();
 			requestStackPush(States::JoinGame);
 		});
@@ -49,20 +52,35 @@ JoinIpEntryState::JoinIpEntryState(StateStack& stack, Context context)
 		});
 
 	mBindingLabels[0] = std::make_shared<GUI::Label>("", *context.fonts);
-	mBindingLabels[0]->setPosition(100, 250);
+	mBindingLabels[0]->setPosition(100, 200);
 
 	mBindingLabels[1] = std::make_shared<GUI::Label>("", *context.fonts);
-	mBindingLabels[1]->setPosition(100, 200);
-	mBindingLabels[1]->setText("Server IP Address");
+	mBindingLabels[1]->setPosition(100, 150);
+	mBindingLabels[1]->setText("Servers IP Address");
+
+	mBindingLabels[2] = std::make_shared<GUI::Label>("", *context.fonts);
+	mBindingLabels[2]->setPosition(400, 200);
+
+	mBindingLabels[3] = std::make_shared<GUI::Label>("", *context.fonts);
+	mBindingLabels[3]->setPosition(400, 150);
+	mBindingLabels[3]->setText("Your Username");
 
 	mBindingButtons[0] = std::make_shared<GUI::Button>(context);
-	mBindingButtons[0]->setPosition(100, 300);
-	mBindingButtons[0]->setText("Enter IP");
+	mBindingButtons[0]->setPosition(100, 250);
+	mBindingButtons[0]->setText("Enter Name");
 	mBindingButtons[0]->setToggle(true);
+
+	mBindingButtons[1] = std::make_shared<GUI::Button>(context);
+	mBindingButtons[1]->setPosition(100, 300);
+	mBindingButtons[1]->setText("Enter IP");
+	mBindingButtons[1]->setToggle(true);
 
 	mGUIContainer.pack(mBindingLabels[0]);
 	mGUIContainer.pack(mBindingLabels[1]);
-	mGUIContainer.pack(mBindingButtons[0]);
+	//mGUIContainer.pack(mBindingLabels[2]);
+	//mGUIContainer.pack(mBindingLabels[3]);
+	//mGUIContainer.pack(mBindingButtons[0]);
+	mGUIContainer.pack(mBindingButtons[1]);
 	mGUIContainer.pack(connectButton);
 	mGUIContainer.pack(backButton);
 
@@ -89,10 +107,10 @@ bool JoinIpEntryState::handleEvent(const sf::Event& event)
 {
 	bool isIpInput = false;
 
-	if (mBindingButtons[0]->isActive())
+	if (mBindingButtons[1]->isActive())
 	{
-		if (event.key.code == sf::Keyboard::Key::E) {
-			mBindingButtons[0]->deactivate();
+		if (event.key.code == sf::Keyboard::Key::Escape) {
+			mBindingButtons[1]->deactivate();
 			event;
 		}
 		else if (event.key.code == sf::Keyboard::Key::BackSpace) {
@@ -111,6 +129,28 @@ bool JoinIpEntryState::handleEvent(const sf::Event& event)
 			}
 		}
 	}
+	//else if (mBindingButtons[0]->isActive())
+	//{
+	//	if (event.key.code == sf::Keyboard::Key::Escape) {
+	//		mBindingButtons[0]->deactivate();
+	//		event;
+	//	}
+	//	else if (event.key.code == sf::Keyboard::Key::BackSpace) {
+	//		if (mUserName.length() > 0) {
+	//			mUserName.pop_back();
+	//		}
+	//		mBindingLabels[2]->setText(mUserName);
+	//	}
+	//	else {
+	//		if (event.type == sf::Event::TextEntered)
+	//		{
+	//			//sf::Keyboard::Key key = event.key.code;
+	//			sf::String input = event.text.unicode;
+	//			mUserName += input;
+	//			mBindingLabels[2]->setText(mUserName);
+	//		}
+	//	}
+	//}
 
 	mGUIContainer.handleEvent(event);
 

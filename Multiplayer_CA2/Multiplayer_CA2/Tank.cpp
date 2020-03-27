@@ -13,6 +13,7 @@
 
 #include <cmath>
 
+extern std::string userName;
 
 using namespace std::placeholders;
 
@@ -72,7 +73,14 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();
+	mHealthDisplay->setColor(sf::Color::Green);
 	attachChild(std::move(healthDisplay));
+
+	std::unique_ptr<TextNode> userNameDisplay(new TextNode(fonts, ""));
+	mUserNameDisplay = userNameDisplay.get();
+	mUserNameDisplay->setString(userName);
+	mUserNameDisplay->setColor(sf::Color::Yellow);
+	attachChild(std::move(userNameDisplay));
 
 	/*if (getCategory() == Category::PlayerTank)
 	{
@@ -399,12 +407,18 @@ void Tank::createPickup(SceneNode& node, const TextureHolder& textures) const
 void Tank::updateTexts()
 {
 	// Display hitpoints
-	if (isDestroyed())
+	if (isDestroyed()) {
 		mHealthDisplay->setString("");
+		mUserNameDisplay->setString("");
+	}
 	else
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
-	mHealthDisplay->setPosition(0.f, 50.f);
+
+	mHealthDisplay->setPosition(0.f, -getBoundingRect().height);
 	mHealthDisplay->setRotation(-getRotation());
+
+	mUserNameDisplay->setPosition(0.f, -getBoundingRect().height-50.0f);
+	mUserNameDisplay->setRotation(-getRotation());
 
 	// Display missiles, if available
 	if (mMissileDisplay)

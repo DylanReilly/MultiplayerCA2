@@ -103,6 +103,7 @@ class Tank : public Entity
 		float					mTravelledDistance;
 		std::size_t				mDirectionIndex;
 		TextNode*				mHealthDisplay;
+		TextNode*				mUserNameDisplay;
 		TextNode*				mMissileDisplay;
 		const					TextureHolder& mTextures; //Hold texture for tank changes - Jason Lynch
 

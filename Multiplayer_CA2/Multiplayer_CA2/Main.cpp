@@ -1,5 +1,4 @@
 #include "Application.hpp"
-
 #include <stdexcept>
 #include <iostream>
 

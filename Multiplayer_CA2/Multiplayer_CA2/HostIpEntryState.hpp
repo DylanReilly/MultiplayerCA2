@@ -25,9 +25,10 @@ public:
 private:
 	sf::Sprite						mBackgroundSprite;
 	GUI::Container					mGUIContainer;
-	std::array<GUI::Label::Ptr, 2> 	mBindingLabels;
-	std::array<GUI::Button::Ptr, 1> mBindingButtons;
+	std::array<GUI::Label::Ptr, 4> 	mBindingLabels;
+	std::array<GUI::Button::Ptr, 2> mBindingButtons;
 	std::string						mIpAddress;
+	std::string						mUserName;
 };
 
 #endif // BOOK_SETTINGSSTATE_HPP

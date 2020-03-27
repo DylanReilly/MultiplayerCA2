@@ -16,7 +16,6 @@
 #include "GameOverState.hpp"
 #include "NetworkProtocol.hpp"
 
-
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application()
