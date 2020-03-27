@@ -21,8 +21,13 @@ class Projectile : public Entity
 			RedHmgBullet,
 			RedGatlingBullet,
 			RedTeslaBullet,
+			HostLmgBullet,
+			HostHmgBullet,
+			HostGatlingBullet,
+			HostTeslaBullet,
 			AlliedBullet = GreenLmgBullet | GreenHmgBullet | GreenGatlingBullet | GreenTeslaBullet,
 			EnemyBullet = RedLmgBullet | RedHmgBullet | RedGatlingBullet | RedTeslaBullet,
+			HostBullet = HostLmgBullet | HostHmgBullet | HostGatlingBullet | HostTeslaBullet,
 			Missile,
 			TypeCount
 		};

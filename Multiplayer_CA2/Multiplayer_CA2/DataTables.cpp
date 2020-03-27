@@ -113,6 +113,13 @@ std::vector<TankData> initializeTankData()
 	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 95, 128);
 	data[Tank::Eagle].bulletType = Projectile::Type::RedHmgBullet;
 
+	data[Tank::HostLmg].hitpoints = 500;
+	data[Tank::HostLmg].speed = 1.0f;
+	data[Tank::HostLmg].fireInterval = sf::seconds(1);
+	data[Tank::HostLmg].texture = Textures::HostTankLmg;
+	data[Tank::HostLmg].textureRect = sf::IntRect(0, 0, 250, 230);
+	data[Tank::HostLmg].bulletType = Projectile::Type::HostLmgBullet;
+
 	return data;
 }
 

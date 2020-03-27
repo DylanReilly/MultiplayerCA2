@@ -40,9 +40,9 @@ namespace Textures
 		HowToPlay,//Texture for state background - Jason Lynch
 		PlayerOneInputSetupBackground,//Texture for state background  - Jason Lynch
 		PlayerTwoInputSetupBackground,//Texture for state background  - Jason Lynch
-		HostTank,
 		HostTankLmg,
 		HostTankHmg,
+		HostTankGatling,
 		HostTankTesla
 	};
 }

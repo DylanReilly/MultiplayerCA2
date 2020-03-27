@@ -16,27 +16,27 @@
 
 
 World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, bool networked)
-: mTarget(outputTarget)
-, mSceneTexture()
-, mWorldView(outputTarget.getDefaultView())
-, mTextures() 
-, mFonts(fonts)
-, mSounds(sounds)
-, mSceneGraph()
-, mSceneLayers()
-, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, mWorldView.getSize().y)
-, mSpawnPosition(0.0f, 0.0f)
-, mScrollSpeed(0.0f)
-, mObstacleSpawnPosition(mWorldView.getSize().x * .25f, mWorldView.getSize().y / 2.f)
-, mScrollSpeedCompensation(0.0f)
-, mPlayerTanks()
-, mObstacles()
-, mPickups()
-, mEnemySpawnPoints()
-, mActiveEnemies()
-, mNetworkedWorld(networked)
-, mNetworkNode(nullptr)
-, mFinishSprite(nullptr)
+	: mTarget(outputTarget)
+	, mSceneTexture()
+	, mWorldView(outputTarget.getDefaultView())
+	, mTextures()
+	, mFonts(fonts)
+	, mSounds(sounds)
+	, mSceneGraph()
+	, mSceneLayers()
+	, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, mWorldView.getSize().y)
+	, mSpawnPosition(0.0f, 0.0f)
+	, mScrollSpeed(0.0f)
+	, mObstacleSpawnPosition(mWorldView.getSize().x * .25f, mWorldView.getSize().y / 2.f)
+	, mScrollSpeedCompensation(0.0f)
+	, mPlayerTanks()
+	, mObstacles()
+	, mPickups()
+	, mEnemySpawnPoints()
+	, mActiveEnemies()
+	, mNetworkedWorld(networked)
+	, mNetworkNode(nullptr)
+	, mFinishSprite(nullptr)
 {
 	mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
@@ -44,12 +44,12 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	buildScene();
 
 	// Prepare the view
-	mWorldView.setCenter(mWorldView.getSize().x/2.f, mWorldView.getSize().y / 2.f);
+	mWorldView.setCenter(mWorldView.getSize().x / 2.f, mWorldView.getSize().y / 2.f);
 }
 
 void World::update(sf::Time dt)
 {
-	FOREACH(Tank* a, mPlayerTanks)
+	FOREACH(Tank * a, mPlayerTanks)
 		a->setVelocity(0.f, 0.f);
 
 	// Setup commands to destroy entities, and guide missiles
@@ -102,7 +102,7 @@ CommandQueue& World::getCommandQueue()
 
 Tank* World::getTank(int identifier) const
 {
-	FOREACH(Tank* a, mPlayerTanks)
+	FOREACH(Tank * a, mPlayerTanks)
 	{
 		if (a->getIdentifier() == identifier)
 			return a;
@@ -137,7 +137,10 @@ Tank* World::addTank(int identifier)
 	fileIn >> scores;
 	fileIn.close();
 
-	if (identifier % 2 > 0)
+	if (identifier == 1) {
+		type = Tank::Type::HostLmg;
+	}
+	else if (identifier % 2 > 0)
 	{
 		if (scores >= 50)
 		{
@@ -179,7 +182,7 @@ Tank* World::addTank(int identifier)
 }
 
 void World::createPickup(sf::Vector2f position, Pickup::Type type)
-{	
+{
 	std::unique_ptr<Pickup> pickup(new Pickup(type, mTextures));
 	pickup->setPosition(position);
 	pickup->setVelocity(0.f, 1.f);
@@ -193,8 +196,8 @@ bool World::pollGameAction(GameActions::Action& out)
 
 void World::setCurrentBattleFieldPosition(float lineY)
 {
-	mWorldView.setCenter(mWorldView.getCenter().x, lineY - mWorldView.getSize().y/2);
-	mSpawnPosition.y = mWorldBounds.height; 
+	mWorldView.setCenter(mWorldView.getCenter().x, lineY - mWorldView.getSize().y / 2);
+	mSpawnPosition.y = mWorldBounds.height;
 }
 
 void World::setWorldHeight(float height)
@@ -211,7 +214,7 @@ bool World::hasPlayerReachedEnd() const
 {
 	if (Tank* Tank = getTank(1))
 		return !mWorldBounds.contains(Tank->getPosition());
-	else 
+	else
 		return false;
 }
 
@@ -219,9 +222,9 @@ void World::loadTextures()
 {
 	//Both added some new textures - Jason Lynch, Dylan Reilly
 	mTextures.load(Textures::ID::Tanks, "Media/Textures/TankSpriteSheet.png");
-	mTextures.load(Textures::ID::HostTank, "Media/Textures/HostTank.png");
-	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/HostTank.png");
 	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/TankSpriteSheet.png");
+	mTextures.load(Textures::ID::HostTankGatling, "Media/Textures/HostTank.png");
 	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/TankSpriteSheet.png");
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
@@ -250,7 +253,7 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds = getViewBounds();
 	const float borderDistance = 40.f;
 
-	FOREACH(Tank* Tank, mPlayerTanks)
+	FOREACH(Tank * Tank, mPlayerTanks)
 	{
 		sf::Vector2f position = Tank->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -278,7 +281,7 @@ void World::addObstacle(Obstacle::Type type, float posX, float posY, float rotat
 
 //Popultaes world with obstacles - Jason Lynch 
 void World::greenBase() {
-	addObstacle(Obstacle::Type::DestructableWall, 100,140, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, 100, 140, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	addObstacle(Obstacle::Type::DestructableWall, 100, 650, 90.0f, .72f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	//addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 30, mObstacleSpawnPosition.y + 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	//addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 170, 0, .3f, .1f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
@@ -302,12 +305,12 @@ void World::hostBase() {
 }
 
 void World::worldWalls() {
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x -30, mObstacleSpawnPosition.y - 230, 90.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x-90, mObstacleSpawnPosition.y - 250, 0.0f, .25f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 30, mObstacleSpawnPosition.y - 230, 90.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x - 90, mObstacleSpawnPosition.y - 250, 0.0f, .25f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+30, mObstacleSpawnPosition.y + 250, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+30, mObstacleSpawnPosition.y + 190, 90.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+30, mObstacleSpawnPosition.y + 130, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 30, mObstacleSpawnPosition.y + 250, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 30, mObstacleSpawnPosition.y + 190, 90.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 30, mObstacleSpawnPosition.y + 130, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 
 	addObstacle(Obstacle::Type::DestructableWall, 512, 400, 90.0f, .4f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	addObstacle(Obstacle::Type::DestructableWall, 512, 400, 0.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
@@ -319,8 +322,8 @@ void World::worldWalls() {
 	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 480, mObstacleSpawnPosition.y + 190, 90.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 480, mObstacleSpawnPosition.y + 130, 0.0f, .2f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+540, mObstacleSpawnPosition.y - 230, 90.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
-	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x+600, mObstacleSpawnPosition.y - 250, 0.0f, .25f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 540, mObstacleSpawnPosition.y - 230, 90.0f, .3f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
+	addObstacle(Obstacle::Type::DestructableWall, mObstacleSpawnPosition.x + 600, mObstacleSpawnPosition.y - 250, 0.0f, .25f, .07f, Textures::ID::Explosion, sf::Vector2i(256, 256), 16, 1, sf::Vector2f(1.f, 1.f));
 
 }
 
@@ -406,14 +409,14 @@ void World::handleCollisions()
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
-			
+
 			// Apply projectile damage to Tank, destroy projectile
 			tank.damage(projectile.getDamage());
 			projectile.destroy();
 
 			if (tank.getHitpoints() <= projectile.getDamage())
 			{
-       			std::ifstream fileIn;
+				std::ifstream fileIn;
 				int scores;
 				fileIn.open("scores.txt");
 				if (!fileIn)
@@ -449,7 +452,7 @@ void World::handleCollisions()
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
-			
+
 			float borderDistance = 40.f;
 			sf::Vector2f position = tank.getPosition();
 
@@ -461,7 +464,7 @@ void World::handleCollisions()
 			//Left of object
 			if (tank.getPosition().x < obstacle.getBoundingRect().left)
 			{
-				if (tank.getPosition().y > obstacle.getBoundingRect().top && tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
+				if (tank.getPosition().y > obstacle.getBoundingRect().top&& tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
 				{
 					position.x = std::min(position.x, obstacle.getBoundingRect().left - borderDistance);
 				}
@@ -470,7 +473,7 @@ void World::handleCollisions()
 			//Right of object
 			if (tank.getPosition().x > obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
 			{
-				if (tank.getPosition().y > obstacle.getBoundingRect().top && tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
+				if (tank.getPosition().y > obstacle.getBoundingRect().top&& tank.getPosition().y < obstacle.getBoundingRect().top + obstacle.getBoundingRect().height)
 				{
 					position.x = std::max(position.x, obstacle.getBoundingRect().left + obstacle.getBoundingRect().width + borderDistance);
 				}
@@ -479,7 +482,7 @@ void World::handleCollisions()
 			//Below object
 			if (tank.getPosition().y > obstacle.getBoundingRect().top)
 			{
-				if (tank.getPosition().x > obstacle.getBoundingRect().left && tank.getPosition().x < obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
+				if (tank.getPosition().x > obstacle.getBoundingRect().left&& tank.getPosition().x < obstacle.getBoundingRect().left + obstacle.getBoundingRect().width)
 				{
 					position.y = std::max(position.y, obstacle.getBoundingRect().top + obstacle.getBoundingRect().height + borderDistance);
 				}
@@ -512,7 +515,7 @@ void World::updateSounds()
 	// 1 or more players -> mean position between all Tanks
 	else
 	{
-		FOREACH(Tank* Tank, mPlayerTanks)
+		FOREACH(Tank * Tank, mPlayerTanks)
 			listenerPosition += Tank->getWorldPosition();
 
 		listenerPosition /= static_cast<float>(mPlayerTanks.size());
@@ -646,11 +649,11 @@ void World::destroyEntitiesOutsideView()
 {
 	Command command;
 	command.category = Category::Projectile;
-	command.action = derivedAction<Entity>([this] (Entity& e, sf::Time)
-	{
-		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
-			e.remove();
-	});
+	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
+		{
+			if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
+				e.remove();
+		});
 
 	mCommandQueue.push(command);
 }
