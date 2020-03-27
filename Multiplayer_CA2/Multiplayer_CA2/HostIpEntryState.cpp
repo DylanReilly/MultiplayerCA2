@@ -58,7 +58,7 @@ HostIpEntryState::HostIpEntryState(StateStack& stack, Context context)
 
 	mBindingLabels[1] = std::make_shared<GUI::Label>("", *context.fonts);
 	mBindingLabels[1]->setPosition(100, 150);
-	mBindingLabels[1]->setText("Your Computers IP Address");
+	mBindingLabels[1]->setText("Your Computers IP Address. Press ESC to enter.");
 
 	mBindingLabels[2] = std::make_shared<GUI::Label>("", *context.fonts);
 	mBindingLabels[2]->setPosition(400, 200);
