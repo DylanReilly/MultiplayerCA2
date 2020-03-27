@@ -76,11 +76,11 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	mHealthDisplay->setColor(sf::Color::Green);
 	attachChild(std::move(healthDisplay));
 
-	std::unique_ptr<TextNode> userNameDisplay(new TextNode(fonts, ""));
+	/*std::unique_ptr<TextNode> userNameDisplay(new TextNode(fonts, ""));
 	mUserNameDisplay = userNameDisplay.get();
 	mUserNameDisplay->setString(userName);
 	mUserNameDisplay->setColor(sf::Color::Yellow);
-	attachChild(std::move(userNameDisplay));
+	attachChild(std::move(userNameDisplay));*/
 
 	/*if (getCategory() == Category::PlayerTank)
 	{
@@ -277,7 +277,7 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		playLocalSound(commands,SoundEffect::TankLMG);
+		checkProjectileType(commands);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
 		mIsFiring = false;
@@ -296,6 +296,29 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		playLocalSound(commands, SoundEffect::LaunchMissile);
 
 		mIsLaunchingMissile = false;
+	}
+}
+
+void Tank::checkProjectileType(CommandQueue& commands)
+{
+	Projectile::Type id = getProjectile();
+
+	if (id == Projectile::Type::GreenLmgBullet || id == Projectile::Type::RedLmgBullet || id == Projectile::Type::HostLmgBullet)  //If tank type is LMG - Jason lynch 
+	{
+		playLocalSound(commands, SoundEffect::TankLMG); //Play LMG sound - Jason lynch 
+	}
+	else if (id == Projectile::Type::GreenHmgBullet || id == Projectile::Type::RedHmgBullet || id == Projectile::Type::HostHmgBullet) //If tank type is HMG - Jason lynch 
+	{
+		SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::TankCannon1 : SoundEffect::TankCannon2; //Pick one of two sounds - Jason lynch  
+		playLocalSound(commands, soundEffect); //Play that sound - Jason lynch 
+	}
+	else if (id == Projectile::Type::GreenGatlingBullet || id == Projectile::Type::RedGatlingBullet || id == Projectile::Type::HostGatlingBullet) //If tank type is Gatling - Jason lynch  
+	{
+		playLocalSound(commands, SoundEffect::TankGatling);//Play gatling sound - Jason lynch 
+	}
+	else if (id == Projectile::Type::GreenTeslaBullet || id == Projectile::Type::RedTeslaBullet || id == Projectile::Type::HostTeslaBullet)//If tank type is Tesla - Jason lynch 
+	{
+		playLocalSound(commands, SoundEffect::TeslaBullet);
 	}
 }
 
@@ -351,6 +374,8 @@ Projectile::Type Tank::getProjectile() const
 		return Projectile::Type::HostTeslaBullet;
 	}
 }
+
+
 
 void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 {
@@ -409,7 +434,7 @@ void Tank::updateTexts()
 	// Display hitpoints
 	if (isDestroyed()) {
 		mHealthDisplay->setString("");
-		mUserNameDisplay->setString("");
+		//mUserNameDisplay->setString("");
 	}
 	else
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
@@ -417,8 +442,8 @@ void Tank::updateTexts()
 	mHealthDisplay->setPosition(0.f, -getBoundingRect().height);
 	mHealthDisplay->setRotation(-getRotation());
 
-	mUserNameDisplay->setPosition(0.f, -getBoundingRect().height-50.0f);
-	mUserNameDisplay->setRotation(-getRotation());
+	/*mUserNameDisplay->setPosition(0.f, -getBoundingRect().height-50.0f);
+	mUserNameDisplay->setRotation(-getRotation());*/
 
 	// Display missiles, if available
 	if (mMissileDisplay)

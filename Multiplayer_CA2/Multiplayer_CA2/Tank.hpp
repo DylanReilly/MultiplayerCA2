@@ -43,6 +43,7 @@ class Tank : public Entity
 								Tank(Type type, const TextureHolder& textures, const FontHolder& fonts);
 
 		virtual unsigned int	getCategory() const;
+		void					checkProjectileType(CommandQueue& commands);
 		virtual sf::FloatRect	getBoundingRect() const;
 		virtual void			remove();
 		virtual bool 			isMarkedForRemoval() const;
