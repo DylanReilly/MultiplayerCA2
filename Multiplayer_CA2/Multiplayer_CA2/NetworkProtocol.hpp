@@ -7,7 +7,7 @@
 #include <string>
 
 
-const unsigned short ServerPort = 50000;
+const unsigned short ServerPort = 50005;
 
 namespace Server
 {

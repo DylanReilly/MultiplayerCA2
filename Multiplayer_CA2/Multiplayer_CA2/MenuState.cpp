@@ -1,3 +1,4 @@
+//D00137655 - Jason Lynch
 #include "MenuState.hpp"
 #include "Button.hpp"
 #include "Utility.hpp"
@@ -33,6 +34,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 			requestStackPush(States::HostGame);
 		});*/
 
+	//Pushes new state - Jason Lynch
 	auto hostPlayButton = std::make_shared<GUI::Button>(context);
 	hostPlayButton->setPosition(100, 350);
 	hostPlayButton->setText("Host");
@@ -42,6 +44,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 			requestStackPush(States::HostIpEntry);
 		});
 
+	//Pushes new state - Jason Lynch
 	auto joinPlayButton = std::make_shared<GUI::Button>(context);
 	joinPlayButton->setPosition(100, 400);
 	joinPlayButton->setText("Join");
@@ -51,6 +54,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 			requestStackPush(States::JoinIpEntry);
 		});
 
+	//Pushes new state - Jason Lynch
 	auto howToPlayButton = std::make_shared<GUI::Button>(context);
 	howToPlayButton->setPosition(100, 450);
 	howToPlayButton->setText("How To Play");
@@ -59,6 +63,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 			requestStackPush(States::HowToPlay);
 		});
 
+	//Pushes new state - Jason Lynch
 	auto settingsButton = std::make_shared<GUI::Button>(context);
 	settingsButton->setPosition(100, 500);
 	settingsButton->setText("Settings");

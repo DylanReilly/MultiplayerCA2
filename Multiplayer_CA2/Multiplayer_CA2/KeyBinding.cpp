@@ -1,3 +1,4 @@
+//D00137655 - Jason Lynch
 #include "KeyBinding.hpp"
 #include "Foreach.hpp"
 
@@ -59,6 +60,7 @@ void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)
 	mKeyMap[key] = action;
 }
 
+//Jason Lynch assigning joystick button
 void KeyBinding::assignJoystickButton(Action action, int buttonNumber)
 {
 	// Remove all keys that already map to action
@@ -110,6 +112,7 @@ bool KeyBinding::checkAction(sf::Keyboard::Key key, Action& out) const
 	}
 }
 
+//Jason Lynch checks action mapped to button
 bool KeyBinding::checkControllerAction(int buttonVal, Action& out) const
 {
 	auto found = mControllerBinding.find(buttonVal);
@@ -136,6 +139,7 @@ std::vector<KeyBinding::Action> KeyBinding::getRealtimeActions() const
 			actions.push_back(pair.second);
 	}
 
+	//Jason Lynch stores action mapped to button if realtime
 	FOREACH(auto pair, mControllerBinding)
 	{
 		// If joystick is pressed and an action is a realtime action, store it

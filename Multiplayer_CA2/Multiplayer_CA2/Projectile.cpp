@@ -95,6 +95,7 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 	}
 }
 
+//Modified for host projectile - Jason Lynch 
 unsigned int Projectile::getCategory() const
 {
 	if (mType == RedLmgBullet || mType == RedHmgBullet || mType == RedGatlingBullet || mType == RedTeslaBullet)

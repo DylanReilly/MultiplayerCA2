@@ -113,6 +113,7 @@ std::vector<TankData> initializeTankData()
 	data[Tank::Eagle].textureRect = sf::IntRect(0, 0, 95, 128);
 	data[Tank::Eagle].bulletType = Projectile::Type::RedHmgBullet;
 
+	//Added in host data - Jason Lynch
 	data[Tank::HostLmg].hitpoints = 500;
 	data[Tank::HostLmg].speed = 1.0f;
 	data[Tank::HostLmg].fireInterval = sf::seconds(1);

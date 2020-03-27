@@ -1,3 +1,4 @@
+//D00137655 - Jason Lynch 
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include "Tank.hpp"
@@ -110,6 +111,7 @@ Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* bi
 		pair.second.category = Category::Tank;
 }
 
+//Added joystick handling - Jason Lynch
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
 	// Event
