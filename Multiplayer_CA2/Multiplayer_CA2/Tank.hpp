@@ -53,6 +53,7 @@ class Tank : public Entity
 
 		void					increaseFireRate();
 		void					increaseSpread();
+		void					setSpread(int val);
 		void					collectMissiles(unsigned int count);
 
 		void 					fire();

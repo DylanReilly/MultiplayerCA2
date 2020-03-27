@@ -224,7 +224,7 @@ void World::loadTextures()
 	mTextures.load(Textures::ID::Tanks, "Media/Textures/TankSpriteSheet.png");
 	mTextures.load(Textures::ID::HostTankLmg, "Media/Textures/HostTank.png");
 	mTextures.load(Textures::ID::HostTankHmg, "Media/Textures/HostTankHmg.png");
-	mTextures.load(Textures::ID::HostTankGatling, "Media/Textures/HostTank.png");
+	mTextures.load(Textures::ID::HostTankGatling, "Media/Textures/HostTankGatling.png");
 	mTextures.load(Textures::ID::HostTankTesla, "Media/Textures/HostTankTesla.png");
 	mTextures.load(Textures::ID::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::ID::Barrel, "Media/Textures/Barell_01.png");
@@ -405,7 +405,8 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::AlliedTank, Category::EnemyProjectile) || matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile))
+		//Added new host tank detection - Jason Lynch
+		else if (matchesCategories(pair, Category::AlliedTank, Category::EnemyProjectile) || matchesCategories(pair, Category::AlliedTank, Category::HostProjectile) || matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile) || matchesCategories(pair, Category::EnemyTank, Category::HostProjectile) || matchesCategories(pair, Category::HostTank, Category::AlliedProjectile) || matchesCategories(pair, Category::HostTank, Category::EnemyProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -414,7 +415,7 @@ void World::handleCollisions()
 			tank.damage(projectile.getDamage());
 			projectile.destroy();
 
-			if (tank.getHitpoints() <= projectile.getDamage())
+			if (tank.getHitpoints() <= projectile.getDamage()) //TODO - Recode to only add score for the one person
 			{
 				std::ifstream fileIn;
 				int scores;
@@ -434,7 +435,7 @@ void World::handleCollisions()
 		}
 
 		//Destroy projectile when it hits a wall - Dylan
-		else if (matchesCategories(pair, Category::AlliedProjectile, Category::Collidable) || matchesCategories(pair, Category::EnemyProjectile, Category::Collidable))
+		else if (matchesCategories(pair, Category::AlliedProjectile, Category::Collidable) || matchesCategories(pair, Category::EnemyProjectile, Category::Collidable) || matchesCategories(pair, Category::HostProjectile, Category::Collidable))
 		{
 			auto& projectile = static_cast<Projectile&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
@@ -447,8 +448,8 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 
-		//Collision to stop tanks phasing through walls - Dylan
-		else if (matchesCategories(pair, Category::AlliedTank, Category::Collidable) || matchesCategories(pair, Category::EnemyTank, Category::Collidable))
+		//Collision to stop tanks phasing through walls - Dylan			Added in host detection - Jason Lynch 
+		else if (matchesCategories(pair, Category::AlliedTank, Category::Collidable) || matchesCategories(pair, Category::EnemyTank, Category::Collidable) || matchesCategories(pair, Category::HostTank, Category::Collidable))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);

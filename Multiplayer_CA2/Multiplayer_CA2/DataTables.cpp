@@ -212,10 +212,10 @@ std::vector<ProjectileData> initializeProjectileData()
 	data[Projectile::HostLmgBullet].texture = Textures::Entities;
 	data[Projectile::HostLmgBullet].textureRect = sf::IntRect(175, 64, 3, 14);
 
-	data[Projectile::HostGatlingBullet].damage = 20;
-	data[Projectile::HostGatlingBullet].speed = 130.f;
-	data[Projectile::HostGatlingBullet].texture = Textures::Entities;
-	data[Projectile::HostGatlingBullet].textureRect = sf::IntRect(184, 66, 30, 38);
+	data[Projectile::HostHmgBullet].damage = 20;
+	data[Projectile::HostHmgBullet].speed = 130.f;
+	data[Projectile::HostHmgBullet].texture = Textures::Entities;
+	data[Projectile::HostHmgBullet].textureRect = sf::IntRect(184, 66, 30, 38);
 
 	data[Projectile::HostGatlingBullet].damage = 8;
 	data[Projectile::HostGatlingBullet].speed = 150.f;

@@ -36,6 +36,7 @@ GameServer::GameServer(sf::Vector2f battlefieldSize)
 	mPeers[0].reset(new RemotePeer());
 	mThread.launch();
 
+	mSpawnPoints.push_back(sf::Vector2f(512, 80));
 	mSpawnPoints.push_back(sf::Vector2f(50,80));
 	mSpawnPoints.push_back(sf::Vector2f(974,80));
 	mSpawnPoints.push_back(sf::Vector2f(50, 205));
@@ -382,7 +383,7 @@ void GameServer::handleIncomingConnections()
 		mMaxSpawnPoints++;
 
 		if (mMaxSpawnPoints >= mSpawnPoints.size()) {
-			mMaxSpawnPoints = 0;
+			mMaxSpawnPoints = 1;
 		}
 	}
 }

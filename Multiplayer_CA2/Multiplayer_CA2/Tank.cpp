@@ -201,6 +201,11 @@ void Tank::increaseSpread()
 		++mSpreadLevel;
 }
 
+void Tank::setSpread(int val) {
+	if (val <= 3)
+		mSpreadLevel = val;;
+}
+
 void Tank::collectMissiles(unsigned int count)
 {
 	mMissileAmmo += count;
@@ -350,14 +355,14 @@ void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 			break;
 
 		case 2:
-			createProjectile(node, type, -0.33f, 0.33f, textures);
-			createProjectile(node, type, +0.33f, 0.33f, textures);
+			createProjectile(node, type, -10.0f, 0.33f, textures);
+			createProjectile(node, type, +10.0f, 0.33f, textures);
 			break;
 
 		case 3:
-			createProjectile(node, type, -0.5f, 0.33f, textures);
+			createProjectile(node, type, -20.0f, 0.33f, textures);
 			createProjectile(node, type,  0.0f, 0.5f, textures);
-			createProjectile(node, type, +0.5f, 0.33f, textures);
+			createProjectile(node, type, +20.0f, 0.33f, textures);
 			break;
 	}
 }
@@ -369,11 +374,11 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	std::unique_ptr<Projectile> projectile(new Projectile(bulletType, textures));
 
 	//Sets projectile spawn position to origin on the tank - Dylan
-	sf::Vector2f offset(15.f * -sin(toRadian(Tank::getRotation())), 15.f * cos(toRadian(Tank::getRotation())));
+	sf::Vector2f offset(15.f * -sin(toRadian(Tank::getRotation()))+xOffset, 15.f * cos(toRadian(Tank::getRotation()))+yOffset);
 
 	//Sets velocity respective to the type of bullet and direction based on the direction the tank is facing - Dylan
-	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation())), 
-		projectile->getMaxSpeed() * 1.5f * cos(toRadian(Tank::getRotation())));
+	sf::Vector2f velocity(projectile->getMaxSpeed() * 1.5f * -sin(toRadian(Tank::getRotation()))+xOffset, 
+		projectile->getMaxSpeed() * 1.5f * cos(toRadian(Tank::getRotation()))+yOffset);
 
 	projectile->setPosition(getWorldPosition() + offset);
 	projectile->setVelocity(velocity);
@@ -421,6 +426,7 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostHmg)].texture), false);
 			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostHmg)].textureRect);
 			mType = Tank::HostHmg;
+			mSpreadLevel = 3;
 			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
@@ -445,6 +451,7 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostGatlingGun)].texture), false);
 			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostGatlingGun)].textureRect);
 			mType = Tank::HostGatlingGun;
+			mSpreadLevel = 2;
 			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
@@ -470,6 +477,7 @@ void Tank::setTankTexture(unsigned int val) { //Allows change of tank texture (e
 			mSprite.setTexture(mTextures.get(Table[static_cast<int>(Tank::HostTesla)].texture), false);
 			mSprite.setTextureRect(Table[static_cast<int>(Tank::HostTesla)].textureRect);
 			mType = Tank::HostTesla;
+			mSpreadLevel = 3;
 			break;
 		case 4:
 			//Assigns new texture to player one tank - Jason Lynch
