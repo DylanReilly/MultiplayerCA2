@@ -1,3 +1,5 @@
+//D00137655 - Jason Lynch
+//D00194504 - Dylan
 #include "SpriteNode.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>

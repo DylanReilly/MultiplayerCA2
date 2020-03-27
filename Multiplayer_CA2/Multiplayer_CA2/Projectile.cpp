@@ -1,3 +1,5 @@
+//D00137655 - Jason Lynch
+//D00194504 - Dylan
 #include "Projectile.hpp"
 #include "EmitterNode.hpp"
 #include "DataTables.hpp"
