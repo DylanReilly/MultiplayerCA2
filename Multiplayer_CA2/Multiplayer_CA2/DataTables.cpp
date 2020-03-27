@@ -183,6 +183,28 @@ std::vector<ProjectileData> initializeProjectileData()
 	data[Projectile::RedTeslaBullet].texture = Textures::Entities;
 	data[Projectile::RedTeslaBullet].textureRect = sf::IntRect(160, 54, 15, 32);
 
+
+	//Jason Lynch - Host Bullet Info
+	data[Projectile::HostLmgBullet].damage = 10;
+	data[Projectile::HostLmgBullet].speed = 150.f;
+	data[Projectile::HostLmgBullet].texture = Textures::Entities;
+	data[Projectile::HostLmgBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+
+	data[Projectile::HostGatlingBullet].damage = 20;
+	data[Projectile::HostGatlingBullet].speed = 130.f;
+	data[Projectile::HostGatlingBullet].texture = Textures::Entities;
+	data[Projectile::HostGatlingBullet].textureRect = sf::IntRect(184, 66, 30, 38);
+
+	data[Projectile::HostGatlingBullet].damage = 8;
+	data[Projectile::HostGatlingBullet].speed = 150.f;
+	data[Projectile::HostGatlingBullet].texture = Textures::Entities;
+	data[Projectile::HostGatlingBullet].textureRect = sf::IntRect(175, 64, 3, 14);
+
+	data[Projectile::HostTeslaBullet].damage = 30;
+	data[Projectile::HostTeslaBullet].speed = 110.f;
+	data[Projectile::HostTeslaBullet].texture = Textures::Entities;
+	data[Projectile::HostTeslaBullet].textureRect = sf::IntRect(160, 54, 15, 32);
+
 	return data;
 }
 

@@ -19,10 +19,11 @@ namespace Category
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
 		Collidable			= 1 << 10,
+		HostProjectile		= 1 << 11,
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		
-		Projectile = AlliedProjectile | EnemyProjectile,
+		Projectile = AlliedProjectile | EnemyProjectile | HostProjectile,
 	};
 }
 

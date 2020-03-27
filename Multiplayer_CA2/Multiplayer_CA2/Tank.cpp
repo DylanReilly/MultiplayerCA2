@@ -319,6 +319,22 @@ Projectile::Type Tank::getProjectile() const
 	{
 		return Projectile::Type::RedTeslaBullet;
 	}
+	if (mType == Type::HostLmg)
+	{
+		return Projectile::Type::HostLmgBullet;
+	}
+	if (mType == Type::HostHmg)
+	{
+		return Projectile::Type::HostHmgBullet;
+	}
+	if (mType == Type::HostGatlingGun)
+	{
+		return Projectile::Type::HostGatlingBullet;
+	}
+	if (mType == Type::HostTesla)
+	{
+		return Projectile::Type::HostTeslaBullet;
+	}
 }
 
 void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
